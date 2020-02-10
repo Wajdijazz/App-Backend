@@ -1,6 +1,5 @@
 package com.followup.davidson.services.implementation;
 
-import com.followup.davidson.model.Client;
 import com.followup.davidson.model.Manager;
 import com.followup.davidson.repositories.ManagerRepository;
 import com.followup.davidson.services.IManagerService;
@@ -51,6 +50,17 @@ public class ManagerServiceImpl implements IManagerService {
     @Override
     public Optional<Manager> findById(Long id) {
         return managerRepository.findById(id);
+    }
+
+    @Override
+    public Manager updateManager(Long managerId, Manager manager) {
+     Manager managerUp=new Manager().builder()
+               .managerId(managerId)
+              .firstName(manager.getFirstName())
+              .lastName(manager.getLastName())
+              .build();
+        managerRepository.save(managerUp);
+        return managerUp ;
     }
 
     /**

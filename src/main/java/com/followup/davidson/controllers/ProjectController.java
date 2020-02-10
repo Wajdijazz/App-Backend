@@ -41,6 +41,12 @@ public class ProjectController {
         return projectService.create(project, clientId);
     }
 
+    @PutMapping("/{projectId}/{clientId}")
+    public Project updateProject(@PathVariable(value = "projectId") Long projectId, @Valid @RequestBody Project project,
+                                 @PathVariable(value = "clientId") Long clientId) {
+        return projectService.updateProject(projectId, project, clientId);
+    }
+
     @GetMapping("/{id}")
     public Optional<Project> findProjectById(@PathVariable(value = "id") Long projectId) {
         return projectService.findById(projectId);
@@ -51,10 +57,5 @@ public class ProjectController {
         projectService.deleteProject(projectId);
     }
 
-    @GetMapping("/active")
-    long getActiveProjects() {
-        return projectRepository.getActiveProjects();
-
-    }
 
 }

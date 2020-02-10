@@ -65,6 +65,20 @@ public class TJServiceImpl implements ITJService {
         return tjRepository.findById(id);
     }
 
+    @Override
+    public TJ updateTj(Long tjId, TJ tj, Long projectId, Long personId) {
+        Optional<Project> project = projectService.findById(projectId);
+        Optional<Person> person = personService.findById(personId);
+        TJ tjUp = new TJ().builder()
+                .tjId(tjId)
+                .tarif(tj.getTarif())
+                .project(project.get())
+                .person(person.get())
+                .build();
+        tjRepository.save(tjUp);
+        return tjUp;
+    }
+
     /**
      * Cette methode permet de supprimer un tj par id
      *
@@ -73,5 +87,20 @@ public class TJServiceImpl implements ITJService {
     @Override
     public void deleteTj(Long id) {
         tjRepository.deleteById(id);
+    }
+
+    /**
+     * Cette methode permet de trouver le tarif par project et personne
+     * @param projectId
+     * @param personId
+     * @return un tarif de type Long
+     */
+    @Override
+    public Long findTarif(Long projectId, Long personId) {
+        if(projectId==null | personId==null){
+            return null;
+        }else {
+            return tjRepository.findTarif(projectId, personId);
+        }
     }
 }

@@ -32,6 +32,11 @@ public class ClientController {
         return clientService.create(client);
     }
 
+    @PutMapping("/{clientId}")
+    public Client updateClient(@PathVariable(value = "clientId") Long clientId,@Valid @RequestBody Client client) {
+        return clientService.updateClient(clientId,client);
+    }
+
     @GetMapping("/{id}")
     public Optional<Client> findClientById(@PathVariable(value = "id") Long clientId) {
         return clientService.findById(clientId);

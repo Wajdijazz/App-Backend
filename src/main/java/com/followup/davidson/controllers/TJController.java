@@ -6,8 +6,11 @@ import com.followup.davidson.model.TJ;
 import com.followup.davidson.repositories.PersonRepository;
 import com.followup.davidson.repositories.ProjectRepository;
 import com.followup.davidson.services.ITJService;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
@@ -39,9 +42,21 @@ public class TJController {
         return tjService.create(tj, projectId, personId);
     }
 
+    @PutMapping("/{tjId}/{projectId}/{personId}")
+    public TJ updateTj(@Valid @RequestBody TJ tj, @PathVariable(value = "tjId") Long tjId, @PathVariable(value = "projectId") Long projectId,
+                       @PathVariable(value = "personId") Long personId) {
+        return tjService.updateTj(tjId, tj, projectId, personId);
+    }
+
     @GetMapping("/{id}")
     public Optional<TJ> findTjById(@PathVariable(value = "id") Long tjId) {
         return tjService.findById(tjId);
+    }
+
+    @GetMapping("/{projectId}/{personId}")
+    public Long findTarif(@PathVariable(value = "projectId") Long projectId,
+                          @PathVariable(value = "personId") Long personId) {
+            return tjService.findTarif(projectId, personId);
     }
 
     @DeleteMapping("/{id}")

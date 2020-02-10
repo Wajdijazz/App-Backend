@@ -35,9 +35,8 @@ public class TJ {
     /**
      * Le projet affecté à ce taux de jour
      */
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name="project_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private Project project;
 
 }

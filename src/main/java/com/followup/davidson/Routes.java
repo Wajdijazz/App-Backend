@@ -10,5 +10,7 @@ public class Routes {
     public static final String CLIENT = "/client";
     public static final String INTERVENTION = "/intervention";
     public static final String Manger = "/manager";
+    public static final String Data = "/data";
+
 
 }

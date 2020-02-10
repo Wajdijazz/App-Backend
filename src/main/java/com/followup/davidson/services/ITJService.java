@@ -8,7 +8,15 @@ import java.util.Optional;
 public interface ITJService {
 
     List<TJ> findAll();
-    TJ create(TJ tj,Long projectId,Long personId);
+
+    TJ create(TJ tj, Long projectId, Long personId);
+
     Optional<TJ> findById(Long id);
+
+    TJ updateTj(Long tjId,TJ tj,Long projectId,Long personId);
+
     void deleteTj(Long id);
+
+    Long findTarif(Long projectId, Long personId);
+
 }

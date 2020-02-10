@@ -8,7 +8,12 @@ import java.util.Optional;
 public interface IPersonService {
 
     List<Person> findAll();
-    Person create(Person person,Long managerId);
+
+    Person create(Person person, Long managerId);
+
     Optional<Person> findById(Long id);
+
+    Person updatePerson(Long personId, Person person, Long managerId);
+
     void deletePerson(Long personId);
 }

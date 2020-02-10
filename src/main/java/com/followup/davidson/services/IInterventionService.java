@@ -14,12 +14,17 @@ public interface IInterventionService {
 
 
     Optional<Intervention> findById(Long id);
-     List<Intervention> findAll();
-    Object saveInterventions(InterventionController.InterventionForm interventionForm, Long personId, Long projectId);
-    void deleteIntervention(Long personId,Long projectId);
-    void deleteInterventionHistorique(Long id);
-    List<Intervention> findByPersonAndProject(long projectId, long personId);
-    long workedDayByPersonAndProject(long projectId,  long personId);
 
-    // void workedDay(Intervention intervention);
+    List<Intervention> findAll();
+
+    Object saveInterventions(InterventionController.InterventionForm interventionForm, Long personId, Long projectId);
+
+    void deleteIntervention(Long personId, Long projectId);
+
+    void deleteInterventionHistorique(Long id);
+
+    List<Intervention> findByPersonAndProject(long projectId, long personId);
+
+    long workedDayByPersonAndProject(long projectId, long personId);
+
 }

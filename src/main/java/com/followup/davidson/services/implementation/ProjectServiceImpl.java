@@ -59,6 +59,18 @@ public class ProjectServiceImpl implements IProjectService {
         return projectRepository.save(project);
     }
 
+    @Override
+    public Project updateProject(Long projectId, Project project, Long clientId) {
+        Optional<Client> client=clientService.findById(clientId);
+        Project projectUp=new Project().builder()
+                .projectId(projectId)
+                .projectName(project.getProjectName())
+                .client(client.get())
+                .build();
+        projectRepository.save(projectUp);
+        return projectUp;
+    }
+
     /**
      * Cette methode permet de supprimer un projet par son id
      *

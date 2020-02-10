@@ -50,6 +50,17 @@ public class ClientServiceImpl implements IClientService {
         return clientRepository.save(client);
     }
 
+    @Override
+    public Client updateClient(Long clientId, Client client) {
+        Client clientUp=new Client().builder()
+                .clientId(clientId)
+                .clientName(client.getClientName())
+                .clientContact(client.getClientContact())
+                .build();
+        clientRepository.save(clientUp);
+        return clientUp;
+    }
+
     /**
      * Cette methode permet de supprimer un client par son id
      *

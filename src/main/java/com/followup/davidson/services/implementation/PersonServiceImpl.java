@@ -59,6 +59,19 @@ public class PersonServiceImpl implements IPersonService {
         return personRepository.findById(id);
     }
 
+    @Override
+    public Person updatePerson(Long personId, Person person, Long managerId) {
+        Optional<Manager> manager = managerService.findById(managerId);
+        Person personUp=new Person().builder()
+                .personId(personId)
+                .firstName(person.getFirstName())
+                .lastName(person.getLastName())
+                .manager(manager.get())
+                .build();
+        personRepository.save(personUp);
+        return personUp;
+    }
+
     /**
      * Cette methode permet de supprimer une personne par id
      *
