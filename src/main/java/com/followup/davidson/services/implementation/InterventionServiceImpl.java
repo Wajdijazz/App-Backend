@@ -68,7 +68,7 @@ public class InterventionServiceImpl implements IInterventionService {
         Calendar cal2 = Calendar.getInstance();
         cal1.setTime(interventionForm.getStartDate());
         cal2.setTime(interventionForm.getEndDate());
-        while (cal1.compareTo(cal2)<=0) {
+        while (cal1.compareTo(cal2) <= 0) {
             if ((Calendar.SATURDAY != cal1.get(Calendar.DAY_OF_WEEK))
                     && (Calendar.SUNDAY != cal1.get(Calendar.DAY_OF_WEEK))) {
                 Date date = cal1.getTime();
@@ -141,4 +141,8 @@ public class InterventionServiceImpl implements IInterventionService {
         return interventionRepository.workedDayByPersonAndProject(projectId, personId);
     }
 
+    @Override
+    public long workedDayByPersonAndProjectByMonth(long projectId, long personId, long monthNumber) {
+        return interventionRepository.workedDayByPersonAndProjectInMonth(projectId, personId, monthNumber);
+    }
 }

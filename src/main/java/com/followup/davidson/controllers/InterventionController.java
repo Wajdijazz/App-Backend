@@ -36,7 +36,6 @@ public class InterventionController {
     private IPersonService personService;
 
 
-
     public InterventionController(IInterventionService interventionService, IProjectService projectService,
                                   IPersonService personService, InterventionRepository interventionRepository) {
         this.projectService = projectService;
@@ -53,7 +52,8 @@ public class InterventionController {
     public Object createIntervention(@Valid @RequestBody InterventionForm interventionForm,
                                      @PathVariable(value = "projectId") Long projectId
             , @PathVariable(value = "personId") Long personId) {
-                return interventionService.saveInterventions(interventionForm,personId,projectId);
+
+        return interventionService.saveInterventions(interventionForm, personId, projectId);
     }
 
     @GetMapping("/{id}")
@@ -73,9 +73,16 @@ public class InterventionController {
         return interventionService.workedDayByPersonAndProject(projectId, personId);
     }
 
+    @GetMapping("{projectId}/{personId}/{monthNumber}")
+    long getworkedByPersonAndProjectByMonth(@PathVariable(value = "projectId") Long projectId,
+                                            @PathVariable(value = "personId") Long personId,
+                                            @PathVariable(value = "monthNumber") Long monthNumber) {
+        return interventionService.workedDayByPersonAndProjectByMonth(projectId, personId, monthNumber)/2;
+    }
+
     @DeleteMapping("/person/{personId}/project/{projectId}")
     public void deleteInterventionByIdPersonAndProject(@PathVariable(value = "personId") Long personId,
-                                   @PathVariable(value = "projectId") Long projectId) {
+                                                       @PathVariable(value = "projectId") Long projectId) {
         interventionService.deleteIntervention(personId, projectId);
     }
 
@@ -89,7 +96,7 @@ public class InterventionController {
     @NoArgsConstructor
     @AllArgsConstructor
     @ToString
-   public static class InterventionForm {
+    public static class InterventionForm {
         @JsonFormat(pattern = "yyyy-MM-dd")
         private Date startDate;
         @JsonFormat(pattern = "yyyy-MM-dd")

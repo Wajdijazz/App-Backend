@@ -30,7 +30,7 @@ public interface InterventionRepository extends JpaRepository<Intervention, Long
      * @return une liste des {@link Intervention}
      */
     @Query(value = "select * from intervention where intervention.project_id= :projectId  And intervention.person_id= :personId",
-                    nativeQuery = true)
+            nativeQuery = true)
     List<Intervention> findByPersonAndProject(long projectId, long personId);
 
     //a besoin dans la prochaine sprint
@@ -46,6 +46,7 @@ public interface InterventionRepository extends JpaRepository<Intervention, Long
 /*    @Query(value = "select count(*) from public.intervention where intervention.person_id= :person_id and intervention.project_id= :project_id and intervention.date between :firstDate AND :secondDate", nativeQuery = true)
     long workedDaysByPeriod(long person_id,long project_id,Date firstDate,Date secondDate);
 */
+
     /**
      * cette methode permet de compter le nombre des jours travaillés d'une personne sur un projet
      *
@@ -55,8 +56,11 @@ public interface InterventionRepository extends JpaRepository<Intervention, Long
      */
     @Query(value = "select count(*) from public.intervention where intervention.project_id= :projectId and intervention.person_id= :personId",
             nativeQuery = true)
-    long workedDayByPersonAndProject(long projectId,  long personId);
+    long workedDayByPersonAndProject(long projectId, long personId);
 
+    @Query(value = "select count(*) from public.intervention WHERE EXTRACT(MONTH FROM date)= :monthNumber and intervention.project_id= :projectId and intervention.person_id= :personId",
+            nativeQuery = true)
+    long workedDayByPersonAndProjectInMonth(long projectId, long personId, long monthNumber);
 
     /**
      * cette methode permet de supprimer les interventions par personId et par projectId

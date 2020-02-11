@@ -33,9 +33,7 @@ public class ClientController {
 
     @PostMapping("/")
     public ResponseEntity<Client> createClient(@Valid @RequestBody Client client) {
-        Client clientAdded = clientService.create(client);
-        if (clientAdded == null)
-            return ResponseEntity.noContent().build();
+        clientService.create(client);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{clientId}")
                 .buildAndExpand(client.getClientId())
@@ -44,8 +42,13 @@ public class ClientController {
     }
 
     @PutMapping("/{clientId}")
-    public Client updateClient(@PathVariable(value = "clientId") Long clientId,@Valid @RequestBody Client client) {
-        return clientService.updateClient(clientId,client);
+    public ResponseEntity<Client> updateClient(@PathVariable(value = "clientId") Long clientId, @Valid @RequestBody Client client) {
+        clientService.updateClient(clientId, client);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{clientId}")
+                .buildAndExpand(client.getClientId())
+                .toUri();
+        return ResponseEntity.created(location).build();
     }
 
     @GetMapping("/{id}")

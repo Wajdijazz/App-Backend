@@ -19,9 +19,6 @@ public class DataSetController {
 
     @GetMapping("/{projectId}")
     public Dataset getByProject(@PathVariable(value = "projectId") Long projectId) {
-
             return datasetService.getByProject(projectId);
-
-
     }
 }

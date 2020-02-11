@@ -43,9 +43,7 @@ public class TJController {
     @PostMapping("/project/{projectId}/person/{personId}")
     public ResponseEntity<TJ> createTj(@Valid @RequestBody TJ tj, @PathVariable(value = "projectId") Long projectId,
                                        @PathVariable(value = "personId") Long personId) {
-        TJ tjAdded = tjService.create(tj, projectId, personId);
-        if (tjAdded == null)
-            return ResponseEntity.noContent().build();
+        tjService.create(tj, projectId, personId);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{tjId}")
                 .buildAndExpand(tj.getTjId())
@@ -54,9 +52,14 @@ public class TJController {
     }
 
     @PutMapping("/{tjId}/{projectId}/{personId}")
-    public TJ updateTj(@Valid @RequestBody TJ tj, @PathVariable(value = "tjId") Long tjId, @PathVariable(value = "projectId") Long projectId,
-                       @PathVariable(value = "personId") Long personId) {
-        return tjService.updateTj(tjId, tj, projectId, personId);
+    public ResponseEntity<TJ> updateTj(@Valid @RequestBody TJ tj, @PathVariable(value = "tjId") Long tjId, @PathVariable(value = "projectId") Long projectId,
+                                       @PathVariable(value = "personId") Long personId) {
+        tjService.updateTj(tjId, tj, projectId, personId);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{tjId}")
+                .buildAndExpand(tj.getTjId())
+                .toUri();
+        return ResponseEntity.created(location).build();
     }
 
     @GetMapping("/{id}")

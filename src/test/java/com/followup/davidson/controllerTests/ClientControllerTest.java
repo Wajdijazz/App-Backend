@@ -26,6 +26,7 @@ import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
@@ -56,31 +57,41 @@ public class ClientControllerTest {
     @Test
     void findAll_whenNoRecord() {
 
-        Mockito.when(clientService.findAll()).thenReturn(Arrays.asList());
+        when(clientService.findAll()).thenReturn(Arrays.asList());
         assertThat(clientController.getAllClient().size(), is(0));
-        Mockito.verify(clientService, Mockito.times(1)).findAll();
+        verify(clientService, times(1)).findAll();
     }
 
     @Test
     void findAll_whenRecord() {
-        Mockito.when(clientService.findAll()).thenReturn(Arrays.asList(c1, c2));
+        when(clientService.findAll()).thenReturn(Arrays.asList(c1, c2));
         assertThat(clientController.getAllClient().size(), is(2));
-        Mockito.verify(clientService, Mockito.times(1)).findAll();
+        verify(clientService, times(1)).findAll();
     }
 
     @Test
     void createOnClickAddClient() {
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        when(clientService.create(Mockito.any(Client.class))).thenReturn(c1);
+        when(clientService.create(any(Client.class))).thenReturn(c1);
         ResponseEntity<Client> responseEntity = clientController.createClient(c1);
         Assertions.assertThat(responseEntity.getStatusCodeValue()).isEqualTo(201);
         Assertions.assertThat(responseEntity.getHeaders().getLocation().getPath()).isEqualTo("/1");
     }
 
     @Test
+    void updateOnClickUpdateClient() {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+        when(clientService.updateClient(anyLong(), any(Client.class))).thenReturn(c1);
+        ResponseEntity<Client> responseEntity = clientController.updateClient(1L,c1);
+        Assertions.assertThat(responseEntity.getStatusCodeValue()).isEqualTo(201);
+        Assertions.assertThat(responseEntity.getHeaders().getLocation().getPath()).isEqualTo("/1");
+    }
+
+    @Test
     void findById_WhenMatch() {
-        Mockito.when(clientService.findById(1L)).thenReturn(Optional.of(c1));
+        when(clientService.findById(1L)).thenReturn(Optional.of(c1));
         Optional<Client> c = clientController.findClientById(1L);
         assertThat(c.get(), is(c1));
     }
@@ -90,7 +101,7 @@ public class ClientControllerTest {
 
         lenient().when(clientService.findById(1L)).thenReturn(Optional.of(c1));
         clientController.deleteClient(1L);
-        Mockito.verify(clientService, Mockito.times(1)).deleteClient(1L);
+        verify(clientService, times(1)).deleteClient(1L);
 
     }
 

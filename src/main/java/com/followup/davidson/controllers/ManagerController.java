@@ -34,9 +34,7 @@ public class ManagerController {
 
     @PostMapping("/")
     public ResponseEntity<Manager> createManager(@Valid @RequestBody Manager manager) {
-        Manager manageradded = managerService.create(manager);
-        if (manageradded == null)
-            return ResponseEntity.noContent().build();
+        managerService.create(manager);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{managerId}")
                 .buildAndExpand(manager.getManagerId())
@@ -47,7 +45,12 @@ public class ManagerController {
     @PutMapping("/{managerId}")
     public ResponseEntity<Manager> updateManager(@PathVariable(value = "managerId") Long managerId,
                                                  @Valid @RequestBody Manager manager) {
-        return ResponseEntity.ok(managerService.updateManager(managerId,manager));
+        managerService.updateManager(managerId,manager);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{managerId}")
+                .buildAndExpand(manager.getManagerId())
+                .toUri();
+        return ResponseEntity.created(location).build();
     }
 
     @GetMapping("/{id}")

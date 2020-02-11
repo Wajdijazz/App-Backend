@@ -94,6 +94,15 @@ public class ProjectControllerTest {
         Assertions.assertThat(responseEntity.getStatusCodeValue()).isEqualTo(201);
         Assertions.assertThat(responseEntity.getHeaders().getLocation().getPath()).isEqualTo("/1");
     }
+    @Test
+    void updateOnClickUpdateProject() {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+        when(projectService.updateProject(anyLong(),Mockito.any(Project.class), anyLong())).thenReturn(p1);
+        ResponseEntity<Project> responseEntity = projectController.updateProject(1L,p1, 1L);
+        Assertions.assertThat(responseEntity.getStatusCodeValue()).isEqualTo(201);
+        Assertions.assertThat(responseEntity.getHeaders().getLocation().getPath()).isEqualTo("/1");
+    }
 
 
 }

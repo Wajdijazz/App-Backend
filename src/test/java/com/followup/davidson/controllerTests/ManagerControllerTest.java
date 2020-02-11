@@ -33,15 +33,20 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Optional;
 
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
-
+import static org.springframework.mock.http.server.reactive.MockServerHttpRequest.post;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -90,6 +95,17 @@ public class ManagerControllerTest {
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
         when(managerService.create(Mockito.any(Manager.class))).thenReturn(m1);
         ResponseEntity<Manager> responseEntity = managerController.createManager(m1);
+        assertThat(responseEntity.getStatusCodeValue()).isEqualTo(201);
+        assertThat(responseEntity.getHeaders().getLocation().getPath()).isEqualTo("/1");
+    }
+
+    @Test
+    void UpdateOnClickUpdate() throws Exception {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+        when(managerService.updateManager(anyLong(),Mockito.any(Manager.class))).thenReturn(m1);
+        ResponseEntity<Manager> responseEntity = managerController.updateManager(1L,m1);
+        System.out.println(responseEntity);
         assertThat(responseEntity.getStatusCodeValue()).isEqualTo(201);
         assertThat(responseEntity.getHeaders().getLocation().getPath()).isEqualTo("/1");
     }

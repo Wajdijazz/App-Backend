@@ -42,9 +42,7 @@ public class ProjectController {
 
     @PostMapping("/client/{clientId}/project")
     public ResponseEntity<Project> createProject(@Valid @RequestBody Project project, @PathVariable(value = "clientId") Long clientId) {
-        Project projectAdded = projectService.create(project, clientId);
-        if (projectAdded == null)
-            return ResponseEntity.noContent().build();
+        projectService.create(project, clientId);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{projectId}")
                 .buildAndExpand(project.getProjectId())
@@ -53,9 +51,14 @@ public class ProjectController {
     }
 
     @PutMapping("/{projectId}/{clientId}")
-    public Project updateProject(@PathVariable(value = "projectId") Long projectId, @Valid @RequestBody Project project,
+    public ResponseEntity<Project> updateProject(@PathVariable(value = "projectId") Long projectId, @Valid @RequestBody Project project,
                                  @PathVariable(value = "clientId") Long clientId) {
-        return projectService.updateProject(projectId, project, clientId);
+    projectService.updateProject(projectId, project, clientId);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{projectId}")
+                .buildAndExpand(project.getProjectId())
+                .toUri();
+        return ResponseEntity.created(location).build();
     }
 
     @GetMapping("/{id}")

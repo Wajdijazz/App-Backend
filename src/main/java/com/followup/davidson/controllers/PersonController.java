@@ -33,12 +33,9 @@ public class PersonController {
         return personService.findAll();
     }
 
-
     @PostMapping("/manager/{managerId}/person")
     public ResponseEntity<Person> createPerson(@Valid @RequestBody Person person, @PathVariable(value = "managerId") Long managerId) {
-        Person personAdded = personService.create(person, managerId);
-        if (personAdded == null)
-            return ResponseEntity.noContent().build();
+        personService.create(person, managerId);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{personId}")
                 .buildAndExpand(person.getPersonId())
@@ -47,9 +44,14 @@ public class PersonController {
     }
 
     @PutMapping("/{personId}/{managerId}")
-    public Person updatePerson(@PathVariable(value = "personId") Long personId, @Valid @RequestBody Person person,
+    public ResponseEntity<Person> updatePerson(@PathVariable(value = "personId") Long personId, @Valid @RequestBody Person person,
                                @PathVariable(value = "managerId") Long managerId) {
-        return personService.updatePerson(personId, person, managerId);
+        personService.updatePerson(personId,person,managerId);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{personId}")
+                .buildAndExpand(person.getPersonId())
+                .toUri();
+        return ResponseEntity.created(location).build();
     }
 
     @GetMapping("/{id}")

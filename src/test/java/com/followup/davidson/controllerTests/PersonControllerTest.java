@@ -66,6 +66,15 @@ public class PersonControllerTest {
         Assertions.assertThat(responseEntity.getHeaders().getLocation().getPath()).isEqualTo("/1");
     }
 
+    @Test
+    void updatePersonOnClickUpdatePerson() {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+        when(personService.updatePerson(anyLong(), Mockito.any(Person.class), anyLong())).thenReturn(p1);
+        ResponseEntity<Person> responseEntity = personController.updatePerson(1L, p1, 1L);
+        Assertions.assertThat(responseEntity.getStatusCodeValue()).isEqualTo(201);
+        Assertions.assertThat(responseEntity.getHeaders().getLocation().getPath()).isEqualTo("/1");
+    }
 
     @Test
     void findAll_whenNoRecord() {

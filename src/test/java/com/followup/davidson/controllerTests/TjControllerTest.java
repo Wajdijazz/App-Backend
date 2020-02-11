@@ -39,6 +39,7 @@ public class TjControllerTest {
     private ITJService tjService;
     @InjectMocks
     private TJController tjController;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -65,12 +66,13 @@ public class TjControllerTest {
         assertThat(tjController.getAllTj().size(), is(2));
         Mockito.verify(tjService, Mockito.times(1)).findAll();
     }
+
     @Test
     void findById_WhenMatch() {
 
         Mockito.when(tjService.findById(1L)).thenReturn(Optional.of(tj1));
         Optional<TJ> tj = tjController.findTjById(1L);
-        assertThat(tj.get(), is(tj1) );
+        assertThat(tj.get(), is(tj1));
     }
 
 
@@ -85,12 +87,20 @@ public class TjControllerTest {
     void createOnClickAddTj() {
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        when(tjService.create(Mockito.any(TJ.class), anyLong(),anyLong())).thenReturn(tj1);
-        ResponseEntity<TJ> responseEntity = tjController.createTj(tj1, 1L,1L);
+        when(tjService.create(Mockito.any(TJ.class), anyLong(), anyLong())).thenReturn(tj1);
+        ResponseEntity<TJ> responseEntity = tjController.createTj(tj1, 1L, 1L);
         Assertions.assertThat(responseEntity.getStatusCodeValue()).isEqualTo(201);
         Assertions.assertThat(responseEntity.getHeaders().getLocation().getPath()).isEqualTo("/1");
+    }
 
-
+    @Test
+    void updateOnClickUpdateTj() {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+        when(tjService.updateTj(anyLong(),Mockito.any(TJ.class), anyLong(), anyLong())).thenReturn(tj1);
+        ResponseEntity<TJ> responseEntity = tjController.updateTj(tj1,1L, 1L, 1L);
+        Assertions.assertThat(responseEntity.getStatusCodeValue()).isEqualTo(201);
+        Assertions.assertThat(responseEntity.getHeaders().getLocation().getPath()).isEqualTo("/1");
     }
 
 }

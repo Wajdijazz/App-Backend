@@ -92,7 +92,7 @@ public class InterventionControllerTest {
     }
 
     @Test
-    void create() {
+    void createIntervention() {
         Object intervention = interventionController.createIntervention(interventionForm, 1L, 1L);
         Mockito.verify(interventionService, Mockito.times(1))
                 .saveInterventions(interventionForm,1L,1L);
