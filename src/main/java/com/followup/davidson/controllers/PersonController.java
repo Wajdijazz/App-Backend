@@ -2,12 +2,16 @@ package com.followup.davidson.controllers;
 
 
 import com.followup.davidson.Routes;
+import com.followup.davidson.model.Manager;
 import com.followup.davidson.model.Person;
 import com.followup.davidson.services.IManagerService;
 import com.followup.davidson.services.IPersonService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,14 +35,23 @@ public class PersonController {
 
 
     @PostMapping("/manager/{managerId}/person")
-    public Person createPerson(@Valid @RequestBody Person person, @PathVariable(value = "managerId") Long managerId) {
-        return personService.create(person, managerId);
+    public ResponseEntity<Person> createPerson(@Valid @RequestBody Person person, @PathVariable(value = "managerId") Long managerId) {
+        Person personAdded = personService.create(person, managerId);
+        if (personAdded == null)
+            return ResponseEntity.noContent().build();
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{personId}")
+                .buildAndExpand(person.getPersonId())
+                .toUri();
+        return ResponseEntity.created(location).build();
     }
+
     @PutMapping("/{personId}/{managerId}")
-    public Person updatePerson( @PathVariable(value = "personId") Long personId,@Valid @RequestBody Person person,
-                                @PathVariable(value = "managerId") Long managerId) {
-        return personService.updatePerson(personId,person, managerId);
+    public Person updatePerson(@PathVariable(value = "personId") Long personId, @Valid @RequestBody Person person,
+                               @PathVariable(value = "managerId") Long managerId) {
+        return personService.updatePerson(personId, person, managerId);
     }
+
     @GetMapping("/{id}")
     public Optional<Person> findPersonById(@PathVariable(value = "id") Long personId) {
         return personService.findById(personId);

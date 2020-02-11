@@ -5,6 +5,7 @@ import com.followup.davidson.controllers.PersonController;
 import com.followup.davidson.model.Manager;
 import com.followup.davidson.model.Person;
 import com.followup.davidson.services.IPersonService;
+import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -15,13 +16,19 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.Arrays;
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
@@ -30,8 +37,6 @@ public class PersonControllerTest {
     private static Person p1;
     private static Person p2;
     private static Manager m1;
-
-
 
 
     @Mock
@@ -46,29 +51,24 @@ public class PersonControllerTest {
 
     @BeforeAll
     public static void init() {
-    p1=new Person(1L,"Wajdi","Jaziri",null);
-    p2=new Person(1L,"Davidson","Consulting",null);
-        m1=new Manager(1L,"Wajdi","Jaziri");
-
-
-
-
-
+        p1 = new Person(1L, "Wajdi", "Jaziri", null);
+        p2 = new Person(1L, "Davidson", "Consulting", null);
+        m1 = new Manager(1L, "Wajdi", "Jaziri");
     }
 
     @Test
-    void create() {
-
-        Person p= personController.createPerson(p1,1L);
-        Mockito.verify(personService, Mockito.times(1)).create(p1,1L);
-
+    void createOnClickAddPerson() {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+        when(personService.create(Mockito.any(Person.class), anyLong())).thenReturn(p1);
+        ResponseEntity<Person> responseEntity = personController.createPerson(p1, 1L);
+        Assertions.assertThat(responseEntity.getStatusCodeValue()).isEqualTo(201);
+        Assertions.assertThat(responseEntity.getHeaders().getLocation().getPath()).isEqualTo("/1");
     }
-
 
 
     @Test
     void findAll_whenNoRecord() {
-
         Mockito.when(personService.findAll()).thenReturn(Arrays.asList());
         assertThat(personController.getAllPerson().size(), is(0));
         Mockito.verify(personService, Mockito.times(1)).findAll();
@@ -81,18 +81,18 @@ public class PersonControllerTest {
         assertThat(personController.getAllPerson().size(), is(2));
         Mockito.verify(personService, Mockito.times(1)).findAll();
     }
+
     @Test
     void findById_WhenMatch() {
 
         Mockito.when(personService.findById(1L)).thenReturn(Optional.of(p1));
         Optional<Person> p = personController.findPersonById(1L);
-        assertThat(p.get(), is(p1) );
+        assertThat(p.get(), is(p1));
     }
 
 
     @Test
     void deleteById_WhenFound() {
-
         lenient().when(personService.findById(1L)).thenReturn(Optional.of(p1));
         personController.deletePerson(1L);
         Mockito.verify(personService, Mockito.times(1)).deletePerson(1L);

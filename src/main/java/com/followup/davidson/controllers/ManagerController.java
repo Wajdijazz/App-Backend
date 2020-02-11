@@ -4,10 +4,14 @@ package com.followup.davidson.controllers;
 import com.followup.davidson.Routes;
 import com.followup.davidson.model.Manager;
 import com.followup.davidson.services.IManagerService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,13 +33,21 @@ public class ManagerController {
 
 
     @PostMapping("/")
-    public Manager createManager(@Valid @RequestBody Manager manager) {
-        return managerService.create(manager);
+    public ResponseEntity<Manager> createManager(@Valid @RequestBody Manager manager) {
+        Manager manageradded = managerService.create(manager);
+        if (manageradded == null)
+            return ResponseEntity.noContent().build();
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{managerId}")
+                .buildAndExpand(manager.getManagerId())
+                .toUri();
+        return ResponseEntity.created(location).build();
     }
 
     @PutMapping("/{managerId}")
-    public Manager updateManager(@PathVariable(value = "managerId") Long managerId, @Valid @RequestBody Manager manager) {
-        return managerService.updateManager(managerId,manager);
+    public ResponseEntity<Manager> updateManager(@PathVariable(value = "managerId") Long managerId,
+                                                 @Valid @RequestBody Manager manager) {
+        return ResponseEntity.ok(managerService.updateManager(managerId,manager));
     }
 
     @GetMapping("/{id}")

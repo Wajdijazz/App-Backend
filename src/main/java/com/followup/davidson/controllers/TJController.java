@@ -2,16 +2,20 @@ package com.followup.davidson.controllers;
 
 
 import com.followup.davidson.Routes;
+import com.followup.davidson.model.Project;
 import com.followup.davidson.model.TJ;
 import com.followup.davidson.repositories.PersonRepository;
 import com.followup.davidson.repositories.ProjectRepository;
 import com.followup.davidson.services.ITJService;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,9 +41,16 @@ public class TJController {
     }
 
     @PostMapping("/project/{projectId}/person/{personId}")
-    public TJ createTj(@Valid @RequestBody TJ tj, @PathVariable(value = "projectId") Long projectId,
-                       @PathVariable(value = "personId") Long personId) {
-        return tjService.create(tj, projectId, personId);
+    public ResponseEntity<TJ> createTj(@Valid @RequestBody TJ tj, @PathVariable(value = "projectId") Long projectId,
+                                       @PathVariable(value = "personId") Long personId) {
+        TJ tjAdded = tjService.create(tj, projectId, personId);
+        if (tjAdded == null)
+            return ResponseEntity.noContent().build();
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{tjId}")
+                .buildAndExpand(tj.getTjId())
+                .toUri();
+        return ResponseEntity.created(location).build();
     }
 
     @PutMapping("/{tjId}/{projectId}/{personId}")
@@ -56,7 +67,7 @@ public class TJController {
     @GetMapping("/{projectId}/{personId}")
     public Long findTarif(@PathVariable(value = "projectId") Long projectId,
                           @PathVariable(value = "personId") Long personId) {
-            return tjService.findTarif(projectId, personId);
+        return tjService.findTarif(projectId, personId);
     }
 
     @DeleteMapping("/{id}")

@@ -2,8 +2,10 @@ package com.followup.davidson.controllerTests;
 
 
 import com.followup.davidson.controllers.TJController;
+import com.followup.davidson.model.Project;
 import com.followup.davidson.model.TJ;
 import com.followup.davidson.services.ITJService;
+import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -14,13 +16,19 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.Arrays;
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
@@ -68,18 +76,20 @@ public class TjControllerTest {
 
     @Test
     void deleteById_WhenFound() {
-
         lenient().when(tjService.findById(1L)).thenReturn(Optional.of(tj1));
         tjController.deleteTj(1L);
         Mockito.verify(tjService, Mockito.times(1)).deleteTj(1L);
-
     }
 
     @Test
-    void create() {
+    void createOnClickAddTj() {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+        when(tjService.create(Mockito.any(TJ.class), anyLong(),anyLong())).thenReturn(tj1);
+        ResponseEntity<TJ> responseEntity = tjController.createTj(tj1, 1L,1L);
+        Assertions.assertThat(responseEntity.getStatusCodeValue()).isEqualTo(201);
+        Assertions.assertThat(responseEntity.getHeaders().getLocation().getPath()).isEqualTo("/1");
 
-        TJ tj= tjController.createTj(tj1,1L,1L);
-        Mockito.verify(tjService, Mockito.times(1)).create(tj1,1L,1L);
 
     }
 

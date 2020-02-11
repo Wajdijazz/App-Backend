@@ -3,10 +3,14 @@ package com.followup.davidson.controllers;
 
 import com.followup.davidson.Routes;
 import com.followup.davidson.model.Client;
+import com.followup.davidson.model.Manager;
 import com.followup.davidson.services.IClientService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,8 +32,15 @@ public class ClientController {
 
 
     @PostMapping("/")
-    public Client createClient(@Valid @RequestBody Client client) {
-        return clientService.create(client);
+    public ResponseEntity<Client> createClient(@Valid @RequestBody Client client) {
+        Client clientAdded = clientService.create(client);
+        if (clientAdded == null)
+            return ResponseEntity.noContent().build();
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{clientId}")
+                .buildAndExpand(client.getClientId())
+                .toUri();
+        return ResponseEntity.created(location).build();
     }
 
     @PutMapping("/{clientId}")
