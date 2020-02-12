@@ -56,11 +56,11 @@ public interface InterventionRepository extends JpaRepository<Intervention, Long
      */
     @Query(value = "select count(*) from public.intervention where intervention.project_id= :projectId and intervention.person_id= :personId",
             nativeQuery = true)
-    long workedDayByPersonAndProject(long projectId, long personId);
+    double workedDayByPersonAndProject(long projectId, long personId);
 
     @Query(value = "select count(*) from public.intervention WHERE EXTRACT(MONTH FROM date)= :monthNumber and EXTRACT(YEAR FROM date)= :yearNumber and intervention.project_id= :projectId and intervention.person_id= :personId",
             nativeQuery = true)
-    long workedDayByPersonAndProjectInMonthAndYear(long projectId, long personId, long monthNumber,long yearNumber );
+    double workedDayByPersonAndProjectInMonthAndYear(long projectId, long personId, long monthNumber,long yearNumber );
 
     /**
      * cette methode permet de supprimer les interventions par personId et par projectId

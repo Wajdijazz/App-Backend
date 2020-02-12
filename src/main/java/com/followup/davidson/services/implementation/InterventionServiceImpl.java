@@ -137,12 +137,12 @@ public class InterventionServiceImpl implements IInterventionService {
      * @return un entier
      */
     @Override
-    public long workedDayByPersonAndProject(long projectId, long personId) {
-        return interventionRepository.workedDayByPersonAndProject(projectId, personId);
+    public double workedDayByPersonAndProject(long projectId, long personId) {
+        return interventionRepository.workedDayByPersonAndProject(projectId, personId)/2;
     }
 
     @Override
-    public long workedDayByPersonAndProjectByMonth(long projectId, long personId, long monthNumber, long yearNumber) {
-        return interventionRepository.workedDayByPersonAndProjectInMonthAndYear(projectId, personId, monthNumber, yearNumber);
+    public double workedDayByPersonAndProjectByMonth(long projectId, long personId, long monthNumber, long yearNumber) {
+        return interventionRepository.workedDayByPersonAndProjectInMonthAndYear(projectId, personId, monthNumber, yearNumber)/2;
     }
 }

@@ -68,17 +68,17 @@ public class InterventionController {
     }
 
     @GetMapping("/worked/project/{projectId}/person/{personId}")
-    long getworkedByPersonAndProject(@PathVariable(value = "projectId") Long projectId,
+    double getworkedByPersonAndProject(@PathVariable(value = "projectId") Long projectId,
                                      @PathVariable(value = "personId") Long personId) {
         return interventionService.workedDayByPersonAndProject(projectId, personId);
     }
 
     @GetMapping("{projectId}/{personId}/{monthNumber}/{yearNumber}")
-    long getworkedByPersonAndProjectByMonth(@PathVariable(value = "projectId") Long projectId,
+    double getworkedByPersonAndProjectByMonth(@PathVariable(value = "projectId") Long projectId,
                                             @PathVariable(value = "personId") Long personId,
                                             @PathVariable(value = "monthNumber") Long monthNumber,
                                             @PathVariable(value = "yearNumber") Long yearNumber) {
-        return interventionService.workedDayByPersonAndProjectByMonth(projectId, personId, monthNumber, yearNumber) / 2;
+        return interventionService.workedDayByPersonAndProjectByMonth(projectId, personId, monthNumber, yearNumber);
     }
 
     @DeleteMapping("/person/{personId}/project/{projectId}")
