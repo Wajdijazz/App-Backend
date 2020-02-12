@@ -27,5 +27,5 @@ public interface IInterventionService {
 
     long workedDayByPersonAndProject(long projectId, long personId);
 
-    long workedDayByPersonAndProjectByMonth(long projectId, long personId, long monthNumber);
+    long workedDayByPersonAndProjectByMonth(long projectId, long personId, long monthNumber, long yearNumber);
 }
