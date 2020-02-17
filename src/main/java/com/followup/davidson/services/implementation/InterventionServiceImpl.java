@@ -1,6 +1,7 @@
 package com.followup.davidson.services.implementation;
 
 import com.followup.davidson.controllers.InterventionController;
+import com.followup.davidson.dto.InterventionDto;
 import com.followup.davidson.exceptions.ApplicationException;
 import com.followup.davidson.model.Intervention;
 import com.followup.davidson.model.Mode;
@@ -53,39 +54,44 @@ public class InterventionServiceImpl implements IInterventionService {
      * automatiquement eliminés
      * elle prend en paramatre , date de debut des interventions et date de fins des interventions
      *
-     * @param interventionForm
+     * @param interventionDto
      * @param personId
      * @param projectId
      */
     @Override
-    public Object saveInterventions(InterventionController.InterventionForm interventionForm, Long personId, Long projectId) {
+    public Object saveInterventions(InterventionDto interventionDto, Long personId, Long projectId) {
         Project project = projectService.findById(projectId);
-       Person person = personService.findById(personId);
+        Person person = personService.findById(personId);
         Calendar cal1 = Calendar.getInstance();
         Calendar cal2 = Calendar.getInstance();
-        cal1.setTime(interventionForm.getStartDate());
-        cal2.setTime(interventionForm.getEndDate());
+        cal1.setTime(interventionDto.getStartDate());
+        cal2.setTime(interventionDto.getEndDate());
         while (cal1.compareTo(cal2) <= 0) {
             if ((Calendar.SATURDAY != cal1.get(Calendar.DAY_OF_WEEK))
                     && (Calendar.SUNDAY != cal1.get(Calendar.DAY_OF_WEEK))) {
                 Date date = cal1.getTime();
-                Intervention intervention1 = new Intervention();
-                Intervention intervention2 = new Intervention();
-                intervention1.setPerson(person);
-                intervention1.setProject(project);
-                intervention2.setPerson(person);
-                intervention2.setProject(project);
                 java.sql.Date sDate = convertUtilToSql(date);
-                intervention1.setDate(sDate);
-                intervention2.setDate(sDate);
-                intervention1.setMode(Mode.AM);
-                intervention2.setMode(Mode.PM);
+
+                Intervention intervention1 = new Intervention().builder()
+                        .person(person)
+                        .project(project)
+                        .date(sDate)
+                        .mode(Mode.AM)
+                        .build();
+
+                Intervention intervention2 = new Intervention().builder()
+                        .person(person)
+                        .project(project)
+                        .date(sDate)
+                        .mode(Mode.PM)
+                        .build();
+
                 interventionRepository.save(intervention1);
                 interventionRepository.save(intervention2);
             }
             cal1.add(Calendar.DATE, 1);
         }
-        return interventionForm;
+        return interventionDto;
     }
 
     private static java.sql.Date convertUtilToSql(java.util.Date uDate) {
@@ -135,11 +141,11 @@ public class InterventionServiceImpl implements IInterventionService {
      */
     @Override
     public Float workedDayByPersonAndProject(long projectId, long personId) {
-        return interventionRepository.workedDayByPersonAndProject(projectId, personId)/2;
+        return interventionRepository.workedDayByPersonAndProject(projectId, personId) / 2;
     }
 
     @Override
     public Float workedDayByPersonAndProjectByMonth(long projectId, long personId, long monthNumber, long yearNumber) {
-        return interventionRepository.workedDayByPersonAndProjectAndMonthAndYear(projectId, personId, monthNumber, yearNumber)/2;
+        return interventionRepository.workedDayByPersonAndProjectAndMonthAndYear(projectId, personId, monthNumber, yearNumber) / 2;
     }
 }

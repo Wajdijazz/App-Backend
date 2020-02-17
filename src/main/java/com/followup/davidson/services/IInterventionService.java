@@ -1,6 +1,7 @@
 package com.followup.davidson.services;
 
 import com.followup.davidson.controllers.InterventionController;
+import com.followup.davidson.dto.InterventionDto;
 import com.followup.davidson.model.Intervention;
 import com.followup.davidson.model.Person;
 import com.followup.davidson.model.Project;
@@ -17,7 +18,7 @@ public interface IInterventionService {
 
     List<Intervention> findAll();
 
-    Object saveInterventions(InterventionController.InterventionForm interventionForm, Long personId, Long projectId);
+    Object saveInterventions(InterventionDto interventionDto, Long personId, Long projectId);
 
     void deleteIntervention(Long personId, Long projectId);
 

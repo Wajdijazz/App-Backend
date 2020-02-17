@@ -4,6 +4,7 @@ package com.followup.davidson.servicesTests;
 import com.followup.davidson.controllers.InterventionController;
 import com.followup.davidson.controllers.PersonController;
 import com.followup.davidson.controllers.ProjectController;
+import com.followup.davidson.dto.InterventionDto;
 import com.followup.davidson.model.*;
 import com.followup.davidson.repositories.InterventionRepository;
 import com.followup.davidson.repositories.PersonRepository;
@@ -37,7 +38,7 @@ public class InterventionServiceTest {
     private static Intervention int2;
     private static Project p1;
     private static Person pe1;
-    private static InterventionController.InterventionForm interventionForm;
+    private static InterventionDto interventionDto;
 
 
     @Mock
@@ -64,7 +65,7 @@ public class InterventionServiceTest {
         int2 = new Intervention(1L, new Date(2020 - 01 - 18), Mode.AM, null, null);
         p1 = new Project(1L, "Followup", null);
         pe1 = new Person(1L, "Wajdi", "Jaziri", null);
-        interventionForm = new InterventionController.InterventionForm(new Date(2020 - 02 - 03),
+        interventionDto = new InterventionDto(new Date(2020 - 02 - 03),
                 new Date(2020 - 03 - 06), null, null);
     }
 
@@ -112,7 +113,7 @@ public class InterventionServiceTest {
         Mockito.when(personService.findById(1L)).thenReturn(pe1);
         Person pe = personController.findPersonById(1L);
         assertThat(pe, is(pe1) );
-        assertThat(interventionService.saveInterventions(interventionForm,1L,1L), is(interventionForm));
+        assertThat(interventionService.saveInterventions(interventionDto,1L,1L), is(interventionDto));
     }
 
 }

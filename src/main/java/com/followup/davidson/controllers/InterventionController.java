@@ -3,6 +3,7 @@ package com.followup.davidson.controllers;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.followup.davidson.Routes;
+import com.followup.davidson.dto.InterventionDto;
 import com.followup.davidson.model.Intervention;
 
 import com.followup.davidson.repositories.PersonRepository;
@@ -49,11 +50,11 @@ public class InterventionController {
     }
 
     @PostMapping("/project/{projectId}/person/{personId}")
-    public Object createIntervention(@Valid @RequestBody InterventionForm interventionForm,
+    public Object createIntervention(@Valid @RequestBody InterventionDto interventionDto,
                                      @PathVariable(value = "projectId") Long projectId
             , @PathVariable(value = "personId") Long personId) {
 
-        return interventionService.saveInterventions(interventionForm, personId, projectId);
+        return interventionService.saveInterventions(interventionDto, personId, projectId);
     }
 
     @GetMapping("/{id}")
@@ -92,17 +93,4 @@ public class InterventionController {
         interventionService.deleteInterventionHistorique(id);
     }
 
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @ToString
-    public static class InterventionForm {
-        @JsonFormat(pattern = "yyyy-MM-dd")
-        private Date startDate;
-        @JsonFormat(pattern = "yyyy-MM-dd")
-        private Date endDate;
-        private Person person;
-        private Project project;
-    }
 }

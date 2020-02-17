@@ -2,6 +2,7 @@ package com.followup.davidson.controllerTests;
 
 
 import com.followup.davidson.controllers.InterventionController;
+import com.followup.davidson.dto.InterventionDto;
 import com.followup.davidson.model.Intervention;
 import com.followup.davidson.model.Person;
 import com.followup.davidson.model.Project;
@@ -37,7 +38,7 @@ import static org.mockito.Mockito.lenient;
 public class InterventionControllerTest {
     private static Intervention it1;
     private static Intervention it2;
-    private static InterventionController.InterventionForm interventionForm;
+    private static InterventionDto interventionDto;
     private static Person pe1;
     private static Project p1;
     @Mock
@@ -56,7 +57,7 @@ public class InterventionControllerTest {
     public static void init() {
         it1 = new Intervention(1L, new Date(2020 - 01 - 01), AM, null, null);
         it2 = new Intervention(2L, new Date(2020 - 01 - 01), AM, null, null);
-        interventionForm = new InterventionController.InterventionForm(new Date(2020 - 02 - 03),
+        interventionDto = new InterventionDto(new Date(2020 - 02 - 03),
                 new Date(2020 - 03 - 06), null, null);
     }
 
@@ -93,9 +94,9 @@ public class InterventionControllerTest {
 
     @Test
     void createIntervention() {
-        Object intervention = interventionController.createIntervention(interventionForm, 1L, 1L);
+        Object intervention = interventionController.createIntervention(interventionDto, 1L, 1L);
         Mockito.verify(interventionService, Mockito.times(1))
-                .saveInterventions(interventionForm,1L,1L);
+                .saveInterventions(interventionDto,1L,1L);
   }
 
 

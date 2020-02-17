@@ -5,6 +5,7 @@ import com.followup.davidson.Routes;
 import com.followup.davidson.model.Client;
 import com.followup.davidson.model.Manager;
 import com.followup.davidson.services.IClientService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
