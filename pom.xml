@@ -9,8 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.followup</groupId>
-    <artifactId>davidson</artifactId>
+    <artifactId>followup</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
     <name>followUp</name>
     <description>Demo project for Spring Boot</description>
 
