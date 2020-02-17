@@ -22,6 +22,7 @@ public class ProjectServiceImpl implements IProjectService {
     private ProjectRepository projectRepository;
     private IClientService clientService;
 
+
     /**
      * Cette methode permet de lister tous les projets de davidsons
      *
