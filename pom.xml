@@ -16,8 +16,23 @@
 
     <properties>
         <java.version>1.8</java.version>
-
+        <sonar.url>https://sonar.cds.projet-davidson.fr</sonar.url>
     </properties>
+
+    <profiles>
+        <profile>
+            <id>sonar</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <!-- Optional URL to server. -->
+                <sonar.host.url>
+                    ${sonar.url}
+                </sonar.host.url>
+            </properties>
+        </profile>
+    </profiles>
 
     <dependencies>
         <dependency>
@@ -150,7 +165,7 @@
                 <version>3.8.0</version>
                 <configuration>
                     <fork>true</fork>
-                    <executable>C:\Program Files\Java\jdk1.8.0_241\bin\javac.exe</executable>
+                    <executable>C:\Program Files\Java\jdk1.8.0_144\bin\javac.exe</executable>
                 </configuration>
             </plugin>
         </plugins>
