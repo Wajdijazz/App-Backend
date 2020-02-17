@@ -1,10 +1,12 @@
 package com.followup.davidson.services.implementation;
 
+import com.followup.davidson.exceptions.ApplicationException;
 import com.followup.davidson.model.Client;
 import com.followup.davidson.model.Project;
 import com.followup.davidson.repositories.ProjectRepository;
 import com.followup.davidson.services.IClientService;
 import com.followup.davidson.services.IProjectService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -12,18 +14,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Transactional
+@AllArgsConstructor
 @Service
 public class ProjectServiceImpl implements IProjectService {
 
 
     private ProjectRepository projectRepository;
     private IClientService clientService;
-
-
-    public ProjectServiceImpl(ProjectRepository projectRepository, IClientService clientService) {
-        this.projectRepository = projectRepository;
-        this.clientService = clientService;
-    }
 
     /**
      * Cette methode permet de lister tous les projets de davidsons
@@ -42,8 +39,8 @@ public class ProjectServiceImpl implements IProjectService {
      * @return un client
      */
     @Override
-    public Optional<Project> findById(Long id) {
-        return projectRepository.findById(id);
+    public Project findById(Long id) {
+        return projectRepository.findById(id).orElseThrow(() -> new ApplicationException("This project with Id" + id + "not exist"));
     }
 
     /**
@@ -54,18 +51,18 @@ public class ProjectServiceImpl implements IProjectService {
      */
     @Override
     public Project create(Project project, Long clientId) {
-        Optional<Client> client = clientService.findById(clientId);
-        project.setClient(client.get());
+       Client client = clientService.findById(clientId);
+        project.setClient(client);
         return projectRepository.save(project);
     }
 
     @Override
     public Project updateProject(Long projectId, Project project, Long clientId) {
-        Optional<Client> client=clientService.findById(clientId);
+        Client client=clientService.findById(clientId);
         Project projectUp=new Project().builder()
                 .projectId(projectId)
                 .projectName(project.getProjectName())
-                .client(client.get())
+                .client(client)
                 .build();
         projectRepository.save(projectUp);
         return projectUp;

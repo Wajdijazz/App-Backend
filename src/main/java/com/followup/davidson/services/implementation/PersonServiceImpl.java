@@ -1,11 +1,13 @@
 package com.followup.davidson.services.implementation;
 
+import com.followup.davidson.exceptions.ApplicationException;
 import com.followup.davidson.model.Client;
 import com.followup.davidson.model.Manager;
 import com.followup.davidson.model.Person;
 import com.followup.davidson.repositories.PersonRepository;
 import com.followup.davidson.services.IManagerService;
 import com.followup.davidson.services.IPersonService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.management.Query;
@@ -14,16 +16,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Transactional
+@AllArgsConstructor
 @Service
 public class PersonServiceImpl implements IPersonService {
 
     private PersonRepository personRepository;
     private IManagerService managerService;
-
-    public PersonServiceImpl(PersonRepository personRepository, IManagerService managerService) {
-        this.personRepository = personRepository;
-        this.managerService = managerService;
-    }
 
     /**
      * Cette methode permet de lister tous les personnes de davidsons
@@ -43,8 +41,8 @@ public class PersonServiceImpl implements IPersonService {
      */
     @Override
     public Person create(Person person, Long managerId) {
-        Optional<Manager> manager = managerService.findById(managerId);
-        person.setManager(manager.get());
+       Manager manager = managerService.findById(managerId);
+        person.setManager(manager);
         return personRepository.save(person);
     }
 
@@ -55,18 +53,19 @@ public class PersonServiceImpl implements IPersonService {
      * @return une  personne
      */
     @Override
-    public Optional<Person> findById(Long id) {
-        return personRepository.findById(id);
+    public Person findById(Long id) {
+        return personRepository.findById(id).
+                orElseThrow(() -> new ApplicationException("This person with Id" + id + "not exist"));
     }
 
     @Override
     public Person updatePerson(Long personId, Person person, Long managerId) {
-        Optional<Manager> manager = managerService.findById(managerId);
-        Person personUp=new Person().builder()
+       Manager manager = managerService.findById(managerId);
+        Person personUp = new Person().builder()
                 .personId(personId)
                 .firstName(person.getFirstName())
                 .lastName(person.getLastName())
-                .manager(manager.get())
+                .manager(manager)
                 .build();
         personRepository.save(personUp);
         return personUp;

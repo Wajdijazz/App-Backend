@@ -1,4 +1,4 @@
-package com.followup.davidson.model;
+package com.followup.davidson.dto;
 
 import lombok.*;
 
@@ -11,6 +11,5 @@ public class PersonDto {
     private Long personId;
     private String firstName;
     private String lastName;
-    private Long price;
-    private Long worked;
+
 }

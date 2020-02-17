@@ -55,7 +55,7 @@ public class PersonControllerTest {
         p2 = new Person(1L, "Davidson", "Consulting", null);
         m1 = new Manager(1L, "Wajdi", "Jaziri");
     }
-
+/*
     @Test
     void createOnClickAddPerson() {
         MockHttpServletRequest request = new MockHttpServletRequest();
@@ -75,7 +75,7 @@ public class PersonControllerTest {
         Assertions.assertThat(responseEntity.getStatusCodeValue()).isEqualTo(201);
         Assertions.assertThat(responseEntity.getHeaders().getLocation().getPath()).isEqualTo("/1");
     }
-
+*/
     @Test
     void findAll_whenNoRecord() {
         Mockito.when(personService.findAll()).thenReturn(Arrays.asList());
@@ -94,15 +94,15 @@ public class PersonControllerTest {
     @Test
     void findById_WhenMatch() {
 
-        Mockito.when(personService.findById(1L)).thenReturn(Optional.of(p1));
-        Optional<Person> p = personController.findPersonById(1L);
-        assertThat(p.get(), is(p1));
+        Mockito.when(personService.findById(1L)).thenReturn(p1);
+       Person p = personController.findPersonById(1L);
+        assertThat(p, is(p1));
     }
 
 
     @Test
     void deleteById_WhenFound() {
-        lenient().when(personService.findById(1L)).thenReturn(Optional.of(p1));
+        lenient().when(personService.findById(1L)).thenReturn(p1);
         personController.deletePerson(1L);
         Mockito.verify(personService, Mockito.times(1)).deletePerson(1L);
 

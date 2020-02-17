@@ -11,11 +11,13 @@ public interface ITJService {
 
     TJ create(TJ tj, Long projectId, Long personId);
 
-    Optional<TJ> findById(Long id);
+    TJ findById(Long id);
 
-    TJ updateTj(Long tjId,TJ tj,Long projectId,Long personId);
+    TJ updateTj(Long tjId, TJ tj, Long projectId, Long personId);
 
     void deleteTj(Long id);
+
+    List<TJ> findByProject(long projectId);
 
     Long findTarif(Long projectId, Long personId);
 

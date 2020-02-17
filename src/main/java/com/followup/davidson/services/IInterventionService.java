@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface IInterventionService {
 
 
-    Optional<Intervention> findById(Long id);
+    Intervention findById(Long id);
 
     List<Intervention> findAll();
 
@@ -25,7 +25,7 @@ public interface IInterventionService {
 
     List<Intervention> findByPersonAndProject(long projectId, long personId);
 
-    double workedDayByPersonAndProject(long projectId, long personId);
+    Float workedDayByPersonAndProject(long projectId, long personId);
 
-    double workedDayByPersonAndProjectByMonth(long projectId, long personId, long monthNumber, long yearNumber);
+    Float workedDayByPersonAndProjectByMonth(long projectId, long personId, long monthNumber, long yearNumber);
 }

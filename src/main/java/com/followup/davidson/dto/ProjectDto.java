@@ -1,4 +1,4 @@
-package com.followup.davidson.model;
+package com.followup.davidson.dto;
 
 import lombok.*;
 
@@ -8,5 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 public class ProjectDto {
+    private Long projectId;
     private String project;
 }

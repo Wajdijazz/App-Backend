@@ -57,7 +57,7 @@ public class InterventionController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Intervention> findInterventionById(@PathVariable(value = "id") Long interventionId) {
+    public Intervention findInterventionById(@PathVariable(value = "id") Long interventionId) {
         return interventionService.findById(interventionId);
     }
 
@@ -68,7 +68,7 @@ public class InterventionController {
     }
 
     @GetMapping("/worked/project/{projectId}/person/{personId}")
-    double getworkedByPersonAndProject(@PathVariable(value = "projectId") Long projectId,
+    Float getworkedByPersonAndProject(@PathVariable(value = "projectId") Long projectId,
                                      @PathVariable(value = "personId") Long personId) {
         return interventionService.workedDayByPersonAndProject(projectId, personId);
     }

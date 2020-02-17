@@ -62,8 +62,8 @@ public class TjServiceTest {
 
     @BeforeAll
     public static void init() {
-        tj1=new TJ(1L,50,null,null);
-        tj2=new TJ(1L,70,null,null);
+        tj1=new TJ(1L,50f,null,null);
+        tj2=new TJ(1L,70f,null,null);
         p1=new Project(1L,"Followup",null);
         pe1=new Person(1L,"Wajdi","Jaziri",null);
 
@@ -71,11 +71,9 @@ public class TjServiceTest {
     }
     @Test
     public void findAllTest_WhenNoRecord() {
-
         Mockito.when(tjRepository.findAll()).thenReturn(Arrays.asList());
         assertThat(tjService.findAll().size(), is(0));
         Mockito.verify(tjRepository, Mockito.times(1)).findAll();
-
     }
 
     @Test
@@ -89,7 +87,6 @@ public class TjServiceTest {
 
     @Test
     public void findById() {
-
         Mockito.when(tjRepository.findById(1L)).thenReturn(Optional.of(tj1));
         assertThat(tjService.findById(1L), is(Optional.of(tj1)));
         Mockito.verify(tjRepository, Mockito.times(1)).findById(1L);
@@ -103,13 +100,13 @@ public class TjServiceTest {
 
     @Test
     void create() {
-        Mockito.when(projectService.findById(1L)).thenReturn(Optional.of(p1));
-        Optional<Project> p = projectController.findProjectById(1L);
-        assertThat(p.get(), is(p1) );
+        Mockito.when(projectService.findById(1L)).thenReturn(p1);
+        Project p = projectController.findProjectById(1L);
+        assertThat(p, is(p1) );
 
-        Mockito.when(personService.findById(1L)).thenReturn(Optional.of(pe1));
-        Optional<Person> pe = personController.findPersonById(1L);
-        assertThat(pe.get(), is(pe1) );
+        Mockito.when(personService.findById(1L)).thenReturn(pe1);
+        Person pe = personController.findPersonById(1L);
+        assertThat(pe, is(pe1) );
 
         Mockito.when(tjRepository.save(tj1)).thenReturn(tj1);
         assertThat(tjService.create(tj1,1L,1L), is(tj1));

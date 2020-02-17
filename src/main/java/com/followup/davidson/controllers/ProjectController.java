@@ -41,28 +41,18 @@ public class ProjectController {
 
 
     @PostMapping("/client/{clientId}/project")
-    public ResponseEntity<Project> createProject(@Valid @RequestBody Project project, @PathVariable(value = "clientId") Long clientId) {
-        projectService.create(project, clientId);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{projectId}")
-                .buildAndExpand(project.getProjectId())
-                .toUri();
-        return ResponseEntity.created(location).build();
+    public Project createProject(@Valid @RequestBody Project project, @PathVariable(value = "clientId") Long clientId) {
+        return projectService.create(project, clientId);
     }
 
     @PutMapping("/{projectId}/{clientId}")
-    public ResponseEntity<Project> updateProject(@PathVariable(value = "projectId") Long projectId, @Valid @RequestBody Project project,
+    public Project updateProject(@PathVariable(value = "projectId") Long projectId, @Valid @RequestBody Project project,
                                  @PathVariable(value = "clientId") Long clientId) {
-    projectService.updateProject(projectId, project, clientId);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{projectId}")
-                .buildAndExpand(project.getProjectId())
-                .toUri();
-        return ResponseEntity.created(location).build();
+    return  projectService.updateProject(projectId, project, clientId);
     }
 
     @GetMapping("/{id}")
-    public Optional<Project> findProjectById(@PathVariable(value = "id") Long projectId) {
+    public Project findProjectById(@PathVariable(value = "id") Long projectId) {
         return projectService.findById(projectId);
     }
 

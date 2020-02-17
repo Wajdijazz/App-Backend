@@ -105,13 +105,13 @@ public class InterventionServiceTest {
     }
     @Test
     void create() {
-        Mockito.when(projectService.findById(1L)).thenReturn(Optional.of(p1));
-        Optional<Project> p = projectController.findProjectById(1L);
-        assertThat(p.get(), is(p1) );
+        Mockito.when(projectService.findById(1L)).thenReturn(p1);
+       Project p = projectController.findProjectById(1L);
+        assertThat(p, is(p1) );
 
-        Mockito.when(personService.findById(1L)).thenReturn(Optional.of(pe1));
-        Optional<Person> pe = personController.findPersonById(1L);
-        assertThat(pe.get(), is(pe1) );
+        Mockito.when(personService.findById(1L)).thenReturn(pe1);
+        Person pe = personController.findPersonById(1L);
+        assertThat(pe, is(pe1) );
         assertThat(interventionService.saveInterventions(interventionForm,1L,1L), is(interventionForm));
     }
 

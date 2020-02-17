@@ -32,27 +32,17 @@ public class ClientController {
 
 
     @PostMapping("/")
-    public ResponseEntity<Client> createClient(@Valid @RequestBody Client client) {
-        clientService.create(client);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{clientId}")
-                .buildAndExpand(client.getClientId())
-                .toUri();
-        return ResponseEntity.created(location).build();
+    public Client createClient(@Valid @RequestBody Client client) {
+        return clientService.create(client);
     }
 
     @PutMapping("/{clientId}")
-    public ResponseEntity<Client> updateClient(@PathVariable(value = "clientId") Long clientId, @Valid @RequestBody Client client) {
-        clientService.updateClient(clientId, client);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{clientId}")
-                .buildAndExpand(client.getClientId())
-                .toUri();
-        return ResponseEntity.created(location).build();
+    public Client updateClient(@PathVariable(value = "clientId") Long clientId, @Valid @RequestBody Client client) {
+       return clientService.updateClient(clientId, client);
     }
 
     @GetMapping("/{id}")
-    public Optional<Client> findClientById(@PathVariable(value = "id") Long clientId) {
+    public Client findClientById(@PathVariable(value = "id") Long clientId) {
         return clientService.findById(clientId);
     }
 

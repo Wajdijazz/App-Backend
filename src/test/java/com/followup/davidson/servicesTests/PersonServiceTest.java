@@ -95,9 +95,9 @@ private static Manager m1;
 
     @Test
     void create() {
-        Mockito.when(managerService.findById(1L)).thenReturn(Optional.of(m1));
-        Optional<Manager> m = managerController.findManagerById(1L);
-        assertThat(m.get(), is(m1) );
+        Mockito.when(managerService.findById(1L)).thenReturn(m1);
+        Manager m = managerController.findManagerById(1L);
+        assertThat(m, is(m1) );
 
         Mockito.when(personRepository.save(p1)).thenReturn(p1);
         assertThat(personService.create(p1,1L), is(p1));

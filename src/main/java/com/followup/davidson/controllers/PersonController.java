@@ -34,28 +34,18 @@ public class PersonController {
     }
 
     @PostMapping("/manager/{managerId}/person")
-    public ResponseEntity<Person> createPerson(@Valid @RequestBody Person person, @PathVariable(value = "managerId") Long managerId) {
-        personService.create(person, managerId);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{personId}")
-                .buildAndExpand(person.getPersonId())
-                .toUri();
-        return ResponseEntity.created(location).build();
+    public Person createPerson(@Valid @RequestBody Person person, @PathVariable(value = "managerId") Long managerId) {
+       return personService.create(person, managerId);
     }
 
     @PutMapping("/{personId}/{managerId}")
-    public ResponseEntity<Person> updatePerson(@PathVariable(value = "personId") Long personId, @Valid @RequestBody Person person,
+    public Person updatePerson(@PathVariable(value = "personId") Long personId, @Valid @RequestBody Person person,
                                @PathVariable(value = "managerId") Long managerId) {
-        personService.updatePerson(personId,person,managerId);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{personId}")
-                .buildAndExpand(person.getPersonId())
-                .toUri();
-        return ResponseEntity.created(location).build();
+       return personService.updatePerson(personId,person,managerId);
     }
 
     @GetMapping("/{id}")
-    public Optional<Person> findPersonById(@PathVariable(value = "id") Long personId) {
+    public Person findPersonById(@PathVariable(value = "id") Long personId) {
         return personService.findById(personId);
     }
 

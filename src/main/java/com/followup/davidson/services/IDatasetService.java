@@ -1,8 +1,8 @@
 package com.followup.davidson.services;
 
-import com.followup.davidson.model.Dataset;
+import com.followup.davidson.dto.DatasetDto;
 
 public interface IDatasetService {
 
-    Dataset getByProject(Long projectId);
+    DatasetDto getByProject(Long projectId);
 }

@@ -85,7 +85,7 @@ public class InterventionControllerTest {
 
     @Test
     void deleteById_WhenFound() {
-        lenient().when(interventionService.findById(1L)).thenReturn(Optional.of(it1));
+        lenient().when(interventionService.findById(1L)).thenReturn(it1);
         interventionController.deleteInterventionById(1L);
         Mockito.verify(interventionService, Mockito.times(1))
                 .deleteInterventionHistorique(1L);

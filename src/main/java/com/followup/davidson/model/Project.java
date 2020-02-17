@@ -29,7 +29,7 @@ public class Project {
     /**
      * C'est le client de chaque projet
      */
-    @ManyToOne(fetch = FetchType.EAGER, optional = false,cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false,cascade = CascadeType.PERSIST)
     @JoinColumn(name = "client_id")
     private Client client;
 

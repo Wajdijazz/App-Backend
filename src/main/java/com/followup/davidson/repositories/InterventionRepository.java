@@ -33,20 +33,6 @@ public interface InterventionRepository extends JpaRepository<Intervention, Long
             nativeQuery = true)
     List<Intervention> findByPersonAndProject(long projectId, long personId);
 
-    //a besoin dans la prochaine sprint
-    /**
-     * cette methode permet de lister les interventions d'une personne sur un projet dans une periode bien determinée
-     *
-     * @param person_id  : l'id de la personne selectionée
-     * @param project_id : l'id du projet
-     * @param firstDate  : la date de debut de la periode
-     * @param secondDate : la date de fin de la periode
-     * @return une liste des {@link Intervention}
-     */
-/*    @Query(value = "select count(*) from public.intervention where intervention.person_id= :person_id and intervention.project_id= :project_id and intervention.date between :firstDate AND :secondDate", nativeQuery = true)
-    long workedDaysByPeriod(long person_id,long project_id,Date firstDate,Date secondDate);
-*/
-
     /**
      * cette methode permet de compter le nombre des jours travaillés d'une personne sur un projet
      *
@@ -54,13 +40,25 @@ public interface InterventionRepository extends JpaRepository<Intervention, Long
      * @param personId
      * @return un entier
      */
-    @Query(value = "select count(*) from public.intervention where intervention.project_id= :projectId and intervention.person_id= :personId",
+    @Query(value = "select count(*) from public.intervention where intervention.project_id= :projectId " +
+            "and intervention.person_id= :personId",
             nativeQuery = true)
-    double workedDayByPersonAndProject(long projectId, long personId);
+    Float workedDayByPersonAndProject(long projectId, long personId);
 
-    @Query(value = "select count(*) from public.intervention WHERE EXTRACT(MONTH FROM date)= :monthNumber and EXTRACT(YEAR FROM date)= :yearNumber and intervention.project_id= :projectId and intervention.person_id= :personId",
+    /**
+     * Cette periode permet de calculer les jours de travail "Worked" pour personne et projet pour chaque mois et année
+     *
+     * @param projectId
+     * @param personId
+     * @param monthNumber
+     * @param yearNumber
+     * @return
+     */
+    @Query(value = "select count(*) from public.intervention WHERE EXTRACT(MONTH FROM date)= :monthNumber " +
+            "and EXTRACT(YEAR FROM date)= :yearNumber" +
+            " and intervention.project_id= :projectId and intervention.person_id= :personId",
             nativeQuery = true)
-    double workedDayByPersonAndProjectInMonthAndYear(long projectId, long personId, long monthNumber,long yearNumber );
+    Float workedDayByPersonAndProjectAndMonthAndYear(long projectId, long personId, long monthNumber, long yearNumber);
 
     /**
      * cette methode permet de supprimer les interventions par personId et par projectId

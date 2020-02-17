@@ -11,7 +11,7 @@ public interface IPersonService {
 
     Person create(Person person, Long managerId);
 
-    Optional<Person> findById(Long id);
+    Person findById(Long id);
 
     Person updatePerson(Long personId, Person person, Long managerId);
 

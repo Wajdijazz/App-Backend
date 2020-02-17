@@ -1,6 +1,7 @@
 package com.followup.davidson.services.implementation;
 
 import com.followup.davidson.controllers.InterventionController;
+import com.followup.davidson.exceptions.ApplicationException;
 import com.followup.davidson.model.Intervention;
 import com.followup.davidson.model.Mode;
 import com.followup.davidson.model.Person;
@@ -9,6 +10,7 @@ import com.followup.davidson.repositories.InterventionRepository;
 import com.followup.davidson.services.IInterventionService;
 import com.followup.davidson.services.IPersonService;
 import com.followup.davidson.services.IProjectService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -16,19 +18,13 @@ import java.time.LocalDate;
 import java.util.*;
 
 @Transactional
+@AllArgsConstructor
 @Service
 public class InterventionServiceImpl implements IInterventionService {
 
     InterventionRepository interventionRepository;
     private IProjectService projectService;
     private IPersonService personService;
-
-    public InterventionServiceImpl(InterventionRepository interventionRepository, IProjectService projectService,
-                                   IPersonService personService) {
-        this.interventionRepository = interventionRepository;
-        this.projectService = projectService;
-        this.personService = personService;
-    }
 
     /**
      * Cette methode permet de retourner une intervention par id
@@ -37,8 +33,9 @@ public class InterventionServiceImpl implements IInterventionService {
      * @return une intervention
      */
     @Override
-    public Optional<Intervention> findById(Long id) {
-        return interventionRepository.findById(id);
+    public Intervention findById(Long id) {
+        return interventionRepository.findById(id)
+                .orElseThrow(() -> new ApplicationException("This intervention with Id" + id + "not exist"));
     }
 
     /**
@@ -62,8 +59,8 @@ public class InterventionServiceImpl implements IInterventionService {
      */
     @Override
     public Object saveInterventions(InterventionController.InterventionForm interventionForm, Long personId, Long projectId) {
-        Optional<Project> project = projectService.findById(projectId);
-        Optional<Person> person = personService.findById(personId);
+        Project project = projectService.findById(projectId);
+       Person person = personService.findById(personId);
         Calendar cal1 = Calendar.getInstance();
         Calendar cal2 = Calendar.getInstance();
         cal1.setTime(interventionForm.getStartDate());
@@ -74,10 +71,10 @@ public class InterventionServiceImpl implements IInterventionService {
                 Date date = cal1.getTime();
                 Intervention intervention1 = new Intervention();
                 Intervention intervention2 = new Intervention();
-                intervention1.setPerson(person.get());
-                intervention1.setProject(project.get());
-                intervention2.setPerson(person.get());
-                intervention2.setProject(project.get());
+                intervention1.setPerson(person);
+                intervention1.setProject(project);
+                intervention2.setPerson(person);
+                intervention2.setProject(project);
                 java.sql.Date sDate = convertUtilToSql(date);
                 intervention1.setDate(sDate);
                 intervention2.setDate(sDate);
@@ -137,12 +134,12 @@ public class InterventionServiceImpl implements IInterventionService {
      * @return un entier
      */
     @Override
-    public double workedDayByPersonAndProject(long projectId, long personId) {
+    public Float workedDayByPersonAndProject(long projectId, long personId) {
         return interventionRepository.workedDayByPersonAndProject(projectId, personId)/2;
     }
 
     @Override
-    public double workedDayByPersonAndProjectByMonth(long projectId, long personId, long monthNumber, long yearNumber) {
-        return interventionRepository.workedDayByPersonAndProjectInMonthAndYear(projectId, personId, monthNumber, yearNumber)/2;
+    public Float workedDayByPersonAndProjectByMonth(long projectId, long personId, long monthNumber, long yearNumber) {
+        return interventionRepository.workedDayByPersonAndProjectAndMonthAndYear(projectId, personId, monthNumber, yearNumber)/2;
     }
 }

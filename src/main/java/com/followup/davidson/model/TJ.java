@@ -23,7 +23,7 @@ public class TJ {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long tjId;
 
-    private double  tarif;
+    private double   tarif;
 
     /**
      * La personne affectée à ce taux de jour

@@ -41,29 +41,19 @@ public class TJController {
     }
 
     @PostMapping("/project/{projectId}/person/{personId}")
-    public ResponseEntity<TJ> createTj(@Valid @RequestBody TJ tj, @PathVariable(value = "projectId") Long projectId,
+    public TJ createTj(@Valid @RequestBody TJ tj, @PathVariable(value = "projectId") Long projectId,
                                        @PathVariable(value = "personId") Long personId) {
-        tjService.create(tj, projectId, personId);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{tjId}")
-                .buildAndExpand(tj.getTjId())
-                .toUri();
-        return ResponseEntity.created(location).build();
+     return    tjService.create(tj, projectId, personId);
     }
 
     @PutMapping("/{tjId}/{projectId}/{personId}")
-    public ResponseEntity<TJ> updateTj(@Valid @RequestBody TJ tj, @PathVariable(value = "tjId") Long tjId, @PathVariable(value = "projectId") Long projectId,
+    public TJ updateTj(@Valid @RequestBody TJ tj, @PathVariable(value = "tjId") Long tjId, @PathVariable(value = "projectId") Long projectId,
                                        @PathVariable(value = "personId") Long personId) {
-        tjService.updateTj(tjId, tj, projectId, personId);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{tjId}")
-                .buildAndExpand(tj.getTjId())
-                .toUri();
-        return ResponseEntity.created(location).build();
+      return tjService.updateTj(tjId, tj, projectId, personId);
     }
 
     @GetMapping("/{id}")
-    public Optional<TJ> findTjById(@PathVariable(value = "id") Long tjId) {
+    public TJ findTjById(@PathVariable(value = "id") Long tjId) {
         return tjService.findById(tjId);
     }
 
@@ -77,4 +67,5 @@ public class TJController {
     public void deleteTj(@PathVariable(value = "id") Long tjId) {
         tjService.deleteTj(tjId);
     }
+
 }

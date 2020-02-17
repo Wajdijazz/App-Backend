@@ -9,7 +9,7 @@ public interface IClientService {
 
     List<Client> findAll();
 
-    Optional<Client> findById(Long id);
+    Client findById(Long id);
 
     Client create(Client client);
 

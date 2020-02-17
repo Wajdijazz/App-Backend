@@ -10,7 +10,7 @@ public interface IManagerService {
 
     Manager create(Manager manager);
 
-    Optional<Manager> findById(Long id);
+    Manager findById(Long id);
 
     Manager updateManager(Long managerId, Manager manager);
 

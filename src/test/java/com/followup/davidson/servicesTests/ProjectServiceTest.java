@@ -89,9 +89,9 @@ public class ProjectServiceTest {
 
     @Test
     void create() {
-        Mockito.when(clientService.findById(1L)).thenReturn(Optional.of(c1));
-        Optional<Client> c = clientController.findClientById(1L);
-        assertThat(c.get(), is(c1) );
+        Mockito.when(clientService.findById(1L)).thenReturn(c1);
+        Client c = clientController.findClientById(1L);
+        assertThat(c, is(c1) );
 
         Mockito.when(projectRepository.save(p1)).thenReturn(p1);
         assertThat(projectService.create(p1,1L), is(p1));
