@@ -1,17 +1,17 @@
 package com.followup.davidson.services.implementation;
 
+import com.followup.davidson.converter.ProjectConverter;
+import com.followup.davidson.dto.ProjectDto;
 import com.followup.davidson.exceptions.ApplicationException;
-import com.followup.davidson.model.Client;
 import com.followup.davidson.model.Project;
 import com.followup.davidson.repositories.ProjectRepository;
-import com.followup.davidson.services.IClientService;
+
 import com.followup.davidson.services.IProjectService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @Transactional
 @AllArgsConstructor
@@ -20,7 +20,8 @@ public class ProjectServiceImpl implements IProjectService {
 
 
     private ProjectRepository projectRepository;
-    private IClientService clientService;
+    private ProjectConverter projectConverter;
+
 
     /**
      * Cette methode permet de lister tous les projets de davidsons
@@ -40,33 +41,16 @@ public class ProjectServiceImpl implements IProjectService {
      */
     @Override
     public Project findById(Long id) {
-        return projectRepository.findById(id).orElseThrow(() -> new ApplicationException("This project with Id" + id + "not exist"));
+        return projectRepository.findById(id)
+                .orElseThrow(() -> new ApplicationException("This project with Id" + id + "not exist"));
     }
 
-    /**
-     * Cette methode permet de créer et sauvgarder un nouveau projet
-     *
-     * @param project
-     * @return projet crée
-     */
-    @Override
-    public Project create(Project project, Long clientId) {
-       Client client = clientService.findById(clientId);
-        project.setClient(client);
-        return projectRepository.save(project);
-    }
 
     @Override
-    public Project updateProject(Long projectId, Project project, Long clientId) {
-        Client client=clientService.findById(clientId);
-        Project projectUp=new Project().builder()
-                .projectId(projectId)
-                .projectName(project.getProjectName())
-                .client(client)
-                .build();
-        projectRepository.save(projectUp);
-        return projectUp;
+    public ProjectDto createOrUpdate(ProjectDto projectDto) {
+        return projectConverter.entityToDto(projectRepository.save(projectConverter.dtoToEntity(projectDto)));
     }
+
 
     /**
      * Cette methode permet de supprimer un projet par son id

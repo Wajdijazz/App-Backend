@@ -1,8 +1,9 @@
 package com.followup.davidson.services.implementation;
 
+import com.followup.davidson.converter.ClientConverter;
+import com.followup.davidson.dto.ClientDto;
 import com.followup.davidson.exceptions.ApplicationException;
 import com.followup.davidson.model.Client;
-import com.followup.davidson.model.Intervention;
 import com.followup.davidson.repositories.ClientRepository;
 import com.followup.davidson.services.IClientService;
 import lombok.AllArgsConstructor;
@@ -10,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @Transactional
 @AllArgsConstructor
@@ -18,8 +18,7 @@ import java.util.Optional;
 public class ClientServiceImpl implements IClientService {
 
     private ClientRepository clientRepository;
-
-
+    private ClientConverter clientConverter;
 
     /**
      * Cette methode permet de lister tous les clients de davidsons
@@ -42,25 +41,9 @@ public class ClientServiceImpl implements IClientService {
                 .orElseThrow(() -> new ApplicationException("This client with Id" + id + "not exist"));
     }
 
-    /**
-     * Cette methode permet de créer et sauvgarder un nouveau client
-     * @param client
-     * @return client crée
-     */
     @Override
-    public Client create(Client client) {
-        return clientRepository.save(client);
-    }
-
-    @Override
-    public Client updateClient(Long clientId, Client client) {
-        Client clientUp=new Client().builder()
-                .clientId(clientId)
-                .clientName(client.getClientName())
-                .clientContact(client.getClientContact())
-                .build();
-        clientRepository.save(clientUp);
-        return clientUp;
+    public ClientDto createOrUpdate(ClientDto clientDto) {
+       return clientConverter.entityToDto(clientRepository.save(clientConverter.dtoToEntity(clientDto)));
     }
 
     /**

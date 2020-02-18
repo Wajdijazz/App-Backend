@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping(Routes.Data)
+@RequestMapping(Routes.DATA)
 public class DataSetController {
 
     private IDatasetService datasetService;

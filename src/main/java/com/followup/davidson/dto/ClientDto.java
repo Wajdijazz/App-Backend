@@ -7,8 +7,9 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class ProjectDto {
-    private Long projectId;
-    private String projectName;
+public class ClientDto {
+
     private Long clientId;
+    private String clientName;
+    private String clientContact;
 }

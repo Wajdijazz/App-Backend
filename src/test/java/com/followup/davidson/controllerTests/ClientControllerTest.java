@@ -1,7 +1,9 @@
 package com.followup.davidson.controllerTests;
 
 
+import com.followup.davidson.Routes;
 import com.followup.davidson.controllers.ClientController;
+import com.followup.davidson.dto.ClientDto;
 import com.followup.davidson.model.Client;
 import com.followup.davidson.model.Manager;
 import com.followup.davidson.services.IClientService;
@@ -15,9 +17,13 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -26,9 +32,12 @@ import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
@@ -37,11 +46,13 @@ public class ClientControllerTest {
     private static Client c1;
     private static Client c2;
 
-    @Mock
+    @MockBean
     private IClientService clientService;
 
-    @InjectMocks
+    @Autowired
     private ClientController clientController;
+
+    private MockMvc mockMvc;
 
     @Before
     public void setUp() {
@@ -52,6 +63,14 @@ public class ClientControllerTest {
     public static void init() {
         c1 = new Client(1L, "Wajdi", "Jaziri");
         c2 = new Client(2L, "test", "test");
+    }
+
+    private ClientDto getClientDto() {
+        return ClientDto.builder()
+                .clientId(1L)
+                .clientName("EverySense")
+                .clientContact("everysense@gmail.com")
+                .build();
     }
 
     @Test
@@ -69,40 +88,54 @@ public class ClientControllerTest {
         verify(clientService, times(1)).findAll();
     }
 
-  /*  @Test
-    void createOnClickAddClient() {
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        when(clientService.create(any(Client.class))).thenReturn(c1);
-        ResponseEntity<Client> responseEntity = clientController.createClient(c1);
-        Assertions.assertThat(responseEntity.getStatusCodeValue()).isEqualTo(201);
-        Assertions.assertThat(responseEntity.getHeaders().getLocation().getPath()).isEqualTo("/1");
+    @Test
+    void createClientTest(){
+        //entry
+        ClientDto clientEntry = getClientDto();
+        //expected
+        ClientDto clientExpceted = getClientDto();
+        //Mocks
+        Mockito.when(clientService.createOrUpdate(clientEntry))
+                .thenReturn(clientExpceted);
+        //call
+        ClientDto effective=clientController.createClient(clientEntry);
+        //Asset
+        assertEquals(clientExpceted, effective);
+        Mockito.verify(clientService, Mockito.times(1)).createOrUpdate(clientEntry);
+
+    }
+    @Test
+    void updateClientTest(){
+        //entry
+        ClientDto clientEntry = getClientDto();
+        //expected
+        ClientDto clientExpceted = getClientDto();
+        //Mocks
+        Mockito.when(clientService.createOrUpdate(clientEntry))
+                .thenReturn(clientExpceted);
+        //call
+        ClientDto effective=clientController.updateClient(clientEntry);
+        //Asset
+        assertEquals(clientExpceted, effective);
+
     }
 
     @Test
-    void updateOnClickUpdateClient() {
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        when(clientService.updateClient(anyLong(), any(Client.class))).thenReturn(c1);
-        ResponseEntity<Client> responseEntity = clientController.updateClient(1L,c1);
-        Assertions.assertThat(responseEntity.getStatusCodeValue()).isEqualTo(201);
-        Assertions.assertThat(responseEntity.getHeaders().getLocation().getPath()).isEqualTo("/1");
-    }
-*/
-    @Test
     void findById_WhenMatch() {
-        when(clientService.findById(1L)).thenReturn(c1);
-       Client c = clientController.findClientById(1L);
+        Mockito.when(clientService.findById(1L)).thenReturn(c1);
+        Client c = clientController.findClientById(1L);
         assertThat(c, is(c1));
     }
 
     @Test
     void deleteById_WhenFound() {
-
-        lenient().when(clientService.findById(1L)).thenReturn(c1);
+        Mockito.when(clientService.findById(1L)).thenReturn(c1);
         clientController.deleteClient(1L);
         verify(clientService, times(1)).deleteClient(1L);
 
     }
+
+
+
 
 }

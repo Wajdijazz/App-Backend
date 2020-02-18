@@ -1,19 +1,12 @@
 package com.followup.davidson.controllers;
 
 import com.followup.davidson.Routes;
-import com.followup.davidson.model.Person;
+import com.followup.davidson.dto.ProjectDto;
 import com.followup.davidson.model.Project;
-import com.followup.davidson.repositories.ClientRepository;
-import com.followup.davidson.repositories.ProjectRepository;
 import com.followup.davidson.services.IProjectService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import javax.validation.Valid;
-import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -23,15 +16,8 @@ public class ProjectController {
 
     private IProjectService projectService;
 
-    private ClientRepository clientRepository;
-
-    private ProjectRepository projectRepository;
-
-    public ProjectController(IProjectService projectService, ClientRepository clientRepository,
-                             ProjectRepository projectRepository) {
+    public ProjectController(IProjectService projectService) {
         this.projectService = projectService;
-        this.clientRepository = clientRepository;
-        this.projectRepository = projectRepository;
     }
 
     @GetMapping(value = "/", produces = {"application/json"})
@@ -39,16 +25,14 @@ public class ProjectController {
         return projectService.findAll();
     }
 
-
-    @PostMapping("/client/{clientId}/project")
-    public Project createProject(@Valid @RequestBody Project project, @PathVariable(value = "clientId") Long clientId) {
-        return projectService.create(project, clientId);
+    @PostMapping("/")
+    public ProjectDto createProject(@Valid @RequestBody ProjectDto projectDto) {
+        return projectService.createOrUpdate(projectDto);
     }
 
-    @PutMapping("/{projectId}/{clientId}")
-    public Project updateProject(@PathVariable(value = "projectId") Long projectId, @Valid @RequestBody Project project,
-                                 @PathVariable(value = "clientId") Long clientId) {
-    return  projectService.updateProject(projectId, project, clientId);
+    @PutMapping("/")
+    public ProjectDto updateProject(@Valid @RequestBody ProjectDto projectDto) {
+        return projectService.createOrUpdate(projectDto);
     }
 
     @GetMapping("/{id}")

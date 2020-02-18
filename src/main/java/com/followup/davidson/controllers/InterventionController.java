@@ -1,30 +1,14 @@
 package com.followup.davidson.controllers;
 
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.followup.davidson.Routes;
 import com.followup.davidson.dto.InterventionDto;
 import com.followup.davidson.model.Intervention;
-
-import com.followup.davidson.repositories.PersonRepository;
-import com.followup.davidson.repositories.ProjectRepository;
 import com.followup.davidson.services.IInterventionService;
-
-import com.followup.davidson.model.Person;
-import com.followup.davidson.model.Project;
-import com.followup.davidson.repositories.InterventionRepository;
-
-import com.followup.davidson.services.IPersonService;
-import com.followup.davidson.services.IProjectService;
-import com.followup.davidson.services.implementation.ProjectServiceImpl;
-import lombok.*;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
-import java.sql.Date;
 import java.util.List;
-import java.util.Optional;
+
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -33,14 +17,10 @@ public class InterventionController {
 
 
     private IInterventionService interventionService;
-    private IProjectService projectService;
-    private IPersonService personService;
 
 
-    public InterventionController(IInterventionService interventionService, IProjectService projectService,
-                                  IPersonService personService, InterventionRepository interventionRepository) {
-        this.projectService = projectService;
-        this.personService = personService;
+
+    public InterventionController(IInterventionService interventionService) {
         this.interventionService = interventionService;
     }
 

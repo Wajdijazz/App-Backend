@@ -14,7 +14,7 @@ public interface TJRepository extends JpaRepository<TJ,Long> {
 
     @Query(value = "select tarif from tj where tj.project_id= :projectId  And tj.person_id= :personId",
             nativeQuery = true)
-    Long   findTarif(Long projectId, Long personId);
+    Long  findTarif(Long projectId, Long personId);
 
     @Query(value = "select * from tj where tj.project_id= :projectId",
             nativeQuery = true)
@@ -23,4 +23,5 @@ public interface TJRepository extends JpaRepository<TJ,Long> {
     @Query(value = "select * from tj where tj.project_id= :projectId  And tj.person_id= :personId",
             nativeQuery = true)
     TJ findByPersonAndProject(long projectId, long personId);
+
 }

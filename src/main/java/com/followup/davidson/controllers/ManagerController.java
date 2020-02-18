@@ -2,22 +2,17 @@ package com.followup.davidson.controllers;
 
 
 import com.followup.davidson.Routes;
+import com.followup.davidson.dto.ManagerDto;
 import com.followup.davidson.model.Manager;
 import com.followup.davidson.services.IManagerService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.transaction.Transactional;
 import javax.validation.Valid;
-import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping(Routes.Manger)
+@RequestMapping(Routes.MANAGER)
 public class ManagerController {
 
     private IManagerService managerService;
@@ -31,17 +26,14 @@ public class ManagerController {
         return managerService.findAll();
     }
 
-
     @PostMapping("/")
-    public Manager createManager(@Valid @RequestBody Manager manager) {
-      return   managerService.create(manager);
+    public ManagerDto createManager(@Valid @RequestBody ManagerDto managerDto) {
+        return managerService.createOrUpdate(managerDto);
     }
 
-    @PutMapping("/{managerId}")
-    public Manager updateManager(@PathVariable(value = "managerId") Long managerId,
-                                                 @Valid @RequestBody Manager manager) {
-       return managerService.updateManager(managerId,manager);
-
+    @PutMapping("/")
+    public ManagerDto updateManager(@Valid @RequestBody ManagerDto managerDto) {
+        return managerService.createOrUpdate(managerDto);
     }
 
     @GetMapping("/{id}")

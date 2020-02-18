@@ -1,15 +1,10 @@
 package com.followup.davidson.services;
 
-import com.followup.davidson.controllers.InterventionController;
+
 import com.followup.davidson.dto.InterventionDto;
 import com.followup.davidson.model.Intervention;
-import com.followup.davidson.model.Person;
-import com.followup.davidson.model.Project;
-
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
+
 
 public interface IInterventionService {
 

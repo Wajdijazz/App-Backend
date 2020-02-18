@@ -1,19 +1,19 @@
 package com.followup.davidson.services.implementation;
 
+import com.followup.davidson.converter.PersonConverter;
+import com.followup.davidson.dto.PersonDto;
 import com.followup.davidson.exceptions.ApplicationException;
-import com.followup.davidson.model.Client;
-import com.followup.davidson.model.Manager;
+
 import com.followup.davidson.model.Person;
 import com.followup.davidson.repositories.PersonRepository;
-import com.followup.davidson.services.IManagerService;
+
 import com.followup.davidson.services.IPersonService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.management.Query;
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
+
 
 @Transactional
 @AllArgsConstructor
@@ -21,7 +21,7 @@ import java.util.Optional;
 public class PersonServiceImpl implements IPersonService {
 
     private PersonRepository personRepository;
-    private IManagerService managerService;
+    private PersonConverter personConverter;
 
     /**
      * Cette methode permet de lister tous les personnes de davidsons
@@ -36,14 +36,12 @@ public class PersonServiceImpl implements IPersonService {
     /**
      * Cette methode permet de créer et sauvgarder une nouvelle personne
      *
-     * @param person
+     * @param personDto
      * @return personne créee
      */
     @Override
-    public Person create(Person person, Long managerId) {
-       Manager manager = managerService.findById(managerId);
-        person.setManager(manager);
-        return personRepository.save(person);
+    public PersonDto createOrUpdate(PersonDto personDto) {
+        return personConverter.entityToDto(personRepository.save(personConverter.dtoToEntity(personDto)));
     }
 
     /**
@@ -56,19 +54,6 @@ public class PersonServiceImpl implements IPersonService {
     public Person findById(Long id) {
         return personRepository.findById(id).
                 orElseThrow(() -> new ApplicationException("This person with Id" + id + "not exist"));
-    }
-
-    @Override
-    public Person updatePerson(Long personId, Person person, Long managerId) {
-       Manager manager = managerService.findById(managerId);
-        Person personUp = new Person().builder()
-                .personId(personId)
-                .firstName(person.getFirstName())
-                .lastName(person.getLastName())
-                .manager(manager)
-                .build();
-        personRepository.save(personUp);
-        return personUp;
     }
 
     /**

@@ -2,6 +2,8 @@ package com.followup.davidson.controllerTests;
 
 
 import com.followup.davidson.controllers.TJController;
+import com.followup.davidson.dto.ClientDto;
+import com.followup.davidson.dto.TjDto;
 import com.followup.davidson.model.Project;
 import com.followup.davidson.model.TJ;
 import com.followup.davidson.services.ITJService;
@@ -15,7 +17,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -26,6 +30,7 @@ import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
@@ -35,9 +40,10 @@ import static org.mockito.Mockito.when;
 public class TjControllerTest {
     private static TJ tj1;
     private static TJ tj2;
-    @Mock
+    @MockBean
     private ITJService tjService;
-    @InjectMocks
+
+    @Autowired
     private TJController tjController;
 
     @Before
@@ -49,6 +55,15 @@ public class TjControllerTest {
     public static void init() {
         tj1 = new TJ(1L, 50f, null, null);
         tj2 = new TJ(1L, 70f, null, null);
+    }
+
+    private TjDto getTjDto() {
+        return TjDto.builder()
+                .tjId(1L)
+                .projectId(1L)
+                .personId(1L)
+                .tarif(50f)
+                .build();
     }
 
     @Test
@@ -69,7 +84,6 @@ public class TjControllerTest {
 
     @Test
     void findById_WhenMatch() {
-
         Mockito.when(tjService.findById(1L)).thenReturn(tj1);
         TJ tj = tjController.findTjById(1L);
         assertThat(tj, is(tj1));
@@ -82,25 +96,36 @@ public class TjControllerTest {
         tjController.deleteTj(1L);
         Mockito.verify(tjService, Mockito.times(1)).deleteTj(1L);
     }
-/*
+
     @Test
-    void createOnClickAddTj() {
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        when(tjService.create(Mockito.any(TJ.class), anyLong(), anyLong())).thenReturn(tj1);
-        ResponseEntity<TJ> responseEntity = tjController.createTj(tj1, 1L, 1L);
-        Assertions.assertThat(responseEntity.getStatusCodeValue()).isEqualTo(201);
-        Assertions.assertThat(responseEntity.getHeaders().getLocation().getPath()).isEqualTo("/1");
+    void createTjTest() {
+        TjDto tjEntry = getTjDto();
+        //expected
+        TjDto tjExpceted = getTjDto();
+        //Mocks
+        Mockito.when(tjService.create(tjEntry))
+                .thenReturn(tjExpceted);
+        //call
+        TjDto effective = tjController.createTj(tjEntry);
+        //Asset
+        assertEquals(tjExpceted, effective);
+        Mockito.verify(tjService, Mockito.times(1)).create(tjEntry);
     }
 
     @Test
-    void updateOnClickUpdateTj() {
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        when(tjService.updateTj(anyLong(),Mockito.any(TJ.class), anyLong(), anyLong())).thenReturn(tj1);
-        ResponseEntity<TJ> responseEntity = tjController.updateTj(tj1,1L, 1L, 1L);
-        Assertions.assertThat(responseEntity.getStatusCodeValue()).isEqualTo(201);
-        Assertions.assertThat(responseEntity.getHeaders().getLocation().getPath()).isEqualTo("/1");
+    void updateTjTest(){
+
+        TjDto tjEntry = getTjDto();
+        //expected
+        TjDto tjExpceted = getTjDto();
+        //Mocks
+        Mockito.when(tjService.updateByProjectAndPerson(tjEntry))
+                .thenReturn(tjExpceted);
+        //call
+        TjDto effective = tjController.updateTj(tjEntry);
+        //Asset
+        assertEquals(tjExpceted, effective);
+        Mockito.verify(tjService, Mockito.times(1)).updateByProjectAndPerson(tjEntry);
     }
-*/
+
 }

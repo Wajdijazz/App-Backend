@@ -1,5 +1,7 @@
 package com.followup.davidson.services.implementation;
 
+import com.followup.davidson.converter.ManagerConverter;
+import com.followup.davidson.dto.ManagerDto;
 import com.followup.davidson.exceptions.ApplicationException;
 import com.followup.davidson.model.Manager;
 import com.followup.davidson.repositories.ManagerRepository;
@@ -9,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @Transactional
 @AllArgsConstructor
@@ -18,6 +19,8 @@ public class ManagerServiceImpl implements IManagerService {
 
 
     private ManagerRepository managerRepository;
+    private ManagerConverter managerConverter;
+
 
     /**
      * Cette methode permet de lister tous les managers de davidsons
@@ -35,10 +38,6 @@ public class ManagerServiceImpl implements IManagerService {
      * @param manager
      * @return manager crée
      */
-    @Override
-    public Manager create(Manager manager) {
-        return managerRepository.save(manager);
-    }
 
     /**
      * Cette methode permet de retourner un manager par id
@@ -53,14 +52,8 @@ public class ManagerServiceImpl implements IManagerService {
     }
 
     @Override
-    public Manager updateManager(Long managerId, Manager manager) {
-     Manager managerUp=new Manager().builder()
-               .managerId(managerId)
-              .firstName(manager.getFirstName())
-              .lastName(manager.getLastName())
-              .build();
-        managerRepository.save(managerUp);
-        return managerUp ;
+    public ManagerDto createOrUpdate(ManagerDto managerDto) {
+        return  managerConverter.entityToDto(managerRepository.save(managerConverter.dtoToEntity(managerDto)));
     }
 
     /**
