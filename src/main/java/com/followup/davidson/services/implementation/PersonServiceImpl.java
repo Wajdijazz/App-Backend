@@ -7,6 +7,7 @@ import com.followup.davidson.exceptions.ApplicationException;
 import com.followup.davidson.model.Person;
 import com.followup.davidson.repositories.PersonRepository;
 
+import com.followup.davidson.repositories.TJRepository;
 import com.followup.davidson.services.IPersonService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ public class PersonServiceImpl implements IPersonService {
 
     private PersonRepository personRepository;
     private PersonConverter personConverter;
+    private TJRepository tjRepository;
 
     /**
      * Cette methode permet de lister tous les personnes de davidsons
@@ -64,6 +66,7 @@ public class PersonServiceImpl implements IPersonService {
     @Override
     public void deletePerson(Long id) {
         personRepository.deleteInterventionByIdPerson(id);
+        tjRepository.deleteByPerson_PersonId(id);
         personRepository.deleteById(id);
     }
 }

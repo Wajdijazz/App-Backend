@@ -27,7 +27,7 @@ import static org.junit.Assert.assertEquals;
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
 public class TjConverterTest {
-    private static Person person;
+ /*   private static Person person;
     private static Project project;
 
     @SpyBean
@@ -43,7 +43,7 @@ public class TjConverterTest {
     @BeforeAll
     public static void init() {
         person = new Person(1L, "Wajdi", "Jaziri", null);
-        project = new Project(1L, "Followup", null);
+     //   project = new Project(1L, "Followup", null);
     }
 
     @Before
@@ -82,7 +82,7 @@ public class TjConverterTest {
     private TjDto createDtoTj(Long id) {
         return TjDto.builder()
                 .tjId(id)
-                .tarif(500)
+                .tarif(500f)
                 .personId(1L)
                 .projectId(1L)
                 .build();
@@ -91,9 +91,9 @@ public class TjConverterTest {
     private TJ createEntityTj(Long id) {
         return TJ.builder()
                 .tjId(id)
-                .tarif(500)
+                .tarif(500f)
                 .person(person)
                 .project(project)
                 .build();
-    }
+    }*/
 }

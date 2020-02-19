@@ -82,13 +82,6 @@ public class TjControllerTest {
         Mockito.verify(tjService, Mockito.times(1)).findAll();
     }
 
-    @Test
-    void findById_WhenMatch() {
-        Mockito.when(tjService.findById(1L)).thenReturn(tj1);
-        TJ tj = tjController.findTjById(1L);
-        assertThat(tj, is(tj1));
-    }
-
 
     @Test
     void deleteById_WhenFound() {

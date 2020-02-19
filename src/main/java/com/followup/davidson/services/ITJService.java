@@ -18,8 +18,9 @@ public interface ITJService {
 
     TjDto updateByProjectAndPerson(TjDto  tjDto);
 
-    Long findTarif(Long projectId, Long personId);
+    Float  findTarifByProject_ProjectIdAndPerson_PersonId(Long projectId, Long personId);
 
+    List<TJ> findByProject_ProjectId(long projectId);
 
 
 }

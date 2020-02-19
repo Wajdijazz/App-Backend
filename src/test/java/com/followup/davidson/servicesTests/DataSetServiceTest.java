@@ -24,6 +24,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -33,18 +34,15 @@ import static org.junit.Assert.assertEquals;
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
 public class DataSetServiceTest {
-    private static TJ tj1;
-    private static TJ tj2;
-    private static Project project;
-    private static  Person person;
-    private static  Person person2;
 
-
-
+    @SpyBean
     @Autowired
     private PersonConverter personConverter;
+
+    @SpyBean
     @Autowired
     private ProjectConverter projectConverter;
+
     @SpyBean
     @Autowired
     private DataSetServiceImp dataSetService;
@@ -54,61 +52,93 @@ public class DataSetServiceTest {
 
     @MockBean
     ProjectServiceImpl projectService;
+
     @BeforeAll
     public static void init() {
-        project=new Project(1L,"Followup",null);
-        person=new Person(1L,"Wajdi","Jaziri",null);
-        person2=new Person(2L,"Test","Test",null);
-        tj1 = new TJ(1L, 50f, person, project);
-        tj2 = new TJ(1L, 70f, person2, project);
+
+    }
+
+    private PersonDto getPersonDto(Long id, String firstName, String lastName) {
+        return PersonDto.builder()
+                .personId(id)
+                .firstName(firstName)
+                .lastName(lastName)
+                .build();
+    }
+
+    private ProjectDto getProjectDto(Long id, String projectName) {
+        return ProjectDto.builder()
+                .projectId(id)
+                .projectName(projectName)
+                .build();
+    }
+
+    private Person getPerson(Long id, String firstName, String lastName) {
+        return Person.builder()
+                .personId(id)
+                .firstName(firstName)
+                .lastName(lastName)
+                .build();
+    }
+
+    private Project getProject(Long id, String projectName) {
+        return Project.builder()
+                .projectId(id)
+                .projectName(projectName)
+                .build();
+    }
+
+    private TJ getTj(Long id, Float tarif, Project project, Person person) {
+        return TJ.builder()
+                .tjId(id)
+                .tarif(tarif)
+                .project(project)
+                .person(person)
+                .build();
     }
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
     }
-    private DatasetDto getDataset(){
-        PersonDto personDto=PersonDto.builder()
-                .personId(1L)
-                .firstName("Wajdi")
-                .lastName("Jaziri")
-                .build();
-        PersonDto personDto1=PersonDto.builder()
-                .personId(2L)
-                .firstName("Test")
-                .lastName("Test")
-                .build();
-        ProjectDto projectDto= ProjectDto.builder()
-                .projectId(1L)
-                .projectName("Followup")
-                .build();
 
-        List<PersonDto> persons=new ArrayList<>();
-        persons.add(personDto);
-        persons.add(personDto1);
-
-        return  DatasetDto.builder()
-                .persons(persons)
-                .project(projectDto)
-                .build();
-    }
     @Test
-    public void getByProjectTest(){
+    public void getByProjectTest() {
         List<TJ> tjListExcepted = new ArrayList<>();
-        tjListExcepted.add(tj1);
-        tjListExcepted.add(tj2);
+
+        tjListExcepted.add(getTj(1L, 50f, getProject(1L, "Follow-up")
+                , getPerson(1L, "Wajdi", "Jaziri")));
+
+        tjListExcepted.add(getTj(2L, 70f, getProject(2L, "Line-up")
+                , getPerson(1L, "Wajdi", "Jaziri")));
 
         Mockito.when(tjService.findAll()).thenReturn(tjListExcepted);
-        Mockito.when(projectService.findById(1L)).thenReturn(project);
+        Mockito.when(projectService.findById(1L)).thenReturn(getProject(1L, "Follow-up"));
 
         Set<Person> persons = tjListExcepted.stream().map(tj -> tj.getPerson()).collect(Collectors.toSet());
-        DatasetDto datasetExcepted= new DatasetDto();
 
-        datasetExcepted.setPersons(personConverter.entityListToDtoList(persons));
-        datasetExcepted.setProject(projectConverter.entityToDto(project));
+        PersonDto personDto = getPersonDto(1L, "Wajdi", "Jaziri");
+        PersonDto personDto1 = getPersonDto(1L, "Wajdi", "Jaziri");
 
-        DatasetDto datasetEntry=dataSetService.getByProject(1L);
-        assertEquals(datasetExcepted, datasetEntry);
+
+        Set<PersonDto> personDtos = new HashSet();
+        personDtos.add(personDto);
+        personDtos.add(personDto1);
+
+        Mockito.when(personConverter.entityListToDtoList(persons))
+                .thenReturn(personDtos);
+
+        Mockito.when(projectConverter.entityToDto(getProject(1L, "Follow-up")))
+                .thenReturn(getProjectDto(1L, "Follow-up"));
+
+        DatasetDto datasetExpected = DatasetDto.builder()
+                .persons(personConverter.entityListToDtoList(persons))
+                .project(projectConverter.entityToDto(getProject(1L, "Follow-up")))
+                .build();
+
+        DatasetDto datasetEntry = dataSetService.getByProject(1L);
+        assertEquals(datasetExpected, datasetEntry);
+
         Mockito.verify(tjService, Mockito.times(1)).findAll();
         Mockito.verify(projectService, Mockito.times(1)).findById(1L);
     }

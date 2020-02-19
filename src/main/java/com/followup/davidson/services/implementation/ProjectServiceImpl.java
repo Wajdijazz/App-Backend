@@ -6,6 +6,7 @@ import com.followup.davidson.exceptions.ApplicationException;
 import com.followup.davidson.model.Project;
 import com.followup.davidson.repositories.ProjectRepository;
 
+import com.followup.davidson.repositories.TJRepository;
 import com.followup.davidson.services.IProjectService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ public class ProjectServiceImpl implements IProjectService {
 
     private ProjectRepository projectRepository;
     private ProjectConverter projectConverter;
+    private TJRepository tjRepository;
 
 
     /**
@@ -60,6 +62,7 @@ public class ProjectServiceImpl implements IProjectService {
     @Override
     public void deleteProject(Long id) {
         projectRepository.deleteInterventionByIdProject(id);
+        tjRepository.deleteByProject_ProjectId(id);
         projectRepository.deleteById(id);
     }
 }

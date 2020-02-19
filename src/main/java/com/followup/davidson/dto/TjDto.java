@@ -9,7 +9,7 @@ import lombok.*;
 @ToString
 public class TjDto {
     private Long tjId;
-    private double tarif;
+    private Float tarif;
     private Long personId;
     private Long projectId;
 }

@@ -32,15 +32,16 @@ public class DataSetServiceImp implements IDatasetService {
      * @return
      */
     @Override
-    public DatasetDto getByProject(Long projectId) {
+    public DatasetDto getByProject(Long projectId) {// return builder
         List<TJ> tjs = tjService.findAll(); // TODO, recupérer les Tjs du projet projectId //
         Project project = projectService.findById(projectId);
-        DatasetDto dataset = new DatasetDto();
+
 
         Set<Person> persons = tjs.stream().map(tj -> tj.getPerson()).collect(Collectors.toSet());
-
-        dataset.setPersons(personConverter.entityListToDtoList(persons));
-        dataset.setProject(projectConverter.entityToDto(project));
+        DatasetDto dataset =DatasetDto.builder()
+                .persons(personConverter.entityListToDtoList(persons))
+                .project(projectConverter.entityToDto(project))
+                .build();
 
         return dataset;
     }

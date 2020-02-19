@@ -34,16 +34,14 @@ import static org.junit.Assert.assertEquals;
 @SpringBootTest
 public class ClientServiceTest {
 
-    private static Client c1;
-    private static Client c2;
 
+    @SpyBean
     @Autowired
     private ClientConverter clientConverter;
 
     @MockBean
     private ClientRepository clientRepository;
 
-    @SpyBean
     @Autowired
     private ClientServiceImpl clientService;
 
@@ -54,15 +52,22 @@ public class ClientServiceTest {
 
     @BeforeAll
     public static void init() {
-        c1 = new Client(1L, "EverySense", "contact@gmail.com");
-        c2 = new Client(1L, "Elivia", "elivia@gamil.com");
+
     }
 
-    private ClientDto getClientDto() {
+    private Client getClient(Long id, String clientName, String clientContact) {
+        return Client.builder()
+                .clientId(id)
+                .clientName(clientName)
+                .clientContact(clientContact)
+                .build();
+    }
+
+    private ClientDto getClientDto(Long id, String clientName, String clientContact) {
         return ClientDto.builder()
-                .clientId(1L)
-                .clientName("EverySense")
-                .clientContact("everysense@gmail.com")
+                .clientId(id)
+                .clientName(clientName)
+                .clientContact(clientContact)
                 .build();
     }
 
@@ -76,23 +81,22 @@ public class ClientServiceTest {
 
     @Test
     public void findAllTest_WhenRecord() {
-        List<Client> clientListExcepted = new ArrayList<>();
-        clientListExcepted.add(c1);
-        clientListExcepted.add(c2);
-        Mockito.when(clientRepository.findAll()).thenReturn(clientListExcepted);
-        List<Client> clientList=clientService.findAll();
-        assertEquals(clientList,clientListExcepted);
+        List<Client> clientListExpected = new ArrayList<>();
+        clientListExpected.add(getClient(1L, "EverySense", "everysense@gmail.com"));
+        clientListExpected.add(getClient(2L, "Elivia", "elivia@gamil.com"));
+        Mockito.when(clientRepository.findAll()).thenReturn(clientListExpected);
+        List<Client> clientList = clientService.findAll();
+        assertEquals(clientList, clientListExpected);
         Mockito.verify(clientRepository, Mockito.times(1)).findAll();
     }
 
     @Test
     public void findClientByIdWhenAReponseIsThere() {
-        Mockito.when(clientRepository.findById(1L)).thenReturn(Optional.of(c1));
-        Client clientExcepted=clientService.findById(1L);
-        assertEquals(clientExcepted, c1);
+        Mockito.when(clientRepository.findById(1L)).thenReturn(Optional.of(getClient(1L, "EverySense", "everysense@gmail.com")));
+        Client clientExcepted = clientService.findById(1L);
+        assertEquals(clientExcepted, getClient(1L, "EverySense", "everysense@gmail.com"));
         Mockito.verify(clientRepository, Mockito.times(1)).findById(1L);
     }
-
 
     @Test
     void deleteById() {
@@ -102,15 +106,14 @@ public class ClientServiceTest {
 
     @Test
     void testCreateOrUpdateClient() {
-        ClientDto clientDto=getClientDto();
-        Client clientEntryRepository=clientConverter.dtoToEntity(clientDto);
-        ClientDto excepted=getClientDto();
-        excepted.setClientId(1L);
-        excepted.setClientName("EverySense");
-        excepted.setClientContact("everysense@gmail.com");
+        ClientDto clientDto = getClientDto(1L, "EverySense", "everysense@gmail.com");
+        Mockito.when(clientConverter.dtoToEntity(clientDto))
+                .thenReturn(getClient(1L, "EverySense", "everysense@gmail.com"));
+        Client clientEntryRepository = clientConverter.dtoToEntity(clientDto);
+        ClientDto expected = getClientDto(1L, "EverySense", "everysense@gmail.com");
         Mockito.when(clientRepository.save(clientEntryRepository)).thenReturn(clientEntryRepository);
         ClientDto clientDtoReturned = clientService.createOrUpdate(clientDto);
+        assertEquals(expected, clientDtoReturned);
         Mockito.verify(clientRepository, Mockito.times(1)).save(clientConverter.dtoToEntity(clientDto));
-        assertEquals(excepted, clientDtoReturned);
     }
 }

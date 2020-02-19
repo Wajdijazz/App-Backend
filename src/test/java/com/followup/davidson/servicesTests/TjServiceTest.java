@@ -137,7 +137,7 @@ public class TjServiceTest {
     void testUpdateByProjectAndPerson(){
 
         TjDto tjDto = getTjDto();
-        Mockito.when(tjRepository.findByPersonAndProject(1L,1L)).thenReturn(tj1);
+        Mockito.when(tjRepository.findByProject_ProjectIdAndPerson_PersonId(1L,1L)).thenReturn(tj1);
 
         Mockito.when(personService.findById(1L)).thenReturn(person);
         Mockito.when(projectService.findById(1L)).thenReturn(project);

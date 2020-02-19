@@ -37,15 +37,15 @@ public class TJController {
         return tjService.updateByProjectAndPerson(tjDto);
     }
 
-    @GetMapping("/{id}")
-    public TJ findTjById(@PathVariable(value = "id") Long tjId) {
-        return tjService.findById(tjId);
+    @GetMapping("/{projectId}")
+    public List<TJ> findTjById(@PathVariable(value = "projectId") Long projectId) {
+        return tjService.findByProject_ProjectId(projectId);
     }
 
     @GetMapping("/{projectId}/{personId}")
-    public Long findTarif(@PathVariable(value = "projectId") Long projectId,
+    public Float findTarif(@PathVariable(value = "projectId") Long projectId,
                           @PathVariable(value = "personId") Long personId) {
-        return tjService.findTarif(projectId, personId);
+        return tjService.findTarifByProject_ProjectIdAndPerson_PersonId(projectId, personId);
     }
 
     @DeleteMapping("/{id}")

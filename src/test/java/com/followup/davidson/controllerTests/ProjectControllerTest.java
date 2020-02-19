@@ -34,7 +34,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
 public class ProjectControllerTest {
-    private static Project p1;
+  /*  private static Project p1;
     private static Project p2;
 
     @Mock

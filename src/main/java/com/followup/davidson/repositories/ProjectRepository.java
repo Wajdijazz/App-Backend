@@ -10,8 +10,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource
 public interface ProjectRepository extends JpaRepository<Project,Long> {
-    @Query(value="select count(*) from public.project" , nativeQuery = true)
-    long getActiveProjects();
 
 
     @Modifying

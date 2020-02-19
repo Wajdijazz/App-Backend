@@ -59,7 +59,7 @@ public class TJServiceImpl implements ITJService {
      */
     @Override
     public TjDto updateByProjectAndPerson(TjDto tjDto) {
-        TJ tjByProjectAndPerson= tjRepository.findByPersonAndProject(tjDto.getProjectId(), tjDto.getPersonId());
+        TJ tjByProjectAndPerson= tjRepository.findByProject_ProjectIdAndPerson_PersonId(tjDto.getProjectId(), tjDto.getPersonId());
         tjDto.setTjId(tjByProjectAndPerson.getTjId());
        return tjConverter.entityToDto(tjRepository.save(tjConverter.dtoToEntity(tjDto)));
     }
@@ -72,12 +72,18 @@ public class TJServiceImpl implements ITJService {
      * @return un tarif de type Long
      */
     @Override
-    public Long findTarif(Long projectId, Long personId) {
-        if (projectId == null || personId == null) {
+    public Float findTarifByProject_ProjectIdAndPerson_PersonId(Long projectId, Long personId) {
+       TJ tj= tjRepository.findByProject_ProjectIdAndPerson_PersonId(projectId,personId);
+        if (projectId == null || personId == null || tj == null) {
             return null;
         } else {
-            return tjRepository.findTarif(projectId, personId);
+            return  tj.getTarif();
         }
+    }
+
+    @Override
+    public List<TJ> findByProject_ProjectId(long projectId) {
+        return tjRepository.findByProject_ProjectId(projectId);
     }
 
 }

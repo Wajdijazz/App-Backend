@@ -36,9 +36,9 @@ public class ClientConverterTest {
     @Test
     public void dtoToEntityTest() {
         //Entry
-        ClientDto entry = createDtoClient(1L);
+        ClientDto entry = createDtoClient(1L,"EverySense","contact@gmail.com");
         //Excepted
-        Client expected = createEntityClient(1L);
+        Client expected = createEntityClient(1L,"EverySense","contact@gmail.com");
         //call
         Client effective = clientConverter.dtoToEntity(entry);
         //Asset
@@ -49,9 +49,9 @@ public class ClientConverterTest {
     @Test
     public void entityToDtoTest() {
         //Entry
-        Client entry = createEntityClient(1L);
+        Client entry = createEntityClient(1L,"EverySense","contact@gmail.com");
         //Excepted
-        ClientDto expected = createDtoClient(1L);
+        ClientDto expected = createDtoClient(1L,"EverySense","contact@gmail.com");
         //call
         ClientDto effective = clientConverter.entityToDto(entry);
         //Asset
@@ -59,19 +59,19 @@ public class ClientConverterTest {
     }
 
 
-    private ClientDto createDtoClient(Long id) {
+    private ClientDto createDtoClient(Long id, String clientName, String clientContact) {
         return ClientDto.builder()
                 .clientId(id)
-                .clientName("EverySence")
-                .clientContact("everysense@gmail.com")
+                .clientName(clientName)
+                .clientContact(clientContact)
                 .build();
     }
 
-    private Client createEntityClient(Long id) {
+    private Client createEntityClient(Long id, String clientName, String clientContact) {
         return Client.builder()
                 .clientId(id)
-                .clientName("EverySence")
-                .clientContact("everysense@gmail.com")
+                .clientName(clientName)
+                .clientContact(clientContact)
                 .build();
     }
 }
