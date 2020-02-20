@@ -2,18 +2,12 @@ package com.followup.davidson.controllers;
 
 
 import com.followup.davidson.Routes;
+import com.followup.davidson.dto.ClientDto;
 import com.followup.davidson.model.Client;
-import com.followup.davidson.model.Manager;
 import com.followup.davidson.services.IClientService;
-import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import javax.validation.Valid;
-import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -31,17 +25,14 @@ public class ClientController {
         return clientService.findAll();
     }
 
-
     @PostMapping("/")
-    public Client createClient(@Valid @RequestBody Client client) {
-        return clientService.create(client);
+    public ClientDto createClient(@Valid @RequestBody ClientDto clientDto) {
+       return clientService.createOrUpdate(clientDto);
     }
-
-    @PutMapping("/{clientId}")
-    public Client updateClient(@PathVariable(value = "clientId") Long clientId, @Valid @RequestBody Client client) {
-       return clientService.updateClient(clientId, client);
+    @PutMapping("/")
+    public ClientDto updateClient(@Valid @RequestBody ClientDto clientDto) {
+        return clientService.createOrUpdate(clientDto);
     }
-
     @GetMapping("/{id}")
     public Client findClientById(@PathVariable(value = "id") Long clientId) {
         return clientService.findById(clientId);

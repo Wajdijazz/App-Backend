@@ -2,18 +2,13 @@ package com.followup.davidson.controllers;
 
 
 import com.followup.davidson.Routes;
-import com.followup.davidson.model.Manager;
+import com.followup.davidson.dto.PersonDto;
 import com.followup.davidson.model.Person;
-import com.followup.davidson.services.IManagerService;
 import com.followup.davidson.services.IPersonService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
-import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(Routes.PERSON)
@@ -21,11 +16,9 @@ import java.util.Optional;
 public class PersonController {
     private IPersonService personService;
 
-    private IManagerService managerService;
 
-    public PersonController(IPersonService personService, IManagerService managerService) {
+    public PersonController(IPersonService personService) {
         this.personService = personService;
-        this.managerService = managerService;
     }
 
     @GetMapping(value = "/", produces = {"application/json"})
@@ -33,15 +26,14 @@ public class PersonController {
         return personService.findAll();
     }
 
-    @PostMapping("/manager/{managerId}/person")
-    public Person createPerson(@Valid @RequestBody Person person, @PathVariable(value = "managerId") Long managerId) {
-       return personService.create(person, managerId);
+    @PostMapping("/")
+    public PersonDto createuPerson(@Valid @RequestBody PersonDto personDto) {
+        return personService.createOrUpdate(personDto);
     }
 
-    @PutMapping("/{personId}/{managerId}")
-    public Person updatePerson(@PathVariable(value = "personId") Long personId, @Valid @RequestBody Person person,
-                               @PathVariable(value = "managerId") Long managerId) {
-       return personService.updatePerson(personId,person,managerId);
+    @PutMapping("/")
+    public PersonDto updatePerson(@Valid @RequestBody PersonDto personDto) {
+        return personService.createOrUpdate(personDto);
     }
 
     @GetMapping("/{id}")

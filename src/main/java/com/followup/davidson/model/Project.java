@@ -2,9 +2,12 @@ package com.followup.davidson.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 
 @Entity
@@ -32,5 +35,9 @@ public class Project {
     @ManyToOne(fetch = FetchType.LAZY, optional = false,cascade = CascadeType.PERSIST)
     @JoinColumn(name = "client_id")
     private Client client;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false,cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "manager_id")
+    private Manager manager;
 
 }

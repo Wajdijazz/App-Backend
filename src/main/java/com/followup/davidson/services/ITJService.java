@@ -1,24 +1,26 @@
 package com.followup.davidson.services;
 
+import com.followup.davidson.dto.TjDto;
 import com.followup.davidson.model.TJ;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ITJService {
 
     List<TJ> findAll();
 
-    TJ create(TJ tj, Long projectId, Long personId);
+    TjDto create(TjDto tjDto);
 
     TJ findById(Long id);
 
-    TJ updateTj(Long tjId, TJ tj, Long projectId, Long personId);
 
     void deleteTj(Long id);
 
-    List<TJ> findByProject(long projectId);
+    TjDto updateByProjectAndPerson(TjDto  tjDto);
 
-    Long findTarif(Long projectId, Long personId);
+    Float  findTarifByProject_ProjectIdAndPerson_PersonId(Long projectId, Long personId);
+
+    List<TJ> findByProject_ProjectId(long projectId);
+
 
 }

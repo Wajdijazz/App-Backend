@@ -1,6 +1,5 @@
 package com.followup.davidson.services.implementation;
 
-import com.followup.davidson.controllers.InterventionController;
 import com.followup.davidson.dto.InterventionDto;
 import com.followup.davidson.exceptions.ApplicationException;
 import com.followup.davidson.model.Intervention;
@@ -13,9 +12,7 @@ import com.followup.davidson.services.IPersonService;
 import com.followup.davidson.services.IProjectService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
-import java.time.LocalDate;
 import java.util.*;
 
 @Transactional
@@ -72,14 +69,14 @@ public class InterventionServiceImpl implements IInterventionService {
                 Date date = cal1.getTime();
                 java.sql.Date sDate = convertUtilToSql(date);
 
-                Intervention intervention1 = new Intervention().builder()
+                Intervention intervention1 = Intervention.builder()
                         .person(person)
                         .project(project)
                         .date(sDate)
                         .mode(Mode.AM)
                         .build();
 
-                Intervention intervention2 = new Intervention().builder()
+                Intervention intervention2 = Intervention.builder()
                         .person(person)
                         .project(project)
                         .date(sDate)
@@ -95,8 +92,7 @@ public class InterventionServiceImpl implements IInterventionService {
     }
 
     private static java.sql.Date convertUtilToSql(java.util.Date uDate) {
-        java.sql.Date sDate = new java.sql.Date(uDate.getTime());
-        return sDate;
+        return new java.sql.Date(uDate.getTime());
     }
 
     /**

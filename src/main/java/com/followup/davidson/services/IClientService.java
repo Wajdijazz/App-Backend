@@ -1,9 +1,8 @@
 package com.followup.davidson.services;
 
+import com.followup.davidson.dto.ClientDto;
 import com.followup.davidson.model.Client;
-
 import java.util.List;
-import java.util.Optional;
 
 public interface IClientService {
 
@@ -11,9 +10,7 @@ public interface IClientService {
 
     Client findById(Long id);
 
-    Client create(Client client);
-
-    Client updateClient(Long clientId,Client client);
+    ClientDto createOrUpdate(ClientDto clientDto);
 
     void deleteClient(Long id);
 }

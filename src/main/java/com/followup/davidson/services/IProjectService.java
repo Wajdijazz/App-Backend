@@ -1,9 +1,9 @@
 package com.followup.davidson.services;
 
+import com.followup.davidson.dto.ProjectDto;
 import com.followup.davidson.model.Project;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface IProjectService {
 
@@ -11,9 +11,7 @@ public interface IProjectService {
 
     Project findById(Long id);
 
-    Project create(Project project, Long clientId);
-
-    Project updateProject(Long projectId,Project project,Long clientId);
+    ProjectDto createOrUpdate(ProjectDto projectDto);
 
     void deleteProject(Long id);
 }

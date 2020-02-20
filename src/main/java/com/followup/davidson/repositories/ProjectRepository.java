@@ -10,9 +10,8 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource
 public interface ProjectRepository extends JpaRepository<Project,Long> {
-    @Query(value="select count(*) from public.project" , nativeQuery = true)
-    long getActiveProjects();
 
+    void deleteByManager_ManagerId(Long managerId);
 
     @Modifying
     @Query(value=" DELETE FROM intervention i WHERE i.project_id=:projectId",nativeQuery = true)

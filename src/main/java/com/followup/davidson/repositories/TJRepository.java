@@ -12,15 +12,16 @@ import java.util.List;
 @RepositoryRestResource
 public interface TJRepository extends JpaRepository<TJ,Long> {
 
-    @Query(value = "select tarif from tj where tj.project_id= :projectId  And tj.person_id= :personId",
-            nativeQuery = true)
-    Long   findTarif(Long projectId, Long personId);
 
-    @Query(value = "select * from tj where tj.project_id= :projectId",
-            nativeQuery = true)
-    List<TJ> findByProject(long projectId);
 
-    @Query(value = "select * from tj where tj.project_id= :projectId  And tj.person_id= :personId",
-            nativeQuery = true)
-    TJ findByPersonAndProject(long projectId, long personId);
+    List<TJ> findByProject_ProjectId(long projectId);
+
+    TJ  findByProject_ProjectIdAndPerson_PersonId(Long projectId, Long personId);
+
+    void deleteByProject_ProjectId(Long projectId);
+
+    void deleteByPerson_PersonId(Long personId);
+
+
+
 }
