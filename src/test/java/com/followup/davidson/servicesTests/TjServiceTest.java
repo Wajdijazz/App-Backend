@@ -66,7 +66,7 @@ public class TjServiceTest {
 
     @BeforeAll
     public static void init() {
-        project = new Project(1L, "Followup", null);
+        project = new Project(1L, "Followup", null,null);
         person = new Person(1L, "Wajdi", "Jaziri", null);
         tj1 = new TJ(1L, 50f, null, null);
         tj2 = new TJ(1L, 70f, null, null);

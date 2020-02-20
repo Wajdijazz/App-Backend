@@ -36,4 +36,8 @@ public class Project {
     @JoinColumn(name = "client_id")
     private Client client;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false,cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "manager_id")
+    private Manager manager;
+
 }

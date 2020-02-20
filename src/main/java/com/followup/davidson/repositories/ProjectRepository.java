@@ -11,6 +11,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 @RepositoryRestResource
 public interface ProjectRepository extends JpaRepository<Project,Long> {
 
+    void deleteByManager_ManagerId(Long managerId);
 
     @Modifying
     @Query(value=" DELETE FROM intervention i WHERE i.project_id=:projectId",nativeQuery = true)

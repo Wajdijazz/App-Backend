@@ -10,6 +10,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 @RepositoryRestResource
 public interface PersonRepository  extends JpaRepository<Person,Long> {
 
+    void deleteByManager_ManagerId(Long managerId);
     @Modifying
     @Query(value=" DELETE FROM intervention i WHERE i.person_id=:personId",nativeQuery = true)
     void deleteInterventionByIdPerson( @Param("personId") Long personId);

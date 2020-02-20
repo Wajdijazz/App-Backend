@@ -36,9 +36,8 @@ public class DataSetServiceImp implements IDatasetService {
         List<TJ> tjs = tjService.findAll(); // TODO, recupérer les Tjs du projet projectId //
         Project project = projectService.findById(projectId);
 
-
         Set<Person> persons = tjs.stream().map(tj -> tj.getPerson()).collect(Collectors.toSet());
-        DatasetDto dataset =DatasetDto.builder()
+        DatasetDto dataset = DatasetDto.builder()
                 .persons(personConverter.entityListToDtoList(persons))
                 .project(projectConverter.entityToDto(project))
                 .build();

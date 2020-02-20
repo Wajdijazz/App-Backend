@@ -4,7 +4,10 @@ import com.followup.davidson.converter.ManagerConverter;
 import com.followup.davidson.dto.ManagerDto;
 import com.followup.davidson.exceptions.ApplicationException;
 import com.followup.davidson.model.Manager;
+import com.followup.davidson.model.Person;
 import com.followup.davidson.repositories.ManagerRepository;
+import com.followup.davidson.repositories.PersonRepository;
+import com.followup.davidson.repositories.ProjectRepository;
 import com.followup.davidson.services.IManagerService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +23,8 @@ public class ManagerServiceImpl implements IManagerService {
 
     private ManagerRepository managerRepository;
     private ManagerConverter managerConverter;
+    private ProjectRepository projectRepository;
+    private PersonRepository personRepository;
 
 
     /**
@@ -63,6 +68,8 @@ public class ManagerServiceImpl implements IManagerService {
      */
     @Override
     public void deleteManager(Long id) {
+        projectRepository.deleteByManager_ManagerId(id);
+        personRepository.deleteByManager_ManagerId(id);
         managerRepository.deleteById(id);
     }
 }

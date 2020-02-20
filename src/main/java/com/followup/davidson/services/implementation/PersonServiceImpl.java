@@ -7,6 +7,7 @@ import com.followup.davidson.exceptions.ApplicationException;
 import com.followup.davidson.model.Person;
 import com.followup.davidson.repositories.PersonRepository;
 
+import com.followup.davidson.repositories.ProjectRepository;
 import com.followup.davidson.repositories.TJRepository;
 import com.followup.davidson.services.IPersonService;
 import lombok.AllArgsConstructor;
