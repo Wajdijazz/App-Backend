@@ -9,6 +9,7 @@ import com.followup.davidson.model.Person;
 import com.followup.davidson.model.Project;
 import com.followup.davidson.model.TJ;
 import com.followup.davidson.services.implementation.DataSetServiceImp;
+import com.followup.davidson.services.implementation.PersonServiceImpl;
 import com.followup.davidson.services.implementation.ProjectServiceImpl;
 import com.followup.davidson.services.implementation.TJServiceImpl;
 import org.junit.Before;
@@ -48,7 +49,7 @@ public class DataSetServiceTest {
     private DataSetServiceImp dataSetService;
 
     @MockBean
-    private TJServiceImpl tjService;
+    private PersonServiceImpl personService;
 
     @MockBean
     ProjectServiceImpl projectService;
@@ -88,14 +89,7 @@ public class DataSetServiceTest {
                 .build();
     }
 
-    private TJ getTj(Long id, Float tarif, Project project, Person person) {
-        return TJ.builder()
-                .tjId(id)
-                .tarif(tarif)
-                .project(project)
-                .person(person)
-                .build();
-    }
+
 
     @Before
     public void setUp() {
@@ -104,24 +98,22 @@ public class DataSetServiceTest {
 
     @Test
     public void getByProjectTest() {
-        List<TJ> tjListExcepted = new ArrayList<>();
+        List<Person> personListExcepted = new ArrayList<>();
 
-        tjListExcepted.add(getTj(1L, 50f, getProject(1L, "Follow-up")
-                , getPerson(1L, "Wajdi", "Jaziri")));
+        personListExcepted.add(getPerson(1L, "Wajdi", "Jaziri"));
+        personListExcepted.add(getPerson(2L, "Noe", "Pamula"));
 
-        tjListExcepted.add(getTj(2L, 70f, getProject(2L, "Line-up")
-                , getPerson(1L, "Wajdi", "Jaziri")));
 
-        Mockito.when(tjService.findAll()).thenReturn(tjListExcepted);
+        Mockito.when(personService.findAll()).thenReturn(personListExcepted);
         Mockito.when(projectService.findById(1L)).thenReturn(getProject(1L, "Follow-up"));
 
-        Set<Person> persons = tjListExcepted.stream().map(tj -> tj.getPerson()).collect(Collectors.toSet());
+        List<Person> persons = personService.findAll();
 
         PersonDto personDto = getPersonDto(1L, "Wajdi", "Jaziri");
-        PersonDto personDto1 = getPersonDto(1L, "Wajdi", "Jaziri");
+        PersonDto personDto1 = getPersonDto(2L, "Noe", "Pamula");
 
 
-        Set<PersonDto> personDtos = new HashSet();
+        List<PersonDto> personDtos = new ArrayList<>();
         personDtos.add(personDto);
         personDtos.add(personDto1);
 
@@ -139,7 +131,7 @@ public class DataSetServiceTest {
         DatasetDto datasetEntry = dataSetService.getByProject(1L);
         assertEquals(datasetExpected, datasetEntry);
 
-        Mockito.verify(tjService, Mockito.times(1)).findAll();
+        Mockito.verify(personService, Mockito.times(2)).findAll();
         Mockito.verify(projectService, Mockito.times(1)).findById(1L);
     }
 }

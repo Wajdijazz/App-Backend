@@ -5,6 +5,7 @@ import com.followup.davidson.converter.ProjectConverter;
 import com.followup.davidson.dto.DatasetDto;
 import com.followup.davidson.model.*;
 import com.followup.davidson.services.IDatasetService;
+import com.followup.davidson.services.IPersonService;
 import com.followup.davidson.services.IProjectService;
 import com.followup.davidson.services.ITJService;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,7 @@ public class DataSetServiceImp implements IDatasetService {
 
     private ITJService tjService;
     private IProjectService projectService;
+    private IPersonService personService;
     private ProjectConverter projectConverter;
     private PersonConverter personConverter;
 
@@ -32,16 +34,13 @@ public class DataSetServiceImp implements IDatasetService {
      * @return
      */
     @Override
-    public DatasetDto getByProject(Long projectId) {// return builder
-        List<TJ> tjs = tjService.findAll(); // TODO, recupérer les Tjs du projet projectId //
+    public DatasetDto getByProject(Long projectId) {
         Project project = projectService.findById(projectId);
-
-        Set<Person> persons = tjs.stream().map(tj -> tj.getPerson()).collect(Collectors.toSet());
+        List <Person> persons=personService.findAll();
         DatasetDto dataset = DatasetDto.builder()
                 .persons(personConverter.entityListToDtoList(persons))
                 .project(projectConverter.entityToDto(project))
                 .build();
-
         return dataset;
     }
 }
