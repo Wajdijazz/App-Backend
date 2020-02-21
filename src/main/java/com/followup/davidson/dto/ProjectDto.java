@@ -1,7 +1,5 @@
 package com.followup.davidson.dto;
 
-import com.followup.davidson.model.Client;
-import com.followup.davidson.model.Manager;
 import lombok.*;
 
 @Data

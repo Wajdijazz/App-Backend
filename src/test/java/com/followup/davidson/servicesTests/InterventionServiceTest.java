@@ -24,7 +24,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -39,7 +41,7 @@ public class InterventionServiceTest {
     private static Project p1;
     private static Person pe1;
     private static InterventionDto interventionDto;
-
+    private List<InterventionDto> interventionDtos = new ArrayList<>();
 
     @Mock
     private InterventionRepository interventionRepository;
@@ -60,13 +62,14 @@ public class InterventionServiceTest {
     }
 
     @BeforeAll
-    public static void init() {
+    public void init() {
         int1 = new Intervention(1L, new Date(2020 - 01 - 06), Mode.AM, null, null);
         int2 = new Intervention(1L, new Date(2020 - 01 - 18), Mode.AM, null, null);
-   //     p1 = new Project(1L, "Followup", null);
+        //     p1 = new Project(1L, "Followup", null);
         pe1 = new Person(1L, "Wajdi", "Jaziri", null);
-        interventionDto = new InterventionDto(new Date(2020 - 02 - 03),
-                new Date(2020 - 03 - 06), null, null);
+        interventionDto = new InterventionDto(new Date(2020 - 02 - 03), Mode.AM, null, null);
+
+        interventionDtos.add(interventionDto);
     }
 
     @Test
@@ -104,11 +107,13 @@ public class InterventionServiceTest {
         interventionService.deleteInterventionHistorique(1L);
         Mockito.verify(interventionRepository, Mockito.times(1)).deleteById(1L);
     }
+
     @Test
     void create() {
    /*     Mockito.when(projectService.findById(1L)).thenReturn(p1);
        Project p = projectController.findProjectById(1L);
         assertThat(p, is(p1) );
+
 
         Mockito.when(personService.findById(1L)).thenReturn(pe1);
         Person pe = personController.findPersonById(1L);

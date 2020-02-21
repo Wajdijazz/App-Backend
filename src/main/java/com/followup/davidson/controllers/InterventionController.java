@@ -29,11 +29,9 @@ public class InterventionController {
     }
 
     @PostMapping("/project/{projectId}/person/{personId}")
-    public Object createIntervention(@Valid @RequestBody InterventionDto interventionDto,
-                                     @PathVariable(value = "projectId") Long projectId
-            , @PathVariable(value = "personId") Long personId) {
+    public Object createIntervention(@Valid @RequestBody List<InterventionDto> interventionDto){
 
-        return interventionService.saveInterventions(interventionDto, personId, projectId);
+        return interventionService.saveInterventions(interventionDto);
     }
 
     @GetMapping("/{id}")
