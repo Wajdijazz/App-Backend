@@ -13,6 +13,9 @@ public class ProjectConverter implements GenericsConverter<Project, ProjectDto> 
     private IClientService clientService;
     private IManagerService managerService;
 
+    private ManagerConverter managerConverter;
+    private ClientConverter clientConverter;
+
     public ProjectConverter(IClientService clientService,IManagerService managerService) {
         this.clientService = clientService;
         this.managerService=managerService;
@@ -23,8 +26,8 @@ public class ProjectConverter implements GenericsConverter<Project, ProjectDto> 
         return ProjectDto.builder()
                 .projectId(project.getProjectId())
                 .projectName(project.getProjectName())
-                .manager(project.getManager())
-                .client(project.getClient())
+                .manager(managerConverter.entityToDto(project.getManager()))
+                .client(clientConverter.entityToDto(project.getClient()))
                 .build();
     }
 
