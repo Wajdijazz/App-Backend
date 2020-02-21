@@ -1,8 +1,7 @@
 package com.followup.davidson.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.followup.davidson.model.Person;
-import com.followup.davidson.model.Project;
+import com.followup.davidson.model.Mode;
 import lombok.*;
 
 import java.sql.Date;
@@ -14,9 +13,8 @@ import java.sql.Date;
 @ToString
 public class InterventionDto {
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date startDate;
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date endDate;
-    private Person person;
-    private Project project;
+    private Date date;
+    private Mode mode;
+    private PersonDto person;
+    private ProjectDto project;
 }

@@ -1,7 +1,5 @@
 package com.followup.davidson.dto;
 
-import com.followup.davidson.model.Client;
-import com.followup.davidson.model.Manager;
 import lombok.*;
 
 @Data
@@ -14,6 +12,6 @@ public class ProjectDto {
     private String projectName;
     private Long clientId;
     private Long managerId;
-    private Manager manager;
-    private Client client;
+    private ManagerDto manager;
+    private ClientDto client;
 }

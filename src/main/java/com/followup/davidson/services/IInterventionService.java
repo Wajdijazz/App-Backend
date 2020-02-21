@@ -13,7 +13,7 @@ public interface IInterventionService {
 
     List<Intervention> findAll();
 
-    Object saveInterventions(InterventionDto interventionDto, Long personId, Long projectId);
+    Object saveInterventions(List<InterventionDto> interventionDto);
 
     void deleteIntervention(Long personId, Long projectId);
 

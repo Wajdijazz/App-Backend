@@ -70,5 +70,7 @@ public interface InterventionRepository extends JpaRepository<Intervention, Long
     @Query(value = " DELETE FROM intervention i WHERE i.person_id= :personId AND i.project_id= :projectId",
             nativeQuery = true)
     void deleteIntervention(Long personId, Long projectId);
+
+    void deleteByPersonPersonIdAndProjectProjectId(Long personId, Long projectId);
 }
 
