@@ -68,7 +68,6 @@ public class InterventionServiceTest {
         //     p1 = new Project(1L, "Followup", null);
         pe1 = new Person(1L, "Wajdi", "Jaziri", null);
         interventionDto = new InterventionDto(new Date(2020 - 02 - 03), Mode.AM, null, null);
-
         interventionDtos.add(interventionDto);
     }
 
@@ -113,7 +112,6 @@ public class InterventionServiceTest {
    /*     Mockito.when(projectService.findById(1L)).thenReturn(p1);
        Project p = projectController.findProjectById(1L);
         assertThat(p, is(p1) );
-
 
         Mockito.when(personService.findById(1L)).thenReturn(pe1);
         Person pe = personController.findPersonById(1L);
