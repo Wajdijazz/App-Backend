@@ -1,5 +1,6 @@
 package com.followup.davidson.services.implementation;
 
+import com.followup.davidson.converter.ManagerConverter;
 import com.followup.davidson.converter.PersonConverter;
 import com.followup.davidson.dto.PersonDto;
 import com.followup.davidson.exceptions.ApplicationException;
@@ -9,11 +10,13 @@ import com.followup.davidson.repositories.PersonRepository;
 
 import com.followup.davidson.repositories.ProjectRepository;
 import com.followup.davidson.repositories.TJRepository;
+import com.followup.davidson.services.IManagerService;
 import com.followup.davidson.services.IPersonService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Collection;
 import java.util.List;
 
 
@@ -25,6 +28,8 @@ public class PersonServiceImpl implements IPersonService {
     private PersonRepository personRepository;
     private PersonConverter personConverter;
     private TJRepository tjRepository;
+    private ManagerConverter managerConverter;
+    private IManagerService managerService;
 
     /**
      * Cette methode permet de lister tous les personnes de davidsons
@@ -32,8 +37,8 @@ public class PersonServiceImpl implements IPersonService {
      * @return une liste des {@link Person}
      */
     @Override
-    public List<Person> findAll() {
-        return personRepository.findAll();
+    public Collection<PersonDto> findAll() {
+        return personConverter.entityListToDtoList(personRepository.findAll());
     }
 
     /**
@@ -44,6 +49,8 @@ public class PersonServiceImpl implements IPersonService {
      */
     @Override
     public PersonDto createOrUpdate(PersonDto personDto) {
+        personDto.setManagerDto(managerService.findById(personDto.getManagerId()));
+
         return personConverter.entityToDto(personRepository.save(personConverter.dtoToEntity(personDto)));
     }
 
@@ -54,9 +61,9 @@ public class PersonServiceImpl implements IPersonService {
      * @return une  personne
      */
     @Override
-    public Person findById(Long id) {
-        return personRepository.findById(id).
-                orElseThrow(() -> new ApplicationException("This person with Id" + id + "not exist"));
+    public PersonDto findById(Long id) {
+        return personConverter.entityToDto(personRepository.findById(id).
+                orElseThrow(() -> new ApplicationException("This person with Id" + id + "not exist")));
     }
 
     /**

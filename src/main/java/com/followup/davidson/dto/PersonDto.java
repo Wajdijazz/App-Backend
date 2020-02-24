@@ -12,5 +12,6 @@ public class PersonDto {
     private String firstName;
     private String lastName;
     private Long managerId;
+    private ManagerDto managerDto;
 
 }

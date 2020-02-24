@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(Routes.TJ)
 public class TJController {
@@ -22,10 +21,6 @@ public class TJController {
         this.tjService = tjService;
     }
 
-    @GetMapping("/")
-    public List<TJ> getAllTj() {
-        return tjService.findAll();
-    }
 
     @PostMapping("/")
     public TjDto createTj(@Valid @RequestBody TjDto tjDto) {
@@ -37,10 +32,6 @@ public class TJController {
         return tjService.updateByProjectAndPerson(tjDto);
     }
 
-    @GetMapping("/{projectId}")
-    public List<TJ> findTjById(@PathVariable(value = "projectId") Long projectId) {
-        return tjService.findByProject_ProjectId(projectId);
-    }
 
     @GetMapping("/{projectId}/{personId}")
     public Float findTarif(@PathVariable(value = "projectId") Long projectId,

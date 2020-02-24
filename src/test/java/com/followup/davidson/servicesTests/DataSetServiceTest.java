@@ -24,10 +24,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
@@ -53,11 +50,6 @@ public class DataSetServiceTest {
 
     @MockBean
     ProjectServiceImpl projectService;
-
-    @BeforeAll
-    public static void init() {
-
-    }
 
     private PersonDto getPersonDto(Long id, String firstName, String lastName) {
         return PersonDto.builder()
@@ -90,7 +82,6 @@ public class DataSetServiceTest {
     }
 
 
-
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -98,16 +89,16 @@ public class DataSetServiceTest {
 
     @Test
     public void getByProjectTest() {
-        List<Person> personListExcepted = new ArrayList<>();
+        Collection<PersonDto> personListExcepted = new ArrayList<>();
 
-        personListExcepted.add(getPerson(1L, "Wajdi", "Jaziri"));
-        personListExcepted.add(getPerson(2L, "Noe", "Pamula"));
+        personListExcepted.add(getPersonDto(1L, "Wajdi", "Jaziri"));
+        personListExcepted.add(getPersonDto(2L, "Noe", "Pamula"));
 
 
         Mockito.when(personService.findAll()).thenReturn(personListExcepted);
-        Mockito.when(projectService.findById(1L)).thenReturn(getProject(1L, "Follow-up"));
+        Mockito.when(projectService.findById(1L)).thenReturn(getProjectDto(1L, "Follow-up"));
 
-        List<Person> persons = personService.findAll();
+        Collection<PersonDto> persons = personService.findAll();
 
         PersonDto personDto = getPersonDto(1L, "Wajdi", "Jaziri");
         PersonDto personDto1 = getPersonDto(2L, "Noe", "Pamula");
@@ -117,14 +108,14 @@ public class DataSetServiceTest {
         personDtos.add(personDto);
         personDtos.add(personDto1);
 
-        Mockito.when(personConverter.entityListToDtoList(persons))
+        Mockito.when(persons)
                 .thenReturn(personDtos);
 
         Mockito.when(projectConverter.entityToDto(getProject(1L, "Follow-up")))
                 .thenReturn(getProjectDto(1L, "Follow-up"));
 
         DatasetDto datasetExpected = DatasetDto.builder()
-                .persons(personConverter.entityListToDtoList(persons))
+                .persons(persons)
                 .project(projectConverter.entityToDto(getProject(1L, "Follow-up")))
                 .build();
 

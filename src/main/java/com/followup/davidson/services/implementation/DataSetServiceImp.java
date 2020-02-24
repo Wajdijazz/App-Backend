@@ -3,6 +3,8 @@ package com.followup.davidson.services.implementation;
 import com.followup.davidson.converter.PersonConverter;
 import com.followup.davidson.converter.ProjectConverter;
 import com.followup.davidson.dto.DatasetDto;
+import com.followup.davidson.dto.PersonDto;
+import com.followup.davidson.dto.ProjectDto;
 import com.followup.davidson.model.*;
 import com.followup.davidson.services.IDatasetService;
 import com.followup.davidson.services.IPersonService;
@@ -12,6 +14,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -21,7 +24,6 @@ import java.util.stream.Collectors;
 @Service
 public class DataSetServiceImp implements IDatasetService {
 
-    private ITJService tjService;
     private IProjectService projectService;
     private IPersonService personService;
     private ProjectConverter projectConverter;
@@ -35,11 +37,11 @@ public class DataSetServiceImp implements IDatasetService {
      */
     @Override
     public DatasetDto getByProject(Long projectId) {
-        Project project = projectService.findById(projectId);
-        List <Person> persons=personService.findAll();
+        ProjectDto project = projectService.findById(projectId);
+        Collection<PersonDto> persons=personService.findAll();
         DatasetDto dataset = DatasetDto.builder()
-                .persons(personConverter.entityListToDtoList(persons))
-                .project(projectConverter.entityToDto(project))
+                .persons(persons)
+                .project(project)
                 .build();
         return dataset;
     }

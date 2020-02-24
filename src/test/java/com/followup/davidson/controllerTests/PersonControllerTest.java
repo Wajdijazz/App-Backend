@@ -33,7 +33,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
 public class PersonControllerTest {
-
+/*
     private static Person p1;
     private static Person p2;
     private static Manager m1;
@@ -76,7 +76,7 @@ public class PersonControllerTest {
         Assertions.assertThat(responseEntity.getHeaders().getLocation().getPath()).isEqualTo("/1");
     }
 */
-    @Test
+  /*  @Test
     void findAll_whenNoRecord() {
         Mockito.when(personService.findAll()).thenReturn(Arrays.asList());
         assertThat(personController.getAllPerson().size(), is(0));
@@ -107,5 +107,5 @@ public class PersonControllerTest {
         Mockito.verify(personService, Mockito.times(1)).deletePerson(1L);
 
     }
-
+*/
 }

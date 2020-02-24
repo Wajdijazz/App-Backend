@@ -28,13 +28,13 @@ public class TJ {
     /**
      * La personne affectée à ce taux de jour
      */
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name="person_id")
     private Person person;
     /**
      * Le projet affecté à ce taux de jour
      */
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name="project_id")
     private Project project;
 
