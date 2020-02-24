@@ -13,8 +13,4 @@ public interface ProjectRepository extends JpaRepository<Project,Long> {
 
     void deleteByManager_ManagerId(Long managerId);
 
-    @Modifying
-    @Query(value=" DELETE FROM intervention i WHERE i.project_id=:projectId",nativeQuery = true)
-    void deleteInterventionByIdProject( @Param("projectId") Long projectId);
-
 }

@@ -1,19 +1,14 @@
 package com.followup.davidson.converter;
 
-import com.followup.davidson.model.Manager;
 import com.followup.davidson.model.Person;
 import com.followup.davidson.dto.PersonDto;
-import com.followup.davidson.services.IManagerService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-
+@AllArgsConstructor
 @Component
 public class PersonConverter implements GenericsConverter<Person, PersonDto> {
 
-    private IManagerService managerService;
-
-    public PersonConverter(IManagerService managerService) {
-        this.managerService = managerService;
-    }
+   private ManagerConverter managerConverter;
 
     @Override
     public PersonDto entityToDto(Person person) {
@@ -21,17 +16,17 @@ public class PersonConverter implements GenericsConverter<Person, PersonDto> {
                 .personId(person.getPersonId())
                 .firstName(person.getFirstName())
                 .lastName(person.getLastName())
+                .managerDto(managerConverter.entityToDto(person.getManager()))
                 .build();
     }
 
 
     public Person dtoToEntity(PersonDto personDto) {
-        Manager manager = managerService.findById(personDto.getManagerId());
         return Person.builder()
                 .personId(personDto.getPersonId())
                 .firstName(personDto.getFirstName())
                 .lastName(personDto.getLastName())
-                .manager(manager)
+                .manager(managerConverter.dtoToEntity(personDto.getManagerDto()))
                 .build();
     }
 

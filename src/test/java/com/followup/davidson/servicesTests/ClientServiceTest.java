@@ -1,6 +1,7 @@
 package com.followup.davidson.servicesTests;
 
 
+import com.followup.davidson.Utils.Utils;
 import com.followup.davidson.converter.ClientConverter;
 import com.followup.davidson.dto.ClientDto;
 import com.followup.davidson.model.Client;
@@ -21,8 +22,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +35,14 @@ import static org.junit.Assert.assertEquals;
 @SpringBootTest
 public class ClientServiceTest {
 
+    @Autowired
+    private Utils utils;
+
+    private final static String CLIENT_1_NAME = "EverySense";
+    private final static String CLIENT_1_EMAIL = "everysense@gmail.com";
+    private ClientDto CLIENT_DTO_1 = utils.getClientDto(1L, CLIENT_1_NAME, CLIENT_1_EMAIL);
+    private Client CLIENT_1 = utils.getClient(1L, CLIENT_1_NAME, CLIENT_1_EMAIL);
+    private Client CLIENT_2 = utils.getClient(2L, "Elivia", "elivia@gamil.com");
 
     @SpyBean
     @Autowired
@@ -50,70 +59,37 @@ public class ClientServiceTest {
         MockitoAnnotations.initMocks(this);
     }
 
-    @BeforeAll
-    public static void init() {
-
-    }
-
-    private Client getClient(Long id, String clientName, String clientContact) {
-        return Client.builder()
-                .clientId(id)
-                .clientName(clientName)
-                .clientContact(clientContact)
-                .build();
-    }
-
-    private ClientDto getClientDto(Long id, String clientName, String clientContact) {
-        return ClientDto.builder()
-                .clientId(id)
-                .clientName(clientName)
-                .clientContact(clientContact)
-                .build();
-    }
-
     @Test
     public void findAllTest_WhenNoRecord() {
-
         Mockito.when(clientRepository.findAll()).thenReturn(Arrays.asList());
         assertThat(clientService.findAll().size(), is(0));
-        Mockito.verify(clientRepository, Mockito.times(1)).findAll();
     }
 
     @Test
     public void findAllTest_WhenRecord() {
-        List<Client> clientListExpected = new ArrayList<>();
-        clientListExpected.add(getClient(1L, "EverySense", "everysense@gmail.com"));
-        clientListExpected.add(getClient(2L, "Elivia", "elivia@gamil.com"));
+        List<Client> clientListExpected = Arrays.asList(CLIENT_1, CLIENT_2);
+
         Mockito.when(clientRepository.findAll()).thenReturn(clientListExpected);
-        List<Client> clientList = clientService.findAll();
+
+        Collection<ClientDto> clientList = clientService.findAll();
         assertEquals(clientList, clientListExpected);
-        Mockito.verify(clientRepository, Mockito.times(1)).findAll();
     }
 
     @Test
     public void findClientByIdWhenAReponseIsThere() {
-        Mockito.when(clientRepository.findById(1L)).thenReturn(Optional.of(getClient(1L, "EverySense", "everysense@gmail.com")));
-        Client clientExcepted = clientService.findById(1L);
-        assertEquals(clientExcepted, getClient(1L, "EverySense", "everysense@gmail.com"));
+        Mockito.when(clientRepository.findById(1L)).thenReturn(Optional.of(CLIENT_1));
+        ClientDto clientExcepted = clientService.findById(1L);
+        assertEquals(clientExcepted, CLIENT_1);
         Mockito.verify(clientRepository, Mockito.times(1)).findById(1L);
     }
 
     @Test
-    void deleteById() {
-        clientService.deleteClient(1L);
-        Mockito.verify(clientRepository, Mockito.times(1)).deleteById(1L);
-    }
-
-    @Test
     void testCreateOrUpdateClient() {
-        ClientDto clientDto = getClientDto(1L, "EverySense", "everysense@gmail.com");
-        Mockito.when(clientConverter.dtoToEntity(clientDto))
-                .thenReturn(getClient(1L, "EverySense", "everysense@gmail.com"));
-        Client clientEntryRepository = clientConverter.dtoToEntity(clientDto);
-        ClientDto expected = getClientDto(1L, "EverySense", "everysense@gmail.com");
-        Mockito.when(clientRepository.save(clientEntryRepository)).thenReturn(clientEntryRepository);
-        ClientDto clientDtoReturned = clientService.createOrUpdate(clientDto);
-        assertEquals(expected, clientDtoReturned);
-        Mockito.verify(clientRepository, Mockito.times(1)).save(clientConverter.dtoToEntity(clientDto));
+        Mockito.when(clientRepository.save(CLIENT_1)).thenReturn(CLIENT_1);
+
+        ClientDto clientDtoReturned = clientService.createOrUpdate(CLIENT_DTO_1);
+
+        assertEquals(CLIENT_DTO_1, clientDtoReturned);
+        Mockito.verify(clientRepository, Mockito.times(1)).save(clientConverter.dtoToEntity(CLIENT_DTO_1));
     }
 }

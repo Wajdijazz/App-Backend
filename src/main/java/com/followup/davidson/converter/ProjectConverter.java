@@ -1,42 +1,39 @@
 package com.followup.davidson.converter;
 
+import com.followup.davidson.dto.ManagerDto;
 import com.followup.davidson.model.Client;
 import com.followup.davidson.model.Manager;
 import com.followup.davidson.model.Project;
 import com.followup.davidson.dto.ProjectDto;
 import com.followup.davidson.services.IClientService;
 import com.followup.davidson.services.IManagerService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-
+@AllArgsConstructor
 @Component
 public class ProjectConverter implements GenericsConverter<Project, ProjectDto> {
-    private IClientService clientService;
-    private IManagerService managerService;
 
-    public ProjectConverter(IClientService clientService,IManagerService managerService) {
-        this.clientService = clientService;
-        this.managerService=managerService;
-    }
+    private ManagerConverter managerConverter;
+    private ClientConverter clientConverter;
+
 
     @Override
     public ProjectDto entityToDto(Project project) {
         return ProjectDto.builder()
                 .projectId(project.getProjectId())
                 .projectName(project.getProjectName())
-                .manager(project.getManager())
-                .client(project.getClient())
+                .managerDto(managerConverter.entityToDto(project.getManager()))
+                .clientDto(clientConverter.entityToDto(project.getClient()))
                 .build();
     }
 
     @Override
     public Project dtoToEntity(ProjectDto projectDto) {
-        Client client = clientService.findById(projectDto.getClientId());
-        Manager manager = managerService.findById(projectDto.getManagerId());
         return Project.builder()
                 .projectId(projectDto.getProjectId())
                 .projectName(projectDto.getProjectName())
-                .client(client)
-                .manager(manager)
+                .client(clientConverter.dtoToEntity(projectDto.getClientDto()))
+                .manager(managerConverter.dtoToEntity(projectDto.getManagerDto()))
                 .build();
     }
 }

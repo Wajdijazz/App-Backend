@@ -14,6 +14,6 @@ public class ProjectDto {
     private String projectName;
     private Long clientId;
     private Long managerId;
-    private Manager manager;
-    private Client client;
+    private ManagerDto managerDto;
+    private ClientDto clientDto;
 }

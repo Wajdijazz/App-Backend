@@ -3,14 +3,12 @@ package com.followup.davidson.controllers;
 
 import com.followup.davidson.Routes;
 import com.followup.davidson.dto.ClientDto;
-import com.followup.davidson.model.Client;
 import com.followup.davidson.services.IClientService;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
-import java.util.List;
+import java.util.Collection;
 
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping(Routes.CLIENT)
 public class ClientController {
 
@@ -21,7 +19,7 @@ public class ClientController {
     }
 
     @GetMapping("/")
-    public List<Client> getAllClient() {
+    public Collection<ClientDto> getAllClient() {
         return clientService.findAll();
     }
 
@@ -32,10 +30,6 @@ public class ClientController {
     @PutMapping("/")
     public ClientDto updateClient(@Valid @RequestBody ClientDto clientDto) {
         return clientService.createOrUpdate(clientDto);
-    }
-    @GetMapping("/{id}")
-    public Client findClientById(@PathVariable(value = "id") Long clientId) {
-        return clientService.findById(clientId);
     }
 
     @DeleteMapping("/{id}")

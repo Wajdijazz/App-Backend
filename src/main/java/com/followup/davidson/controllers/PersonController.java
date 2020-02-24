@@ -8,11 +8,11 @@ import com.followup.davidson.services.IPersonService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Collection;
 import java.util.List;
 
 @RestController
 @RequestMapping(Routes.PERSON)
-@CrossOrigin(origins = "*")
 public class PersonController {
     private IPersonService personService;
 
@@ -22,7 +22,7 @@ public class PersonController {
     }
 
     @GetMapping(value = "/", produces = {"application/json"})
-    public List<Person> getAllPerson() {
+    public Collection<PersonDto> getAllPerson() {
         return personService.findAll();
     }
 
@@ -37,7 +37,7 @@ public class PersonController {
     }
 
     @GetMapping("/{id}")
-    public Person findPersonById(@PathVariable(value = "id") Long personId) {
+    public PersonDto findPersonById(@PathVariable(value = "id") Long personId) {
         return personService.findById(personId);
     }
 

@@ -16,7 +16,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @ToString
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-
+@EqualsAndHashCode
 /**
  * Client est la classe represetant un client chez Davidson
  */

@@ -6,10 +6,10 @@ import com.followup.davidson.model.Project;
 import com.followup.davidson.services.IProjectService;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
+import java.util.Collection;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping(Routes.PROJECT)
 
 public class ProjectController {
@@ -21,7 +21,7 @@ public class ProjectController {
     }
 
     @GetMapping(value = "/", produces = {"application/json"})
-    public List<Project> getAllProject() {
+    public Collection<ProjectDto> getAllProject() {
         return projectService.findAll();
     }
 
@@ -36,7 +36,7 @@ public class ProjectController {
     }
 
     @GetMapping("/{id}")
-    public Project findProjectById(@PathVariable(value = "id") Long projectId) {
+    public ProjectDto findProjectById(@PathVariable(value = "id") Long projectId) {
         return projectService.findById(projectId);
     }
 
