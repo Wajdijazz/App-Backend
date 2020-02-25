@@ -8,6 +8,7 @@ import com.followup.davidson.dto.ManagerDto;
 import com.followup.davidson.model.Client;
 import com.followup.davidson.model.Manager;
 import com.followup.davidson.repositories.ManagerRepository;
+import com.followup.davidson.services.IManagerService;
 import com.followup.davidson.services.implementation.ClientServiceImpl;
 import com.followup.davidson.services.implementation.ManagerServiceImpl;
 import org.junit.Before;
@@ -61,7 +62,7 @@ public class ManagerServiceTest {
     private ManagerRepository managerRepository;
 
     @Autowired
-    private ManagerServiceImpl managerService;
+    private IManagerService managerService;
 
 
     @Before

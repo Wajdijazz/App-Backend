@@ -7,6 +7,7 @@ import com.followup.davidson.converter.ClientConverter;
 import com.followup.davidson.dto.ClientDto;
 import com.followup.davidson.model.Client;
 import com.followup.davidson.repositories.ClientRepository;
+import com.followup.davidson.services.IClientService;
 import com.followup.davidson.services.implementation.ClientServiceImpl;
 
 import org.junit.Before;
@@ -57,15 +58,12 @@ public class ClientServiceTest {
 
 
 
-    @SpyBean
-    @Autowired
-    private ClientConverter clientConverter;
 
     @MockBean
     private ClientRepository clientRepository;
 
     @Autowired
-    private ClientServiceImpl clientService;
+    private IClientService clientService;
 
     @Before
     public void setUp() {
@@ -92,8 +90,8 @@ public class ClientServiceTest {
     @Test
     public void findClientByIdWhenAReponseIsThere() {
         Mockito.when(clientRepository.findById(1L)).thenReturn(Optional.of(CLIENT_1));
-        ClientDto clientExcepted = clientService.findById(1L);
-        assertEquals(clientExcepted, CLIENT_DTO_1);
+        ClientDto clientDtoExcepted = clientService.findById(1L);
+        assertEquals(clientDtoExcepted, CLIENT_DTO_1);
     }
 
     @Test

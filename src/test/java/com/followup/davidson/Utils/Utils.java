@@ -46,33 +46,46 @@ public class Utils {
     }
 
 
-    private static final PersonDto getPersonDto(Long id, String firstName, String lastName) {
+    public static final PersonDto getPersonDto(Long id, String firstName, String lastName, Long managerId,
+                                               ManagerDto managerDto) {
         return PersonDto.builder()
                 .personId(id)
                 .firstName(firstName)
                 .lastName(lastName)
+                .managerId(managerId)
+                .managerDto(managerDto)
                 .build();
     }
 
-    private static final ProjectDto getProjectDto(Long id, String projectName) {
-        return ProjectDto.builder()
-                .projectId(id)
-                .projectName(projectName)
-                .build();
-    }
-
-    private static final Person getPerson(Long id, String firstName, String lastName) {
+    public static final Person getPerson(Long id, String firstName, String lastName,
+                                         Manager manager) {
         return Person.builder()
                 .personId(id)
                 .firstName(firstName)
                 .lastName(lastName)
+                .manager(manager)
                 .build();
     }
 
-    private static final Project getProject(Long id, String projectName) {
+    public static final ProjectDto getProjectDto(Long id, String projectName, Long clientId, Long managerId,
+                                                 ManagerDto managerDto, ClientDto clientDto) {
+        return ProjectDto.builder()
+                .projectId(id)
+                .projectName(projectName)
+                .clientId(clientId)
+                .managerId(managerId)
+                .managerDto(managerDto)
+                .clientDto(clientDto)
+                .build();
+    }
+
+
+    public static final Project getProject(Long id, String projectName, Manager manager, Client client) {
         return Project.builder()
                 .projectId(id)
                 .projectName(projectName)
+                .manager(manager)
+                .client(client)
                 .build();
     }
 

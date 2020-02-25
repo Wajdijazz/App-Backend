@@ -28,7 +28,6 @@ public class PersonServiceImpl implements IPersonService {
     private PersonRepository personRepository;
     private PersonConverter personConverter;
     private TJRepository tjRepository;
-    private ManagerConverter managerConverter;
     private IManagerService managerService;
 
     /**

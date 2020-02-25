@@ -22,6 +22,8 @@ public class ProjectConverter implements GenericsConverter<Project, ProjectDto> 
         return ProjectDto.builder()
                 .projectId(project.getProjectId())
                 .projectName(project.getProjectName())
+                .managerId(project.getManager().getManagerId())
+                .clientId(project.getClient().getClientId())
                 .managerDto(managerConverter.entityToDto(project.getManager()))
                 .clientDto(clientConverter.entityToDto(project.getClient()))
                 .build();

@@ -36,7 +36,7 @@ import static org.junit.Assert.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
-public class TjServiceTest {
+public class TjServiceTest {/*
     private static TJ tj1;
     private static TJ tj2;
     private static Project project;
@@ -82,13 +82,14 @@ public class TjServiceTest {
                 .build();
     }
 
-  /*  @Test
+    @Test
     public void findAllTest_WhenNoRecord() {
         Mockito.when(tjRepository.findAll()).thenReturn(Arrays.asList());
         assertThat(tjService.findAll().size(), is(0));
         Mockito.verify(tjRepository, Mockito.times(1)).findAll();
-    }
 
+    }
+/*
     @Test
     public void findAllTest_WhenRecord() {
         Mockito.when(tjRepository.findAll()).thenReturn(Arrays.asList(tj1, tj2));
@@ -103,7 +104,7 @@ public class TjServiceTest {
     /*    Mockito.when(tjRepository.findById(1L)).thenReturn(Optional.of(tj1));
         TJ tjExcepted = tjService.findById(1L);
         assertEquals(tjExcepted, tj1);
-        Mockito.verify(tjRepository, Mockito.times(1)).findById(1L);*/
+        Mockito.verify(tjRepository, Mockito.times(1)).findById(1L);*
     }
 
     @Test
@@ -130,7 +131,7 @@ public class TjServiceTest {
         assertEquals(excepted, tjDtoReturned);
         Mockito.verify(personService, Mockito.times(2)).findById(1L);
         Mockito.verify(projectService, Mockito.times(2)).findById(1L);
-        Mockito.verify(tjRepository, Mockito.times(1)).save(tjConverter.dtoToEntity(tjDto));*/
+        Mockito.verify(tjRepository, Mockito.times(1)).save(tjConverter.dtoToEntity(tjDto));
     }
 
     @Test

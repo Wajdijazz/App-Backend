@@ -1,10 +1,10 @@
 package com.followup.davidson.servicesTests;
 
+import com.followup.davidson.Utils.DataForTest;
+import com.followup.davidson.Utils.Utils;
 import com.followup.davidson.converter.PersonConverter;
 import com.followup.davidson.converter.ProjectConverter;
-import com.followup.davidson.dto.DatasetDto;
-import com.followup.davidson.dto.PersonDto;
-import com.followup.davidson.dto.ProjectDto;
+import com.followup.davidson.dto.*;
 import com.followup.davidson.model.Person;
 import com.followup.davidson.model.Project;
 import com.followup.davidson.model.TJ;
@@ -33,6 +33,40 @@ import static org.junit.Assert.assertEquals;
 @SpringBootTest
 public class DataSetServiceTest {
 
+    @Autowired
+    private Utils utils;
+    private ManagerDto MANAGER_DTO = utils.getManagerDto(
+            DataForTest.ManagerData.MANAGER_1_ID,
+            DataForTest.ManagerData.MANAGER_1_FIRSTNAME,
+            DataForTest.ManagerData.MANAGER_1_LASTTNAME);
+
+    private ClientDto CLIENT_DTO = utils.getClientDto(
+            DataForTest.ClientData.CLIENT_1_ID,
+            DataForTest.ClientData.CLIENT_1_NAME,
+            DataForTest.ClientData.CLIENT_1_EMAIL);
+    private PersonDto PERSON_DTO_1 = utils.getPersonDto(
+            DataForTest.PersonData.PERSON_1_ID,
+            DataForTest.PersonData.PERSON_1_FIRSTNAME,
+            DataForTest.PersonData.PERSON_1_LASTTNAME,
+            DataForTest.ManagerData.MANAGER_1_ID,
+            MANAGER_DTO);
+
+    private PersonDto PERSON_DTO_2 = utils.getPersonDto(
+            DataForTest.PersonData.PERSON_2_ID,
+            DataForTest.PersonData.PERSON_2_FIRSTNAME,
+            DataForTest.PersonData.PERSON_2_LASTTNAME,
+            DataForTest.ManagerData.MANAGER_1_ID,
+            MANAGER_DTO);
+
+    private ProjectDto PROJECT_DTO_1 = utils.getProjectDto(
+            DataForTest.ProjectData.PROJECT_1_ID,
+            DataForTest.ProjectData.PROJECT_1_NAME,
+            DataForTest.ClientData.CLIENT_1_ID,
+            DataForTest.ManagerData.MANAGER_1_ID,
+            MANAGER_DTO,
+            CLIENT_DTO
+    );
+
     @SpyBean
     @Autowired
     private PersonConverter personConverter;
@@ -59,28 +93,6 @@ public class DataSetServiceTest {
                 .build();
     }
 
-    private ProjectDto getProjectDto(Long id, String projectName) {
-        return ProjectDto.builder()
-                .projectId(id)
-                .projectName(projectName)
-                .build();
-    }
-
-    private Person getPerson(Long id, String firstName, String lastName) {
-        return Person.builder()
-                .personId(id)
-                .firstName(firstName)
-                .lastName(lastName)
-                .build();
-    }
-
-    private Project getProject(Long id, String projectName) {
-        return Project.builder()
-                .projectId(id)
-                .projectName(projectName)
-                .build();
-    }
-
 
     @Before
     public void setUp() {
@@ -91,39 +103,24 @@ public class DataSetServiceTest {
     public void getByProjectTest() {
         List<PersonDto> personListExcepted = new ArrayList<>();
 
-        personListExcepted.add(getPersonDto(1L, "Wajdi", "Jaziri"));
-        personListExcepted.add(getPersonDto(2L, "Noe", "Pamula"));
+        personListExcepted.add(PERSON_DTO_1);
+        personListExcepted.add(PERSON_DTO_2);
 
 
         Mockito.when(personService.findAll()).thenReturn(personListExcepted);
-        Mockito.when(projectService.findById(1L)).thenReturn(getProjectDto(1L, "Follow-up"));
+        Mockito.when(projectService.findById(1L)).thenReturn(PROJECT_DTO_1);
 
-        Collection<PersonDto> persons = personService.findAll();
+        List<PersonDto> persons = personService.findAll();
 
-        PersonDto personDto = getPersonDto(1L, "Wajdi", "Jaziri");
-        PersonDto personDto1 = getPersonDto(2L, "Noe", "Pamula");
-
-
-        List<PersonDto> personDtos = new ArrayList<>();
-        personDtos.add(personDto);
-        personDtos.add(personDto1);
-
-        Mockito.when(persons)
-                .thenReturn(personDtos);
-
-        Mockito.when(projectConverter.entityToDto(getProject(1L, "Follow-up")))
-                .thenReturn(getProjectDto(1L, "Follow-up"));
 
         DatasetDto datasetExpected = DatasetDto.builder()
                 .persons(persons)
-                .project(projectConverter.entityToDto(getProject(1L, "Follow-up")))
+                .project(PROJECT_DTO_1)
                 .build();
 
         DatasetDto datasetEntry = dataSetService.getByProject(1L);
         assertEquals(datasetExpected, datasetEntry);
 
-        Mockito.verify(personService, Mockito.times(2)).findAll();
-        Mockito.verify(projectService, Mockito.times(1)).findById(1L);
     }
 }
 

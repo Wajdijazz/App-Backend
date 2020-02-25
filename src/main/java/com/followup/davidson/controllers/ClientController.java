@@ -32,7 +32,11 @@ public class ClientController {
     public ClientDto updateClient(@Valid @RequestBody ClientDto clientDto) {
         return clientService.createOrUpdate(clientDto);
     }
-
+    @GetMapping("/{id}")
+    public ClientDto getById(@PathVariable(value = "id") Long clientId)
+    {
+        return clientService.findById(clientId);
+    }
     @DeleteMapping("/{id}")
     public void deleteClient(@PathVariable(value = "id") Long clientId) {
         clientService.deleteClient(clientId);
