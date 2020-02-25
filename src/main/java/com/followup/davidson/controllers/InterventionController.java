@@ -6,18 +6,17 @@ import com.followup.davidson.dto.InterventionDto;
 import com.followup.davidson.model.Intervention;
 import com.followup.davidson.services.IInterventionService;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import java.util.List;
 
 
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping(Routes.INTERVENTION)
 public class InterventionController {
 
 
     private IInterventionService interventionService;
-
 
 
     public InterventionController(IInterventionService interventionService) {
@@ -50,15 +49,15 @@ public class InterventionController {
 
     @GetMapping("/worked/project/{projectId}/person/{personId}")
     Float getworkedByPersonAndProject(@PathVariable(value = "projectId") Long projectId,
-                                     @PathVariable(value = "personId") Long personId) {
+                                      @PathVariable(value = "personId") Long personId) {
         return interventionService.workedDayByPersonAndProject(projectId, personId);
     }
 
     @GetMapping("{projectId}/{personId}/{monthNumber}/{yearNumber}")
     double getworkedByPersonAndProjectByMonth(@PathVariable(value = "projectId") Long projectId,
-                                            @PathVariable(value = "personId") Long personId,
-                                            @PathVariable(value = "monthNumber") Long monthNumber,
-                                            @PathVariable(value = "yearNumber") Long yearNumber) {
+                                              @PathVariable(value = "personId") Long personId,
+                                              @PathVariable(value = "monthNumber") Long monthNumber,
+                                              @PathVariable(value = "yearNumber") Long yearNumber) {
         return interventionService.workedDayByPersonAndProjectByMonth(projectId, personId, monthNumber, yearNumber);
     }
 

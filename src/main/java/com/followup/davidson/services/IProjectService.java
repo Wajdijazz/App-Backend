@@ -3,13 +3,14 @@ package com.followup.davidson.services;
 import com.followup.davidson.dto.ProjectDto;
 import com.followup.davidson.model.Project;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface IProjectService {
 
-    List<Project> findAll();
+    List<ProjectDto> findAll();
 
-    Project findById(Long id);
+    ProjectDto findById(Long id);
 
     ProjectDto createOrUpdate(ProjectDto projectDto);
 

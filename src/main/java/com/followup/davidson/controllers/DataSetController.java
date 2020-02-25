@@ -7,7 +7,6 @@ import com.followup.davidson.services.IDatasetService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping(Routes.DATA)
 public class DataSetController {
 

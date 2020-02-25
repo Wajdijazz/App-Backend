@@ -9,11 +9,12 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@EqualsAndHashCode
 public class ProjectDto {
     private Long projectId;
     private String projectName;
     private Long clientId;
     private Long managerId;
-    private Manager manager;
-    private Client client;
+    private ManagerDto managerDto;
+    private ClientDto clientDto;
 }

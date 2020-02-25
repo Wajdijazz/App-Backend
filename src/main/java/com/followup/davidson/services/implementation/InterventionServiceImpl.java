@@ -57,7 +57,7 @@ public class InterventionServiceImpl implements IInterventionService {
      */
     @Override
     public Object saveInterventions(InterventionDto interventionDto, Long personId, Long projectId) {
-        Project project = projectService.findById(projectId);
+    /*    Project project = projectService.findById(projectId);
         Person person = personService.findById(personId);
         Calendar cal1 = Calendar.getInstance();
         Calendar cal2 = Calendar.getInstance();
@@ -87,7 +87,7 @@ public class InterventionServiceImpl implements IInterventionService {
                 interventionRepository.save(intervention2);
             }
             cal1.add(Calendar.DATE, 1);
-        }
+        }*/
         return interventionDto;
     }
 

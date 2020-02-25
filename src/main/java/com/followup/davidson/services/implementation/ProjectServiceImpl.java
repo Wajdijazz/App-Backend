@@ -1,17 +1,25 @@
 package com.followup.davidson.services.implementation;
 
+import com.followup.davidson.converter.ClientConverter;
+import com.followup.davidson.converter.ManagerConverter;
 import com.followup.davidson.converter.ProjectConverter;
+import com.followup.davidson.dto.ClientDto;
+import com.followup.davidson.dto.ManagerDto;
 import com.followup.davidson.dto.ProjectDto;
 import com.followup.davidson.exceptions.ApplicationException;
+import com.followup.davidson.model.Client;
+import com.followup.davidson.model.Manager;
 import com.followup.davidson.model.Project;
-import com.followup.davidson.repositories.ProjectRepository;
+import com.followup.davidson.repositories.*;
 
-import com.followup.davidson.repositories.TJRepository;
+import com.followup.davidson.services.IClientService;
+import com.followup.davidson.services.IManagerService;
 import com.followup.davidson.services.IProjectService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Collection;
 import java.util.List;
 
 @Transactional
@@ -21,9 +29,13 @@ public class ProjectServiceImpl implements IProjectService {
 
 
     private ProjectRepository projectRepository;
+    private IManagerService managerService;
+    private IClientService clientService;
     private ProjectConverter projectConverter;
     private TJRepository tjRepository;
-
+    private InterventionRepository interventionRepository;
+    private ManagerConverter managerConverter;
+    private ClientConverter clientConverter;
 
 
     /**
@@ -32,8 +44,8 @@ public class ProjectServiceImpl implements IProjectService {
      * @return une liste des {@link Project}
      */
     @Override
-    public List<Project> findAll() {
-        return projectRepository.findAll();
+    public List<ProjectDto> findAll() {
+        return projectConverter.entityListToDtoList(projectRepository.findAll());
     }
 
     /**
@@ -43,14 +55,17 @@ public class ProjectServiceImpl implements IProjectService {
      * @return un client
      */
     @Override
-    public Project findById(Long id) {
-        return projectRepository.findById(id)
-                .orElseThrow(() -> new ApplicationException("This project with Id" + id + "not exist"));
+    public ProjectDto findById(Long id) {
+        return projectConverter.entityToDto(projectRepository.findById(id)
+                .orElseThrow(() -> new ApplicationException("This project with Id" + id + "not exist")));
     }
 
 
     @Override
     public ProjectDto createOrUpdate(ProjectDto projectDto) {
+        projectDto.setClientDto((clientService.findById(projectDto.getClientId())));
+        projectDto.setManagerDto(managerService.findById(projectDto.getManagerId()));
+
         return projectConverter.entityToDto(projectRepository.save(projectConverter.dtoToEntity(projectDto)));
     }
 
@@ -62,7 +77,7 @@ public class ProjectServiceImpl implements IProjectService {
      */
     @Override
     public void deleteProject(Long id) {
-        projectRepository.deleteInterventionByIdProject(id);
+        interventionRepository.deleteByProject_ProjectId(id);
         tjRepository.deleteByProject_ProjectId(id);
         projectRepository.deleteById(id);
     }

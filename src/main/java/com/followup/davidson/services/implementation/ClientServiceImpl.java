@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Collection;
 import java.util.List;
 
 @Transactional
@@ -25,8 +26,8 @@ public class ClientServiceImpl implements IClientService {
      * @return une liste des {@link Client}
      */
     @Override
-    public List<Client> findAll() {
-        return clientRepository.findAll();
+    public List<ClientDto> findAll() {
+        return clientConverter.entityListToDtoList(clientRepository.findAll());
     }
 
     /**
@@ -36,9 +37,9 @@ public class ClientServiceImpl implements IClientService {
      * @return un client
      */
     @Override
-    public Client findById(Long id) {
-        return clientRepository.findById(id)
-                .orElseThrow(() -> new ApplicationException("This client with Id" + id + "not exist"));
+    public ClientDto findById(Long id) {
+        return clientConverter.entityToDto(clientRepository.findById(id)
+                .orElseThrow(() -> new ApplicationException("This client with Id" + id + "not exist")));
     }
 
     @Override

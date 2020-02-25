@@ -1,27 +1,20 @@
 package com.followup.davidson.converter;
 
 import com.followup.davidson.dto.TjDto;
-import com.followup.davidson.model.Person;
-import com.followup.davidson.model.Project;
 import com.followup.davidson.model.TJ;
-import com.followup.davidson.services.IPersonService;
-import com.followup.davidson.services.IProjectService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+@AllArgsConstructor
 @Component
-public class TjConverter   implements GenericsConverter<TJ, TjDto>{
+public class TjConverter implements GenericsConverter<TJ, TjDto> {
+    private ProjectConverter projectConverter;
+    private PersonConverter personConverter;
 
-    private IProjectService projectService;
-    private IPersonService personService;
-
-    public TjConverter(IProjectService projectService, IPersonService personService) {
-        this.projectService = projectService;
-        this.personService = personService;
-    }
 
     @Override
     public TjDto entityToDto(TJ tj) {
-     return TjDto.builder()
+        return TjDto.builder()
                 .tjId(tj.getTjId())
                 .personId(tj.getPerson().getPersonId())
                 .projectId(tj.getProject().getProjectId())
@@ -31,12 +24,10 @@ public class TjConverter   implements GenericsConverter<TJ, TjDto>{
 
     @Override
     public TJ dtoToEntity(TjDto tjDto) {
-        Project project = projectService.findById(tjDto.getProjectId());
-        Person person = personService.findById(tjDto.getPersonId());
         return TJ.builder()
                 .tjId(tjDto.getTjId())
-                .project(project)
-                .person(person)
+                .project(projectConverter.dtoToEntity(tjDto.getProjectDto()))
+                .person(personConverter.dtoToEntity(tjDto.getPersonDto()))
                 .tarif(tjDto.getTarif())
                 .build();
     }

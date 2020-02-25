@@ -52,7 +52,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(ManagerController.class)
 public class ManagerControllerTest {
-    private static Manager m1;
+/*    private static Manager m1;
     private static Manager m2;
 
     @Autowired
@@ -110,7 +110,7 @@ public class ManagerControllerTest {
         assertThat(responseEntity.getHeaders().getLocation().getPath()).isEqualTo("/1");
     }
 */
-    @Test
+ /*   @Test
     void findById_WhenMatch() {
         when(managerService.findById(1L)).thenReturn(m1);
        Manager m = managerController.findManagerById(1L);
@@ -124,7 +124,7 @@ public class ManagerControllerTest {
         Mockito.verify(managerService, Mockito.times(1)).deleteManager(1L);
     }
 
-
+*/
 }
 
 

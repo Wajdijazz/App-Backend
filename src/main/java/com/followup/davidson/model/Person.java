@@ -41,7 +41,7 @@ public class Person {
      * manager presente le manager de chaque consultant
      */
 
-   @ManyToOne(cascade = CascadeType.PERSIST)
+   @ManyToOne(fetch = FetchType.LAZY, optional = false)
    @JoinColumn(name="manager_id")
   private Manager manager;
 

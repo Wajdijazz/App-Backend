@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Collection;
 import java.util.List;
 
 @Transactional
@@ -33,8 +34,8 @@ public class ManagerServiceImpl implements IManagerService {
      * @return une liste des {@link Manager}
      */
     @Override
-    public List<Manager> findAll() {
-        return managerRepository.findAll();
+    public List<ManagerDto> findAll() {
+        return managerConverter.entityListToDtoList(managerRepository.findAll());
     }
 
     /**
@@ -51,9 +52,9 @@ public class ManagerServiceImpl implements IManagerService {
      * @return un client
      */
     @Override
-    public Manager findById(Long id) {
-        return managerRepository.findById(id)
-                .orElseThrow(() -> new ApplicationException("This manager with Id" + id + "not exist"));
+    public ManagerDto findById(Long id) {
+        return managerConverter.entityToDto(managerRepository.findById(id)
+                .orElseThrow(() -> new ApplicationException("This manager with Id" + id + "not exist")));
     }
 
     @Override

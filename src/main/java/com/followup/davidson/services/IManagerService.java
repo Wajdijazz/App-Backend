@@ -3,12 +3,13 @@ package com.followup.davidson.services;
 import com.followup.davidson.dto.ManagerDto;
 import com.followup.davidson.model.Manager;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface IManagerService {
-    List<Manager> findAll();
+    List<ManagerDto> findAll();
 
-    Manager findById(Long id);
+    ManagerDto findById(Long id);
 
     ManagerDto createOrUpdate(ManagerDto managerDto);
 

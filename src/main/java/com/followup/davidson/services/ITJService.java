@@ -7,12 +7,8 @@ import java.util.List;
 
 public interface ITJService {
 
-    List<TJ> findAll();
 
     TjDto create(TjDto tjDto);
-
-    TJ findById(Long id);
-
 
     void deleteTj(Long id);
 
@@ -20,7 +16,7 @@ public interface ITJService {
 
     Float  findTarifByProject_ProjectIdAndPerson_PersonId(Long projectId, Long personId);
 
-    List<TJ> findByProject_ProjectId(long projectId);
+
 
 
 }
