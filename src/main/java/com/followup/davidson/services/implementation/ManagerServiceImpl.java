@@ -34,7 +34,7 @@ public class ManagerServiceImpl implements IManagerService {
      * @return une liste des {@link Manager}
      */
     @Override
-    public Collection<ManagerDto> findAll() {
+    public List<ManagerDto> findAll() {
         return managerConverter.entityListToDtoList(managerRepository.findAll());
     }
 

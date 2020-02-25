@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface IClientService {
 
-    Collection<ClientDto> findAll();
+    List<ClientDto> findAll();
 
     ClientDto findById(Long id);
 

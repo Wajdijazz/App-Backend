@@ -89,7 +89,7 @@ public class DataSetServiceTest {
 
     @Test
     public void getByProjectTest() {
-        Collection<PersonDto> personListExcepted = new ArrayList<>();
+        List<PersonDto> personListExcepted = new ArrayList<>();
 
         personListExcepted.add(getPersonDto(1L, "Wajdi", "Jaziri"));
         personListExcepted.add(getPersonDto(2L, "Noe", "Pamula"));

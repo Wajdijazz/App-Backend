@@ -44,7 +44,7 @@ public class ProjectServiceImpl implements IProjectService {
      * @return une liste des {@link Project}
      */
     @Override
-    public Collection<ProjectDto> findAll() {
+    public List<ProjectDto> findAll() {
         return projectConverter.entityListToDtoList(projectRepository.findAll());
     }
 

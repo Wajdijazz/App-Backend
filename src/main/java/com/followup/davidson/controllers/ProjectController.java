@@ -21,7 +21,7 @@ public class ProjectController {
     }
 
     @GetMapping(value = "/", produces = {"application/json"})
-    public Collection<ProjectDto> getAllProject() {
+    public List<ProjectDto> getAllProject() {
         return projectService.findAll();
     }
 

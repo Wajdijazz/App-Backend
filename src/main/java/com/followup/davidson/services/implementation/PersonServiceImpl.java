@@ -37,7 +37,7 @@ public class PersonServiceImpl implements IPersonService {
      * @return une liste des {@link Person}
      */
     @Override
-    public Collection<PersonDto> findAll() {
+    public List<PersonDto> findAll() {
         return personConverter.entityListToDtoList(personRepository.findAll());
     }
 

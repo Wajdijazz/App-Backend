@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface IPersonService {
 
-    Collection<PersonDto> findAll();
+    List<PersonDto> findAll();
 
     PersonDto createOrUpdate(PersonDto personDto);
 

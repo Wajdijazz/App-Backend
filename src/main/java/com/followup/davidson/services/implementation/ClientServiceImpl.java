@@ -26,7 +26,7 @@ public class ClientServiceImpl implements IClientService {
      * @return une liste des {@link Client}
      */
     @Override
-    public Collection<ClientDto> findAll() {
+    public List<ClientDto> findAll() {
         return clientConverter.entityListToDtoList(clientRepository.findAll());
     }
 

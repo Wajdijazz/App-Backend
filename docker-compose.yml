@@ -11,5 +11,5 @@ services:
       - "5432:5432"
     environment:
       POSTGRES_DB: "followupDB"
-      POSTGRES_PASSWORD: "Wajdi12345&"
+      POSTGRES_PASSWORD: "postgres"
 

@@ -1,6 +1,7 @@
 package com.followup.davidson.servicesTests;
 
 
+import com.followup.davidson.Utils.DataForTest;
 import com.followup.davidson.Utils.Utils;
 import com.followup.davidson.converter.ClientConverter;
 import com.followup.davidson.dto.ClientDto;
@@ -9,7 +10,6 @@ import com.followup.davidson.repositories.ClientRepository;
 import com.followup.davidson.services.implementation.ClientServiceImpl;
 
 import org.junit.Before;
-import org.junit.jupiter.api.BeforeAll;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,11 +38,24 @@ public class ClientServiceTest {
     @Autowired
     private Utils utils;
 
-    private final static String CLIENT_1_NAME = "EverySense";
-    private final static String CLIENT_1_EMAIL = "everysense@gmail.com";
-    private ClientDto CLIENT_DTO_1 = utils.getClientDto(1L, CLIENT_1_NAME, CLIENT_1_EMAIL);
-    private Client CLIENT_1 = utils.getClient(1L, CLIENT_1_NAME, CLIENT_1_EMAIL);
-    private Client CLIENT_2 = utils.getClient(2L, "Elivia", "elivia@gamil.com");
+    private ClientDto CLIENT_DTO_1 = utils.getClientDto(
+            DataForTest.ClientData.CLIENT_1_ID,
+            DataForTest.ClientData.CLIENT_1_NAME,
+            DataForTest.ClientData.CLIENT_1_EMAIL);
+    private ClientDto CLIENT_DTO_2 = utils.getClientDto(
+            DataForTest.ClientData.CLIENT_2_ID,
+            DataForTest.ClientData.CLIENT_2_NAME,
+            DataForTest.ClientData.CLIENT_2_EMAIL);
+    private Client CLIENT_1 = utils.getClient(
+            DataForTest.ClientData.CLIENT_1_ID,
+            DataForTest.ClientData.CLIENT_1_NAME,
+            DataForTest.ClientData.CLIENT_1_EMAIL);
+    private Client CLIENT_2 = utils.getClient(
+            DataForTest.ClientData.CLIENT_2_ID,
+            DataForTest.ClientData.CLIENT_2_NAME,
+            DataForTest.ClientData.CLIENT_2_EMAIL);
+
+
 
     @SpyBean
     @Autowired
@@ -68,19 +81,19 @@ public class ClientServiceTest {
     @Test
     public void findAllTest_WhenRecord() {
         List<Client> clientListExpected = Arrays.asList(CLIENT_1, CLIENT_2);
-
         Mockito.when(clientRepository.findAll()).thenReturn(clientListExpected);
 
-        Collection<ClientDto> clientList = clientService.findAll();
-        assertEquals(clientList, clientListExpected);
+        List<ClientDto> clientListDtoExpected = Arrays.asList(CLIENT_DTO_1, CLIENT_DTO_2);
+        List<ClientDto> clientListDto = clientService.findAll();
+
+        assertEquals(clientListDto, clientListDtoExpected);
     }
 
     @Test
     public void findClientByIdWhenAReponseIsThere() {
         Mockito.when(clientRepository.findById(1L)).thenReturn(Optional.of(CLIENT_1));
         ClientDto clientExcepted = clientService.findById(1L);
-        assertEquals(clientExcepted, CLIENT_1);
-        Mockito.verify(clientRepository, Mockito.times(1)).findById(1L);
+        assertEquals(clientExcepted, CLIENT_DTO_1);
     }
 
     @Test
@@ -90,6 +103,5 @@ public class ClientServiceTest {
         ClientDto clientDtoReturned = clientService.createOrUpdate(CLIENT_DTO_1);
 
         assertEquals(CLIENT_DTO_1, clientDtoReturned);
-        Mockito.verify(clientRepository, Mockito.times(1)).save(clientConverter.dtoToEntity(CLIENT_DTO_1));
     }
 }

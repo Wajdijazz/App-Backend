@@ -7,6 +7,7 @@ import com.followup.davidson.services.IClientService;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping(Routes.CLIENT)
@@ -19,7 +20,7 @@ public class ClientController {
     }
 
     @GetMapping("/")
-    public Collection<ClientDto> getAllClient() {
+    public List<ClientDto> getAllClient() {
         return clientService.findAll();
     }
 

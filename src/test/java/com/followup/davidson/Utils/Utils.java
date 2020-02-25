@@ -1,9 +1,11 @@
 package com.followup.davidson.Utils;
 
 import com.followup.davidson.dto.ClientDto;
+import com.followup.davidson.dto.ManagerDto;
 import com.followup.davidson.dto.PersonDto;
 import com.followup.davidson.dto.ProjectDto;
 import com.followup.davidson.model.Client;
+import com.followup.davidson.model.Manager;
 import com.followup.davidson.model.Person;
 import com.followup.davidson.model.Project;
 import org.springframework.stereotype.Component;
@@ -26,6 +28,23 @@ public class Utils {
                 .clientContact(clientContact)
                 .build();
     }
+
+    public static final Manager getManager(Long id, String firstName, String lastName) {
+        return Manager.builder()
+                .managerId(id)
+                .firstName(firstName)
+                .lastName(lastName)
+                .build();
+    }
+
+    public static final ManagerDto getManagerDto(Long id, String firstName, String lastName) {
+        return ManagerDto.builder()
+                .managerId(id)
+                .firstName(firstName)
+                .lastName(lastName)
+                .build();
+    }
+
 
     private static final PersonDto getPersonDto(Long id, String firstName, String lastName) {
         return PersonDto.builder()

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping(Routes.MANAGER)
@@ -20,7 +21,7 @@ public class ManagerController {
     }
 
     @GetMapping("/")
-    public Collection<ManagerDto> getAllManager() {
+    public List<ManagerDto> getAllManager() {
         return managerService.findAll();
     }
 

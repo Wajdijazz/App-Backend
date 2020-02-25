@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.List;
 
 public interface IManagerService {
-    Collection<ManagerDto> findAll();
+    List<ManagerDto> findAll();
 
     ManagerDto findById(Long id);
 

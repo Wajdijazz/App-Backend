@@ -22,7 +22,7 @@ public class PersonController {
     }
 
     @GetMapping(value = "/", produces = {"application/json"})
-    public Collection<PersonDto> getAllPerson() {
+    public List<PersonDto> getAllPerson() {
         return personService.findAll();
     }
 
