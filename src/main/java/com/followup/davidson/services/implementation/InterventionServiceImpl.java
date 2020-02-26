@@ -51,50 +51,17 @@ public class InterventionServiceImpl implements IInterventionService {
         return interventionRepository.findAll();
     }
 
-//    /**
-//     * cette methode permet de sauvgarder lhistorique des interventions d'une personne sur un projet par details , les weekend sont
-//     * automatiquement eliminés
-//     * elle prend en paramatre , date de debut des interventions et date de fins des interventions
-//     *
-//     * @param interventionDto
-//     * @param personId
-//     * @param projectId
-//     */
-//    @Override
-//    public Object saveInterventions(InterventionDto interventionDto, Long personId, Long projectId) {
-//        Project project = projectService.findById(projectId);
-//        Person person = personService.findById(personId);
-//        Calendar cal1 = Calendar.getInstance();
-//        Calendar cal2 = Calendar.getInstance();
-//        cal1.setTime(interventionDto.getStartDate());
-//        cal2.setTime(interventionDto.getEndDate());
-//        while (cal1.compareTo(cal2) <= 0) {
-//            if ((Calendar.SATURDAY != cal1.get(Calendar.DAY_OF_WEEK))
-//                    && (Calendar.SUNDAY != cal1.get(Calendar.DAY_OF_WEEK))) {
-//                Date date = cal1.getTime();
-//                java.sql.Date sDate = convertUtilToSql(date);
-//
-//                Intervention intervention1 = Intervention.builder()
-//                        .person(person)
-//                        .project(project)
-//                        .date(sDate)
-//                        .mode(Mode.AM)
-//                        .build();
-//
-//                Intervention intervention2 = Intervention.builder()
-//                        .person(person)
-//                        .project(project)
-//                        .date(sDate)
-//                        .mode(Mode.PM)
-//                        .build();
-//
-//                interventionRepository.save(intervention1);
-//                interventionRepository.save(intervention2);
-//            }
-//            cal1.add(Calendar.DATE, 1);
-//        }
-//        return interventionDto;
-//    }
+
+    public Map<Date, List<Intervention>> findAllByDay() {
+        List<Intervention> interventions = interventionRepository.findAll();
+
+        return interventions.stream().collect(
+                Collectors.groupingBy(
+                        Intervention::getDate, Collectors.toList()
+                )
+        );
+
+    }
 
     /**
      * cette methode permet de sauvgarder des interventions d'une personne sur un projet

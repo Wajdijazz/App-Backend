@@ -3,7 +3,10 @@ package com.followup.davidson.services;
 
 import com.followup.davidson.dto.InterventionDto;
 import com.followup.davidson.model.Intervention;
+
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 
 public interface IInterventionService {
@@ -12,6 +15,8 @@ public interface IInterventionService {
     Intervention findById(Long id);
 
     List<Intervention> findAll();
+
+    Map<Date, List<Intervention>> findAllByDay();
 
     Object saveInterventions(List<InterventionDto> interventionDto);
 

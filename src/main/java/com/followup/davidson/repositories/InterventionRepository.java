@@ -14,13 +14,10 @@ import java.util.List;
 
 @RepositoryRestResource
 public interface InterventionRepository extends JpaRepository<Intervention, Long> {
-    /**
-     * cette methode permet de lister toutes les interventions enregistrés dans la base de données
-     *
-     * @return une liste de {@link Intervention}
-     */
-    @Query(value = "select * from public.intervention ", nativeQuery = true)
-    List<Intervention> findAll();
+
+
+    @Query(value = "SELECT i.date, i.mode, i.person, i.project FROM Intervention as i GROUP BY i.date")
+    List<Intervention> findAllByDay ();
 
     /**
      * cette methode permet de lister toutes les interventions d'une personne  sur un projet
