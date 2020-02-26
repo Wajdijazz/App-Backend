@@ -44,19 +44,24 @@ public class DataSetServiceTest {
             DataForTest.ClientData.CLIENT_1_ID,
             DataForTest.ClientData.CLIENT_1_NAME,
             DataForTest.ClientData.CLIENT_1_EMAIL);
+
     private PersonDto PERSON_DTO_1 = utils.getPersonDto(
             DataForTest.PersonData.PERSON_1_ID,
             DataForTest.PersonData.PERSON_1_FIRSTNAME,
             DataForTest.PersonData.PERSON_1_LASTTNAME,
             DataForTest.ManagerData.MANAGER_1_ID,
-            MANAGER_DTO);
+            MANAGER_DTO,
+            DataForTest.PersonData.PERSON_1_ISACTIVE
+    );
 
     private PersonDto PERSON_DTO_2 = utils.getPersonDto(
             DataForTest.PersonData.PERSON_2_ID,
             DataForTest.PersonData.PERSON_2_FIRSTNAME,
             DataForTest.PersonData.PERSON_2_LASTTNAME,
             DataForTest.ManagerData.MANAGER_1_ID,
-            MANAGER_DTO);
+            MANAGER_DTO,
+            DataForTest.PersonData.PERSON_1_ISACTIVE
+    );
 
     private ProjectDto PROJECT_DTO_1 = utils.getProjectDto(
             DataForTest.ProjectData.PROJECT_1_ID,
@@ -64,7 +69,8 @@ public class DataSetServiceTest {
             DataForTest.ClientData.CLIENT_1_ID,
             DataForTest.ManagerData.MANAGER_1_ID,
             MANAGER_DTO,
-            CLIENT_DTO
+            CLIENT_DTO,
+            DataForTest.ProjectData.PROJECT_1_ISACTIVE
     );
 
     @SpyBean
@@ -85,18 +91,18 @@ public class DataSetServiceTest {
     @MockBean
     ProjectServiceImpl projectService;
 
-    private PersonDto getPersonDto(Long id, String firstName, String lastName) {
-        return PersonDto.builder()
-                .personId(id)
-                .firstName(firstName)
-                .lastName(lastName)
-                .build();
-    }
-
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
+    }
+
+    private List<PersonDto> getPersonsActive() {
+        List<PersonDto> persons = personService.findAll();
+
+        return persons.stream()
+                .filter(personDto -> personDto.isActive() == true)
+                .collect(Collectors.toList());
     }
 
     @Test
@@ -108,13 +114,13 @@ public class DataSetServiceTest {
 
 
         Mockito.when(personService.findAll()).thenReturn(personListExcepted);
-        Mockito.when(projectService.findById(1L)).thenReturn(PROJECT_DTO_1);
-
-        List<PersonDto> persons = personService.findAll();
+        Mockito.when(projectService.findByProjectIdAndIsActiveTrue(1L)).thenReturn(PROJECT_DTO_1);
 
 
-        DatasetDto datasetExpected = DatasetDto.builder()
-                .persons(persons)
+        List<PersonDto> personDtoList =getPersonsActive();
+
+                DatasetDto datasetExpected = DatasetDto.builder()
+                .persons(personDtoList)
                 .project(PROJECT_DTO_1)
                 .build();
 

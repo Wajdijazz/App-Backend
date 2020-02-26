@@ -15,13 +15,11 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(value = {Exception.class})
     public ResponseEntity genericExceptionHandler(Exception ex) {
-        log.debug("handling Exception...");
         return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(ex.getMessage());
     }
 
     @ExceptionHandler(value = {EntityNotFoundException.class})
     public ResponseEntity EntityNotFound(EntityNotFoundException ex) {
-        log.debug("handling EntityNotFoundException...");
         return ResponseEntity.status(ex.getErrCode()).body(ex.getErrMsg());
     }
 }

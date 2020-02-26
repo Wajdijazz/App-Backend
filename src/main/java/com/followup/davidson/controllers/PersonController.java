@@ -27,13 +27,18 @@ public class PersonController {
     }
 
     @PostMapping("/")
-    public PersonDto createuPerson(@Valid @RequestBody PersonDto personDto) {
+    public PersonDto createPerson(@Valid @RequestBody PersonDto personDto) {
         return personService.createOrUpdate(personDto);
     }
 
     @PutMapping("/")
     public PersonDto updatePerson(@Valid @RequestBody PersonDto personDto) {
         return personService.createOrUpdate(personDto);
+    }
+
+    @PutMapping("/{personId}")
+    public PersonDto updateIsActiveByPersonId(@PathVariable(value = "personId") Long personId,@Valid @RequestBody PersonDto personDto) {
+        return personService.updateIsActiveByPersonId(personId,personDto.isActive());
     }
 
     @GetMapping("/{id}")

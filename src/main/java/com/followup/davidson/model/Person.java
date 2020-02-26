@@ -2,10 +2,13 @@ package com.followup.davidson.model;
 
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 
 @Entity
@@ -36,6 +39,9 @@ public class Person {
      */
     @NotEmpty
     private String lastName;
+
+    @NotNull
+    private boolean isActive;
 
     /**
      * manager presente le manager de chaque consultant

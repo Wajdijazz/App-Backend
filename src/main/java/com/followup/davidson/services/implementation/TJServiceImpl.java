@@ -23,8 +23,6 @@ import java.util.List;
 public class TJServiceImpl implements ITJService {
     private TJRepository tjRepository;
     private TjConverter tjConverter;
-    private ProjectConverter projectConverter;
-    private PersonConverter personConverter;
     private IProjectService projectService;
     private IPersonService personService;
 
@@ -77,14 +75,15 @@ public class TJServiceImpl implements ITJService {
      */
     @Override
     public Float findTarifByProject_ProjectIdAndPerson_PersonId(Long projectId, Long personId) {
-        TJ tj = tjRepository.findByProject_ProjectIdAndPerson_PersonId(projectId, personId);
-        if (projectId == null || personId == null || tj == null) {
+        if (projectId == null || personId == null) {
             return null;
         } else {
+            TJ tj = tjRepository.findByProject_ProjectIdAndPerson_PersonId(projectId, personId);
+            if(tj == null){
+                return null;
+            }
             return tj.getTarif();
         }
     }
-
-
 
 }

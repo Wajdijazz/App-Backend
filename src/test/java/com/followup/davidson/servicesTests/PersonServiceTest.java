@@ -61,25 +61,34 @@ public class PersonServiceTest {
             DataForTest.PersonData.PERSON_1_FIRSTNAME,
             DataForTest.PersonData.PERSON_1_LASTTNAME,
             DataForTest.ManagerData.MANAGER_1_ID,
-            MANAGER_DTO);
+            MANAGER_DTO,
+            DataForTest.PersonData.PERSON_1_ISACTIVE
+    );
 
     private PersonDto PERSON_DTO_2 = utils.getPersonDto(
             DataForTest.PersonData.PERSON_2_ID,
             DataForTest.PersonData.PERSON_2_FIRSTNAME,
             DataForTest.PersonData.PERSON_2_LASTTNAME,
             DataForTest.ManagerData.MANAGER_1_ID,
-            MANAGER_DTO);
+            MANAGER_DTO,
+            DataForTest.PersonData.PERSON_2_ISACTIVE
+    );
 
     private Person PERSON_1 = utils.getPerson(
             DataForTest.PersonData.PERSON_1_ID,
             DataForTest.PersonData.PERSON_1_FIRSTNAME,
             DataForTest.PersonData.PERSON_1_LASTTNAME,
-            MANAGER);
+            MANAGER,
+            DataForTest.PersonData.PERSON_1_ISACTIVE
+    );
+
     private Person PERSON_2 = utils.getPerson(
             DataForTest.PersonData.PERSON_2_ID,
             DataForTest.PersonData.PERSON_2_FIRSTNAME,
             DataForTest.PersonData.PERSON_2_LASTTNAME,
-            MANAGER);
+            MANAGER,
+            DataForTest.PersonData.PERSON_2_ISACTIVE
+    );
 
 
     @MockBean
@@ -144,6 +153,19 @@ public class PersonServiceTest {
         PersonDto personDtoReturned = personService.createOrUpdate(PERSON_DTO_1);
 
         assertEquals(PERSON_DTO_1, personDtoReturned);
+    }
+
+    @Test
+    void updateIsActiveByPersonIdTest() {
+        Mockito.when(personRepository.findById(1L)).thenReturn(Optional.of(PERSON_1));
+
+        Mockito.when(personRepository.save(PERSON_1)).thenReturn(PERSON_1);
+
+        PersonDto personDtoReturned = personService
+                .updateIsActiveByPersonId(PERSON_1.getPersonId(), PERSON_1.isActive());
+
+        assertEquals(PERSON_DTO_1, personDtoReturned);
+
     }
 }
 

@@ -24,16 +24,21 @@ public class DataForTest {
         public static final long PERSON_1_ID = 1L;
         public static final String PERSON_1_FIRSTNAME = "Wajdi";
         public static final String PERSON_1_LASTTNAME = "Jaziri";
+        public static final boolean PERSON_1_ISACTIVE = true;
         public static final long PERSON_2_ID = 2L;
         public static final String PERSON_2_FIRSTNAME = "Noe";
         public static final String PERSON_2_LASTTNAME = "Pamula";
+        public static final boolean PERSON_2_ISACTIVE = true;
 
     }
     public class ProjectData {
         public static final long PROJECT_1_ID = 1L;
         public static final String PROJECT_1_NAME = "FolloUp-2020";
+        public static final boolean PROJECT_1_ISACTIVE = false;
         public static final long PROJECT_2_ID = 2L;
         public static final String PROJECT_2_NAME = "Linup-2019";
+        public static final boolean PROJECT_2_ISACTIVE = true;
+
 
 
     }

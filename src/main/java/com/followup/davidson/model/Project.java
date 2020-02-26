@@ -7,6 +7,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 
@@ -29,6 +30,8 @@ public class Project {
     @NotEmpty
     private String projectName;
 
+    @NotNull
+    private boolean isActive;
     /**
      * C'est le client de chaque projet
      */

@@ -4,6 +4,7 @@ import com.followup.davidson.Utils.DataForTest;
 import com.followup.davidson.Utils.Utils;
 import com.followup.davidson.dto.ClientDto;
 import com.followup.davidson.dto.ManagerDto;
+import com.followup.davidson.dto.PersonDto;
 import com.followup.davidson.dto.ProjectDto;
 import com.followup.davidson.model.Client;
 
@@ -69,7 +70,8 @@ public class ProjectServiceTest {
             DataForTest.ClientData.CLIENT_1_ID,
             DataForTest.ManagerData.MANAGER_1_ID,
             MANAGER_DTO,
-            CLIENT_DTO
+            CLIENT_DTO,
+            DataForTest.ProjectData.PROJECT_1_ISACTIVE
     );
     private ProjectDto PROJECT_DTO_2 = utils.getProjectDto(
             DataForTest.ProjectData.PROJECT_2_ID,
@@ -77,20 +79,24 @@ public class ProjectServiceTest {
             DataForTest.ClientData.CLIENT_1_ID,
             DataForTest.ManagerData.MANAGER_1_ID,
             MANAGER_DTO,
-            CLIENT_DTO
+            CLIENT_DTO,
+            DataForTest.ProjectData.PROJECT_2_ISACTIVE
     );
 
     private Project PROJECT_1 = utils.getProject(
             DataForTest.ProjectData.PROJECT_1_ID,
             DataForTest.ProjectData.PROJECT_1_NAME,
             MANAGER,
-            CLIENT
+            CLIENT,
+            DataForTest.ProjectData.PROJECT_1_ISACTIVE
     );
+
     private Project PROJECT_2 = utils.getProject(
             DataForTest.ProjectData.PROJECT_2_ID,
             DataForTest.ProjectData.PROJECT_2_NAME,
             MANAGER,
-            CLIENT
+            CLIENT,
+            DataForTest.ProjectData.PROJECT_2_ISACTIVE
     );
 
 
@@ -163,5 +169,18 @@ public class ProjectServiceTest {
         ProjectDto projectDtoReturned = projectService.createOrUpdate(PROJECT_DTO_1);
 
         assertEquals(PROJECT_DTO_1, projectDtoReturned);
+    }
+
+    @Test
+    void updateIsActiveByPersonIdTest() {
+        Mockito.when(projectRepository.findById(1L)).thenReturn(Optional.of(PROJECT_1));
+
+        Mockito.when(projectRepository.save(PROJECT_1)).thenReturn(PROJECT_1);
+
+        ProjectDto personDtoReturned = projectService
+                .updateIsActiveByProjectId(PROJECT_1.getProjectId(), PROJECT_1.isActive());
+
+        assertEquals(PROJECT_DTO_1, personDtoReturned);
+
     }
 }

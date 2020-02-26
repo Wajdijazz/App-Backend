@@ -32,7 +32,7 @@ import static org.hamcrest.Matchers.is;
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
-public class InterventionServiceTest {
+public class InterventionServiceTest {/*
     //preparer les unit test pour service intervention et controller intervention
     private static Intervention int1;
     private static Intervention int2;
@@ -91,7 +91,7 @@ public class InterventionServiceTest {
 
         assertThat(interventionService.findById(1L), is(Optional.of(int1)));
         Mockito.verify(interventionRepository, Mockito.times(1)).findById(1L);*/
-    }
+  /*  }
 
     @Test
     void deleteByIdPersonAndProject() {
@@ -113,7 +113,7 @@ public class InterventionServiceTest {
         Mockito.when(personService.findById(1L)).thenReturn(pe1);
         Person pe = personController.findPersonById(1L);
         assertThat(pe, is(pe1) );
-        assertThat(interventionService.saveInterventions(interventionDto,1L,1L), is(interventionDto));*/
-    }
+        assertThat(interventionService.saveInterventions(interventionDto,1L,1L), is(interventionDto));
+    }*/
 
 }

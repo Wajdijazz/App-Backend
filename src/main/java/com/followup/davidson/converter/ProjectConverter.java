@@ -22,6 +22,7 @@ public class ProjectConverter implements GenericsConverter<Project, ProjectDto> 
         return ProjectDto.builder()
                 .projectId(project.getProjectId())
                 .projectName(project.getProjectName())
+                .isActive(project.isActive())
                 .managerId(project.getManager().getManagerId())
                 .clientId(project.getClient().getClientId())
                 .managerDto(managerConverter.entityToDto(project.getManager()))
@@ -34,6 +35,7 @@ public class ProjectConverter implements GenericsConverter<Project, ProjectDto> 
         return Project.builder()
                 .projectId(projectDto.getProjectId())
                 .projectName(projectDto.getProjectName())
+                .isActive(projectDto.isActive())
                 .client(clientConverter.dtoToEntity(projectDto.getClientDto()))
                 .manager(managerConverter.dtoToEntity(projectDto.getManagerDto()))
                 .build();

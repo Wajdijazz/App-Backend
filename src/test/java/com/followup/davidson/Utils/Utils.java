@@ -47,31 +47,34 @@ public class Utils {
 
 
     public static final PersonDto getPersonDto(Long id, String firstName, String lastName, Long managerId,
-                                               ManagerDto managerDto) {
+                                               ManagerDto managerDto, boolean isActive) {
         return PersonDto.builder()
                 .personId(id)
                 .firstName(firstName)
                 .lastName(lastName)
+                .isActive(isActive)
                 .managerId(managerId)
                 .managerDto(managerDto)
                 .build();
     }
 
     public static final Person getPerson(Long id, String firstName, String lastName,
-                                         Manager manager) {
+                                         Manager manager, boolean isActive) {
         return Person.builder()
                 .personId(id)
                 .firstName(firstName)
                 .lastName(lastName)
+                .isActive(isActive)
                 .manager(manager)
                 .build();
     }
 
     public static final ProjectDto getProjectDto(Long id, String projectName, Long clientId, Long managerId,
-                                                 ManagerDto managerDto, ClientDto clientDto) {
+                                                 ManagerDto managerDto, ClientDto clientDto, boolean isActive) {
         return ProjectDto.builder()
                 .projectId(id)
                 .projectName(projectName)
+                .isActive(isActive)
                 .clientId(clientId)
                 .managerId(managerId)
                 .managerDto(managerDto)
@@ -80,10 +83,11 @@ public class Utils {
     }
 
 
-    public static final Project getProject(Long id, String projectName, Manager manager, Client client) {
+    public static final Project getProject(Long id, String projectName, Manager manager, Client client, boolean isActive) {
         return Project.builder()
                 .projectId(id)
                 .projectName(projectName)
+                .isActive(isActive)
                 .manager(manager)
                 .client(client)
                 .build();

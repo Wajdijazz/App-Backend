@@ -12,6 +12,8 @@ public interface IPersonService {
 
     PersonDto createOrUpdate(PersonDto personDto);
 
+    PersonDto updateIsActiveByPersonId(Long personId, Boolean isActive);
+
     PersonDto findById(Long id);
 
     void deletePerson(Long personId);

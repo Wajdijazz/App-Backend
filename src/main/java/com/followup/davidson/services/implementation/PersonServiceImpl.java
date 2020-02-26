@@ -53,6 +53,15 @@ public class PersonServiceImpl implements IPersonService {
         return personConverter.entityToDto(personRepository.save(personConverter.dtoToEntity(personDto)));
     }
 
+    @Override
+    public PersonDto updateIsActiveByPersonId(Long personId, Boolean isActive) {
+        PersonDto personDto = personConverter.entityToDto(personRepository.findById(personId).
+                orElseThrow(() -> new ApplicationException("This person with Id" + personId + "not exist")));
+
+        personDto.setActive(isActive);
+        return personConverter.entityToDto(personRepository.save(personConverter.dtoToEntity(personDto)));
+    }
+
     /**
      * Cette methode permet de retourner une personne par id
      *

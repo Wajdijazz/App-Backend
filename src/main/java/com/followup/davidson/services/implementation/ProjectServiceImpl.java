@@ -34,8 +34,7 @@ public class ProjectServiceImpl implements IProjectService {
     private ProjectConverter projectConverter;
     private TJRepository tjRepository;
     private InterventionRepository interventionRepository;
-    private ManagerConverter managerConverter;
-    private ClientConverter clientConverter;
+
 
 
     /**
@@ -67,6 +66,20 @@ public class ProjectServiceImpl implements IProjectService {
         projectDto.setManagerDto(managerService.findById(projectDto.getManagerId()));
 
         return projectConverter.entityToDto(projectRepository.save(projectConverter.dtoToEntity(projectDto)));
+    }
+
+    @Override
+    public ProjectDto updateIsActiveByProjectId(Long projectId, Boolean isActive) {
+        ProjectDto projectDto = projectConverter.entityToDto(projectRepository.findById(projectId)
+                .orElseThrow(() -> new ApplicationException("This project with Id" + projectId + "not exist")));
+
+        projectDto.setActive(isActive);
+        return projectConverter.entityToDto(projectRepository.save(projectConverter.dtoToEntity(projectDto)));
+    }
+
+    @Override
+    public ProjectDto findByProjectIdAndIsActiveTrue(Long projectId) {
+        return projectConverter.entityToDto(projectRepository.findByProjectIdAndIsActiveTrue(projectId));
     }
 
 
