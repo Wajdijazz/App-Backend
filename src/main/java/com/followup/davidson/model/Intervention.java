@@ -23,7 +23,7 @@ import java.time.LocalDate;
 public class Intervention {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "intervention_id")
     private Long interventionId;
 

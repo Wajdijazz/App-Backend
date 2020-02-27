@@ -1,43 +1,37 @@
-CREATE SEQUENCE hibernate_sequence START 1;
 CREATE TABLE public.client
 (
-    client_id      bigint NOT NULL,
+    client_id     SERIAL PRIMARY KEY ,
     client_contact character varying(255),
-    client_name    character varying(255),
-    PRIMARY KEY (client_id)
+    client_name    character varying(255)
 
 );
 
 CREATE TABLE public.manager
 (
-    manager_id bigint NOT NULL,
+    manager_id SERIAL PRIMARY KEY,
     first_name character varying(255),
-    last_name  character varying(255),
-    PRIMARY KEY (manager_id)
+    last_name  character varying(255)
 
 );
 
 CREATE TABLE public.person
 (
-    person_id  bigint NOT NULL,
+    person_id SERIAL PRIMARY KEY,
     first_name character varying(255),
     last_name  character varying(255),
     is_active boolean not null,
-    manager_id bigint NOT NULL,
-    PRIMARY KEY (person_id)
-
+    manager_id bigint NOT NULL
 );
 ALTER TABLE person
     ADD FOREIGN KEY (manager_id) REFERENCES manager;
 
 CREATE TABLE public.project
 (
-    project_id   bigint NOT NULL,
+    project_id SERIAL PRIMARY KEY,
     project_name character varying(255),
     is_active boolean not null,
     client_id    bigint NOT NULL,
-    manager_id   bigint NOT NULL,
-    PRIMARY KEY (project_id)
+    manager_id   bigint NOT NULL
 );
 ALTER TABLE project
     ADD FOREIGN KEY (client_id) REFERENCES client;
@@ -46,12 +40,12 @@ ALTER TABLE project
 
 CREATE TABLE public.intervention
 (
-    intervention_id bigint NOT NULL,
+    intervention_id SERIAL PRIMARY KEY,
     date            date,
     mode            integer,
     person_id       bigint,
-    project_id      bigint,
-    PRIMARY KEY (intervention_id)
+    project_id      bigint
+
 );
 
 ALTER TABLE intervention
@@ -61,7 +55,7 @@ ALTER TABLE intervention
 
 CREATE TABLE public.tj
 (
-    tj_id      bigint NOT NULL,
+    tj_id     SERIAL PRIMARY KEY,
     tarif      real,
     person_id  bigint NOT NULL,
     project_id bigint NOT NULL
