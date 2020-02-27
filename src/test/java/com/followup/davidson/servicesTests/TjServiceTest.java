@@ -140,6 +140,5 @@ public class TjServiceTest {
         TjDto tjDtoReturned = tjItjService.updateByProjectAndPerson(TJ_DTO_1);
         assertEquals(TJ_DTO_1, tjDtoReturned);
 
-
     }
 }
