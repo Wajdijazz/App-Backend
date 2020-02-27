@@ -19,13 +19,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static com.followup.davidson.model.Mode.AM;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -38,14 +35,18 @@ public class InterventionControllerTest {
     private static Intervention it1;
     private static Intervention it2;
     private static InterventionDto interventionDto;
-    private List<InterventionDto> interventionDtos = new ArrayList<>();
+    private static List<InterventionDto> interventionDtos = new ArrayList<>();
     private static Person pe1;
     private static Project p1;
+    private static Map<Date, List<Intervention>> map = new HashMap<>();
+    private static List<Intervention> list = new ArrayList<>();
     @Mock
     private InterventionServiceImpl interventionService;
     @InjectMocks
+    @Autowired
     private InterventionController interventionController;
 
+    @Autowired
     private InterventionConverter interventionConverter;
 
 
@@ -55,11 +56,14 @@ public class InterventionControllerTest {
     }
 
     @BeforeAll
-    public void init() {
+    public static void init() {
         it1 = new Intervention(1L, new Date(2020 - 01 - 01), AM, null, null);
         it2 = new Intervention(2L, new Date(2020 - 01 - 01), AM, null, null);
         interventionDto = new InterventionDto(new Date(2020 - 02 - 03), Mode.AM, null, null);
         interventionDtos.add(interventionDto);
+        list.add(it1);
+        list.add(it2);
+        map.put(new Date(2020 - 01 - 01), list);
     }
 
     @Test
@@ -74,6 +78,13 @@ public class InterventionControllerTest {
         Mockito.when(interventionService.findAll()).thenReturn(Arrays.asList(it1, it2));
         assertThat(interventionController.getAllIntervention().size(), is(2));
         Mockito.verify(interventionService, Mockito.times(1)).findAll();
+    }
+
+    @Test
+    void findAllByDayTest() {
+        Mockito.when(interventionService.findAllByDay()).thenReturn(map);
+        assertThat(interventionController.getAllInterventionByDay().size(), is(1));
+        Mockito.verify(interventionService, Mockito.times(1)).findAllByDay();
     }
 
     @Test

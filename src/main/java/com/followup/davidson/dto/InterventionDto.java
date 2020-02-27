@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.followup.davidson.model.Mode;
 import lombok.*;
 
-import java.sql.Date;
+import java.util.Date;
 
 @Data
 @Builder
