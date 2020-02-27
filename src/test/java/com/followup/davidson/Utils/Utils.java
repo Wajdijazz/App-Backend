@@ -1,13 +1,7 @@
 package com.followup.davidson.Utils;
 
-import com.followup.davidson.dto.ClientDto;
-import com.followup.davidson.dto.ManagerDto;
-import com.followup.davidson.dto.PersonDto;
-import com.followup.davidson.dto.ProjectDto;
-import com.followup.davidson.model.Client;
-import com.followup.davidson.model.Manager;
-import com.followup.davidson.model.Person;
-import com.followup.davidson.model.Project;
+import com.followup.davidson.dto.*;
+import com.followup.davidson.model.*;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -90,6 +84,28 @@ public class Utils {
                 .isActive(isActive)
                 .manager(manager)
                 .client(client)
+                .build();
+    }
+
+    public static final TjDto getTjDto(Long id, float tarif, Long projectId, Long personId, ProjectDto projectDto,
+                                       PersonDto personDto) {
+        return TjDto.builder()
+                .tjId(id)
+                .tarif(tarif)
+                .projectId(projectId)
+                .personId(personId)
+                .personDto(personDto)
+                .projectDto(projectDto)
+                .build();
+    }
+
+    public static final TJ getTj(Long id, float tarif, Project project,
+                                 Person person) {
+        return TJ.builder()
+                .tjId(id)
+                .tarif(tarif)
+                .person(person)
+                .project(project)
                 .build();
     }
 

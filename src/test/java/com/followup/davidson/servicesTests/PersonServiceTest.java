@@ -98,13 +98,8 @@ public class PersonServiceTest {
     @Autowired
     private IPersonService personService;
 
-    @SpyBean
-    @Autowired
-    private IManagerService managerService;
-
-
     @MockBean
-    private ManagerRepository managerRepository;
+    private IManagerService managerService;
 
 
     @Before
@@ -142,12 +137,7 @@ public class PersonServiceTest {
     @Test
     void testCreateOrUpdatePerson() {
 
-        Mockito.when(managerRepository.findById(1L)).thenReturn(Optional.of(MANAGER));
-
-        ManagerDto managerExcepted = managerService.findById(1L);
-
-        assertEquals(managerExcepted, MANAGER_DTO);
-
+        Mockito.when(managerService.findById(1L)).thenReturn(MANAGER_DTO);
         Mockito.when(personRepository.save(PERSON_1)).thenReturn(PERSON_1);
 
         PersonDto personDtoReturned = personService.createOrUpdate(PERSON_DTO_1);
