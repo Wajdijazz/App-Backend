@@ -1,5 +1,6 @@
 package com.followup.davidson.services.implementation;
 
+import com.followup.davidson.converter.InterventionConverter;
 import com.followup.davidson.dto.InterventionDto;
 import com.followup.davidson.exceptions.ApplicationException;
 import com.followup.davidson.model.Intervention;
@@ -12,8 +13,10 @@ import com.followup.davidson.services.IPersonService;
 import com.followup.davidson.services.IProjectService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import javax.transaction.Transactional;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Transactional
 @AllArgsConstructor
@@ -23,6 +26,8 @@ public class InterventionServiceImpl implements IInterventionService {
     InterventionRepository interventionRepository;
     private IProjectService projectService;
     private IPersonService personService;
+
+    private InterventionConverter interventionConverter;
 
     /**
      * Cette methode permet de retourner une intervention par id
@@ -46,49 +51,32 @@ public class InterventionServiceImpl implements IInterventionService {
         return interventionRepository.findAll();
     }
 
+
+    public Map<Date, List<Intervention>> findAllByDay() {
+        List<Intervention> interventions = interventionRepository.findAll();
+
+        return interventions.stream().collect(
+                Collectors.groupingBy(
+                        Intervention::getDate, Collectors.toList()
+                )
+        );
+
+    }
+
     /**
-     * cette methode permet de sauvgarder lhistorique des interventions d'une personne sur un projet par details , les weekend sont
-     * automatiquement eliminés
-     * elle prend en paramatre , date de debut des interventions et date de fins des interventions
+     * cette methode permet de sauvgarder des interventions d'une personne sur un projet
+     * elle prend en parametre une liste d'object InterventionDto
      *
-     * @param interventionDto
-     * @param personId
-     * @param projectId
+     * @param interventionDtos
      */
-    @Override
-    public Object saveInterventions(InterventionDto interventionDto, Long personId, Long projectId) {
-    /*    Project project = projectService.findById(projectId);
-        Person person = personService.findById(personId);
-        Calendar cal1 = Calendar.getInstance();
-        Calendar cal2 = Calendar.getInstance();
-        cal1.setTime(interventionDto.getStartDate());
-        cal2.setTime(interventionDto.getEndDate());
-        while (cal1.compareTo(cal2) <= 0) {
-            if ((Calendar.SATURDAY != cal1.get(Calendar.DAY_OF_WEEK))
-                    && (Calendar.SUNDAY != cal1.get(Calendar.DAY_OF_WEEK))) {
-                Date date = cal1.getTime();
-                java.sql.Date sDate = convertUtilToSql(date);
+    public List<InterventionDto> saveInterventions(List<InterventionDto> interventionDtos) {
 
-                Intervention intervention1 = Intervention.builder()
-                        .person(person)
-                        .project(project)
-                        .date(sDate)
-                        .mode(Mode.AM)
-                        .build();
+        List<Intervention> listInt = interventionDtos.stream()
+                .map(interventionDto -> interventionConverter.dtoToEntity(interventionDto))
+                .collect(Collectors.toList());
 
-                Intervention intervention2 = Intervention.builder()
-                        .person(person)
-                        .project(project)
-                        .date(sDate)
-                        .mode(Mode.PM)
-                        .build();
-
-                interventionRepository.save(intervention1);
-                interventionRepository.save(intervention2);
-            }
-            cal1.add(Calendar.DATE, 1);
-        }*/
-        return interventionDto;
+        interventionRepository.saveAll(listInt);
+        return interventionDtos;
     }
 
     private static java.sql.Date convertUtilToSql(java.util.Date uDate) {

@@ -1,8 +1,5 @@
 package com.followup.davidson.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.followup.davidson.model.Client;
-import com.followup.davidson.model.Manager;
 import lombok.*;
 
 @Data

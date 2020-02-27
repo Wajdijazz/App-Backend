@@ -24,8 +24,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.Date;
-import java.util.Arrays;
-import java.util.Optional;
+import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -39,7 +38,10 @@ public class InterventionServiceTest {/*
     private static Project p1;
     private static Person pe1;
     private static InterventionDto interventionDto;
-
+    private static List<InterventionDto> interventionDtos = new ArrayList<>();
+    private static Map<java.util.Date, List<Intervention>> map = new HashMap<>();
+    private static List<Intervention> list = new ArrayList<>();
+    private static List<Intervention> list2 = new ArrayList<>();
 
     @Mock
     private InterventionRepository interventionRepository;
@@ -63,10 +65,14 @@ public class InterventionServiceTest {/*
     public static void init() {
         int1 = new Intervention(1L, new Date(2020 - 01 - 06), Mode.AM, null, null);
         int2 = new Intervention(1L, new Date(2020 - 01 - 18), Mode.AM, null, null);
-   //     p1 = new Project(1L, "Followup", null);
+        //     p1 = new Project(1L, "Followup", null);
         pe1 = new Person(1L, "Wajdi", "Jaziri", null);
-        interventionDto = new InterventionDto(new Date(2020 - 02 - 03),
-                new Date(2020 - 03 - 06), null, null);
+        interventionDto = new InterventionDto(new Date(2020 - 02 - 03), Mode.AM, null, null);
+        interventionDtos.add(interventionDto);
+        list.add(int1);
+        map.put(new java.util.Date(2020 - 01 - 06), list);
+        list2.add(int2);
+        map.put(new java.util.Date(2020 - 01 - 18), list2);
     }
 
     @Test
@@ -74,6 +80,14 @@ public class InterventionServiceTest {/*
         Mockito.when(interventionRepository.findAll()).thenReturn(Arrays.asList());
         assertThat(interventionService.findAll().size(), is(0));
         Mockito.verify(interventionRepository, Mockito.times(1)).findAll();
+    }
+
+    @Test
+    public void findAllByDayTest() {
+        Mockito.when(interventionRepository.findAll()).thenReturn(Arrays.asList(int1, int2));
+        assertThat(interventionService.findAllByDay().size(), is(2));
+        assertThat(interventionService.findAllByDay(), is(map));
+        Mockito.verify(interventionRepository, Mockito.times(2)).findAll();
     }
 
     @Test
@@ -104,6 +118,7 @@ public class InterventionServiceTest {/*
         interventionService.deleteInterventionHistorique(1L);
         Mockito.verify(interventionRepository, Mockito.times(1)).deleteById(1L);
     }
+
     @Test
     void create() {
    /*     Mockito.when(projectService.findById(1L)).thenReturn(p1);
@@ -112,8 +127,8 @@ public class InterventionServiceTest {/*
 
         Mockito.when(personService.findById(1L)).thenReturn(pe1);
         Person pe = personController.findPersonById(1L);
-        assertThat(pe, is(pe1) );
-        assertThat(interventionService.saveInterventions(interventionDto,1L,1L), is(interventionDto));
-    }*/
+        assertThat(interventionService.saveInterventions(interventionDto,1L,1L), is(interventionDto));*/
+//        assertThat(pe, is(pe1) );
+    }
 
 }

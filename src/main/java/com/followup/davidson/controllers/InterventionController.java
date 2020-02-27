@@ -8,7 +8,9 @@ import com.followup.davidson.services.IInterventionService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -28,12 +30,15 @@ public class InterventionController {
         return interventionService.findAll();
     }
 
-    @PostMapping("/project/{projectId}/person/{personId}")
-    public Object createIntervention(@Valid @RequestBody InterventionDto interventionDto,
-                                     @PathVariable(value = "projectId") Long projectId
-            , @PathVariable(value = "personId") Long personId) {
+    @GetMapping("/getAllByDay")
+    public Map<Date, List<Intervention>> getAllInterventionByDay() {
+        return interventionService.findAllByDay();
+    }
 
-        return interventionService.saveInterventions(interventionDto, personId, projectId);
+    @PostMapping("/project/{projectId}/person/{personId}")
+    public Object createIntervention(@Valid @RequestBody List<InterventionDto> interventionDto){
+
+        return interventionService.saveInterventions(interventionDto);
     }
 
     @GetMapping("/{id}")
