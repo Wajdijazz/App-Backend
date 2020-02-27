@@ -31,7 +31,7 @@ import static org.hamcrest.Matchers.is;
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
-public class InterventionServiceTest {/*
+public class InterventionServiceTest {
     //preparer les unit test pour service intervention et controller intervention
     private static Intervention int1;
     private static Intervention int2;
@@ -66,7 +66,7 @@ public class InterventionServiceTest {/*
         int1 = new Intervention(1L, new Date(2020 - 01 - 06), Mode.AM, null, null);
         int2 = new Intervention(1L, new Date(2020 - 01 - 18), Mode.AM, null, null);
         //     p1 = new Project(1L, "Followup", null);
-        pe1 = new Person(1L, "Wajdi", "Jaziri", null);
+        pe1 = new Person(1L, "Wajdi", "Jaziri",true, null);
         interventionDto = new InterventionDto(new Date(2020 - 02 - 03), Mode.AM, null, null);
         interventionDtos.add(interventionDto);
         list.add(int1);
@@ -101,11 +101,11 @@ public class InterventionServiceTest {/*
 
     @Test
     public void findById() {
-   /*     Mockito.when(interventionRepository.findById(1L)).thenReturn(Optional.of(int1));
+        Mockito.when(interventionRepository.findById(1L)).thenReturn(Optional.of(int1));
 
         assertThat(interventionService.findById(1L), is(Optional.of(int1)));
-        Mockito.verify(interventionRepository, Mockito.times(1)).findById(1L);*/
-  /*  }
+        Mockito.verify(interventionRepository, Mockito.times(1)).findById(1L);
+    }
 
     @Test
     void deleteByIdPersonAndProject() {
