@@ -1,24 +1,18 @@
 package com.followup.davidson.servicesTests;
 
-import com.followup.davidson.controllers.PersonController;
-import com.followup.davidson.controllers.ProjectController;
-import com.followup.davidson.converter.TjConverter;
-import com.followup.davidson.dto.ClientDto;
-import com.followup.davidson.dto.TjDto;
-import com.followup.davidson.model.Client;
-import com.followup.davidson.model.Person;
-import com.followup.davidson.model.Project;
-import com.followup.davidson.model.TJ;
+import com.followup.davidson.Utils.DataForTest;
+import com.followup.davidson.Utils.Utils;
+import com.followup.davidson.dto.*;
+import com.followup.davidson.model.*;
+import com.followup.davidson.repositories.ClientRepository;
 import com.followup.davidson.repositories.TJRepository;
-import com.followup.davidson.services.implementation.PersonServiceImpl;
-import com.followup.davidson.services.implementation.ProjectServiceImpl;
-import com.followup.davidson.services.implementation.TJServiceImpl;
+import com.followup.davidson.services.IPersonService;
+import com.followup.davidson.services.IProjectService;
+import com.followup.davidson.services.ITJService;
 import org.junit.Before;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -27,135 +21,125 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
-import java.util.Arrays;
 import java.util.Optional;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
+
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
-public class TjServiceTest {/*
-    private static TJ tj1;
-    private static TJ tj2;
-    private static Project project;
-    private static Person person;
+public class TjServiceTest {
 
     @Autowired
-    private TjConverter tjConverter;
+    private Utils utils;
+    private ManagerDto MANAGER_DTO = utils.getManagerDto(
+            DataForTest.ManagerData.MANAGER_1_ID,
+            DataForTest.ManagerData.MANAGER_1_FIRSTNAME,
+            DataForTest.ManagerData.MANAGER_1_LASTTNAME);
+
+    private ClientDto CLIENT_DTO = utils.getClientDto(
+            DataForTest.ClientData.CLIENT_1_ID,
+            DataForTest.ClientData.CLIENT_1_NAME,
+            DataForTest.ClientData.CLIENT_1_EMAIL);
+
+    private ProjectDto PROJECT_DTO_1 = utils.getProjectDto(
+            DataForTest.ProjectData.PROJECT_1_ID,
+            DataForTest.ProjectData.PROJECT_1_NAME,
+            DataForTest.ClientData.CLIENT_1_ID,
+            DataForTest.ManagerData.MANAGER_1_ID,
+            MANAGER_DTO,
+            CLIENT_DTO,
+            DataForTest.ProjectData.PROJECT_1_ISACTIVE
+    );
+    private Manager MANAGER = utils.getManager(
+            DataForTest.ManagerData.MANAGER_1_ID,
+            DataForTest.ManagerData.MANAGER_1_FIRSTNAME,
+            DataForTest.ManagerData.MANAGER_1_LASTTNAME);
+
+    private Client CLIENT = utils.getClient(
+            DataForTest.ClientData.CLIENT_1_ID,
+            DataForTest.ClientData.CLIENT_1_NAME,
+            DataForTest.ClientData.CLIENT_1_EMAIL);
+    private Project PROJECT_1 = utils.getProject(
+            DataForTest.ProjectData.PROJECT_1_ID,
+            DataForTest.ProjectData.PROJECT_1_NAME,
+            MANAGER,
+            CLIENT,
+            DataForTest.ProjectData.PROJECT_1_ISACTIVE
+    );
+    private PersonDto PERSON_DTO_1 = utils.getPersonDto(
+            DataForTest.PersonData.PERSON_1_ID,
+            DataForTest.PersonData.PERSON_1_FIRSTNAME,
+            DataForTest.PersonData.PERSON_1_LASTTNAME,
+            DataForTest.ManagerData.MANAGER_1_ID,
+            MANAGER_DTO,
+            DataForTest.PersonData.PERSON_1_ISACTIVE
+    );
+
+    private Person PERSON_1 = utils.getPerson(
+            DataForTest.PersonData.PERSON_1_ID,
+            DataForTest.PersonData.PERSON_1_FIRSTNAME,
+            DataForTest.PersonData.PERSON_1_LASTTNAME,
+            MANAGER,
+            DataForTest.PersonData.PERSON_1_ISACTIVE
+    );
+
+    private TJ TJ_1 = utils.getTj(
+            DataForTest.TjData.TJ_I_ID,
+            DataForTest.TjData.TARIF,
+            PROJECT_1,
+            PERSON_1
+    );
+    private TjDto TJ_DTO_1 = utils.getTjDto(
+            DataForTest.TjData.TJ_I_ID,
+            DataForTest.TjData.TARIF,
+            DataForTest.ProjectData.PROJECT_1_ID,
+            DataForTest.PersonData.PERSON_1_ID,
+            PROJECT_DTO_1,
+            PERSON_DTO_1
+    );
+
+    @MockBean
+    private IProjectService projectService;
+
+    @MockBean
+    private IPersonService personService;
 
     @MockBean
     private TJRepository tjRepository;
 
-    @SpyBean
     @Autowired
-    private TJServiceImpl tjService;
-
-    @MockBean
-    private ProjectServiceImpl projectService;
-
-    @MockBean
-    private PersonServiceImpl personService;
-
+    private ITJService tjItjService;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
     }
 
-    @BeforeAll
-    public static void init() {
-        project = new Project(1L, "Followup", null,null);
-        person = new Person(1L, "Wajdi", "Jaziri", null);
-        tj1 = new TJ(1L, 50f, null, null);
-        tj2 = new TJ(1L, 70f, null, null);
 
-    }
+    @Test
+    public void createTjTest() {
+        Mockito.when(projectService.findById(1L)).thenReturn(PROJECT_DTO_1);
+        Mockito.when(personService.findById(1L)).thenReturn(PERSON_DTO_1);
+        Mockito.when(tjRepository.save(TJ_1)).thenReturn(TJ_1);
 
-    private TjDto getTjDto() {
-        return TjDto.builder()
-                .tjId(1L)
-                .projectId(1L)
-                .personId(1L)
-                .tarif(50f)
-                .build();
+        TjDto tjDtoReturned = tjItjService.create(TJ_DTO_1);
+        assertEquals(TJ_DTO_1, tjDtoReturned);
     }
 
     @Test
-    public void findAllTest_WhenNoRecord() {
-        Mockito.when(tjRepository.findAll()).thenReturn(Arrays.asList());
-        assertThat(tjService.findAll().size(), is(0));
-        Mockito.verify(tjRepository, Mockito.times(1)).findAll();
+    public void updateByProjectAndPersonTest() {
+        Mockito.when(projectService.findById(1L)).thenReturn(PROJECT_DTO_1);
+        Mockito.when(personService.findById(1L)).thenReturn(PERSON_DTO_1);
 
-    }
-/*
-    @Test
-    public void findAllTest_WhenRecord() {
-        Mockito.when(tjRepository.findAll()).thenReturn(Arrays.asList(tj1, tj2));
-        assertThat(tjService.findAll().size(), is(2));
-        assertThat(tjService.findAll().get(0), is(tj1));
-        assertThat(tjService.findAll().get(1), is(tj2));
-        Mockito.verify(tjRepository, Mockito.times(3)).findAll();
-    }*/
+        Mockito.when(tjRepository.findByProject_ProjectIdAndPerson_PersonId(PROJECT_DTO_1.getProjectId(),
+                PERSON_DTO_1.getPersonId())).thenReturn(TJ_1);
 
-    @Test
-    public void findTjByIdWhenAReponseIsThere() {
-    /*    Mockito.when(tjRepository.findById(1L)).thenReturn(Optional.of(tj1));
-        TJ tjExcepted = tjService.findById(1L);
-        assertEquals(tjExcepted, tj1);
-        Mockito.verify(tjRepository, Mockito.times(1)).findById(1L);*
-    }
+        Mockito.when(tjRepository.save(TJ_1)).thenReturn(TJ_1);
 
-    @Test
-    void deleteById() {
-        tjService.deleteTj(1L);
-        Mockito.verify(tjRepository, Mockito.times(1)).deleteById(1L);
-    }
+        TjDto tjDtoReturned = tjItjService.updateByProjectAndPerson(TJ_DTO_1);
+        assertEquals(TJ_DTO_1, tjDtoReturned);
 
-    @Test
-    void testCreateTjt() {
-   /*     TjDto tjDto = getTjDto();
-        Mockito.when(personService.findById(1L)).thenReturn(person);
-        Mockito.when(projectService.findById(1L)).thenReturn(project);
 
-        TJ tjEntryRepository = tjConverter.dtoToEntity(tjDto);
-        TjDto excepted = getTjDto();
-        excepted.setTjId(1L);
-        excepted.setPersonId(1L);
-        excepted.setProjectId(1L);
-        excepted.setTarif(50f);
-
-        Mockito.when(tjRepository.save(tjEntryRepository)).thenReturn(tjEntryRepository);
-        TjDto tjDtoReturned = tjService.create(tjDto);
-        assertEquals(excepted, tjDtoReturned);
-        Mockito.verify(personService, Mockito.times(2)).findById(1L);
-        Mockito.verify(projectService, Mockito.times(2)).findById(1L);
-        Mockito.verify(tjRepository, Mockito.times(1)).save(tjConverter.dtoToEntity(tjDto));
-    }
-
-    @Test
-    void testUpdateByProjectAndPerson(){
-/*
-        TjDto tjDto = getTjDto();
-        Mockito.when(tjRepository.findByProject_ProjectIdAndPerson_PersonId(1L,1L)).thenReturn(tj1);
-
-        Mockito.when(personService.findById(1L)).thenReturn(person);
-        Mockito.when(projectService.findById(1L)).thenReturn(project);
-
-        TJ tjEntryRepository = tjConverter.dtoToEntity(tjDto);
-        TjDto excepted = getTjDto();
-        excepted.setTjId(1L);
-        excepted.setPersonId(1L);
-        excepted.setProjectId(1L);
-        excepted.setTarif(50f);
-
-        Mockito.when(tjRepository.save(tjEntryRepository)).thenReturn(tjEntryRepository);
-        TjDto tjDtoReturned = tjService.create(tjDto);
-        assertEquals(excepted, tjDtoReturned);
-        Mockito.verify(personService, Mockito.times(2)).findById(1L);
-        Mockito.verify(projectService, Mockito.times(2)).findById(1L);
-        Mockito.verify(tjRepository, Mockito.times(1)).save(tjConverter.dtoToEntity(tjDto));
-*/
     }
 }

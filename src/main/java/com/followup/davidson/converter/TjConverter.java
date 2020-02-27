@@ -18,6 +18,8 @@ public class TjConverter implements GenericsConverter<TJ, TjDto> {
                 .tjId(tj.getTjId())
                 .personId(tj.getPerson().getPersonId())
                 .projectId(tj.getProject().getProjectId())
+                .projectDto(projectConverter.entityToDto(tj.getProject()))
+                .personDto(personConverter.entityToDto(tj.getPerson()))
                 .tarif(tj.getTarif())
                 .build();
     }
