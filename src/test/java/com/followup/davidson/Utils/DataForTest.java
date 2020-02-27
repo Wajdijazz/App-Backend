@@ -38,8 +38,9 @@ public class DataForTest {
         public static final long PROJECT_2_ID = 2L;
         public static final String PROJECT_2_NAME = "Linup-2019";
         public static final boolean PROJECT_2_ISACTIVE = true;
-
-
-
+    }
+    public class TjData{
+        public static final long TJ_I_ID=1L;
+        public static final float TARIF =150;
     }
 }

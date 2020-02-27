@@ -106,20 +106,11 @@ public class ProjectServiceTest {
     @Autowired
     private IProjectService projectService;
 
-    @SpyBean
-    @Autowired
+    @MockBean
     private IClientService clientService;
 
-    @SpyBean
-    @Autowired
+    @MockBean
     private IManagerService managerService;
-
-    @MockBean
-    private ManagerRepository managerRepository;
-
-    @MockBean
-    private ClientRepository clientRepository;
-
 
     @Before
     public void setUp() {
@@ -157,13 +148,9 @@ public class ProjectServiceTest {
 
     @Test
     void testCreateOrUpdateProject() {
-        Mockito.when(managerRepository.findById(1L)).thenReturn(Optional.of(MANAGER));
-        ManagerDto managerExcepted = managerService.findById(1L);
-        assertEquals(managerExcepted, MANAGER_DTO);
+        Mockito.when(managerService.findById(1L)).thenReturn(MANAGER_DTO);
+        Mockito.when(clientService.findById(1L)).thenReturn(CLIENT_DTO);
 
-        Mockito.when(clientRepository.findById(1L)).thenReturn(Optional.of(CLIENT));
-        ClientDto clientDtoExcepted = clientService.findById(1L);
-        assertEquals(clientDtoExcepted, CLIENT_DTO);
 
         Mockito.when(projectRepository.save(PROJECT_1)).thenReturn(PROJECT_1);
         ProjectDto projectDtoReturned = projectService.createOrUpdate(PROJECT_DTO_1);
