@@ -20,7 +20,7 @@ import javax.persistence.*;
  */
 public class TJ {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long tjId;
 
     private Float   tarif;

@@ -39,7 +39,6 @@ public class ProjectController {
 
     @PutMapping("/{projectId}")
     public ProjectDto updateIsActiveByProjectId(@PathVariable(value = "projectId") Long projectId, @Valid @RequestBody ProjectDto projectDto) {
-        System.out.println(projectDto);
         return projectService.updateIsActiveByProjectId(projectId, projectDto.isActive());
     }
 
