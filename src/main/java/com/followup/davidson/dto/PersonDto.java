@@ -13,7 +13,6 @@ public class PersonDto {
     private Long personId;
     private String firstName;
     private String lastName;
-    private Long managerId;
     private ManagerDto managerDto;
     @JsonProperty
     private boolean isActive;

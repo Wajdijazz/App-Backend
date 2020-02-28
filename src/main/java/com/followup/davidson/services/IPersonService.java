@@ -10,7 +10,7 @@ public interface IPersonService {
 
     List<PersonDto> findAll();
 
-    PersonDto createOrUpdate(PersonDto personDto);
+    PersonDto createOrUpdate(PersonDto personDto, Long managerId);
 
     PersonDto updateIsActiveByPersonId(Long personId, Boolean isActive);
 

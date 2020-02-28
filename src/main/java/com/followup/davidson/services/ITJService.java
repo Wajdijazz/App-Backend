@@ -8,11 +8,11 @@ import java.util.List;
 public interface ITJService {
 
 
-    TjDto create(TjDto tjDto);
+    TjDto create(TjDto tjDto,  Long projectId, Long personId);
 
     void deleteTj(Long id);
 
-    TjDto updateByProjectAndPerson(TjDto  tjDto);
+    TjDto updateByProjectAndPerson(TjDto  tjDto,  Long projectId, Long personId);
 
     Float  findTarifByProject_ProjectIdAndPerson_PersonId(Long projectId, Long personId);
 

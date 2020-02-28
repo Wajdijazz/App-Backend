@@ -36,7 +36,6 @@ public class ProjectServiceImpl implements IProjectService {
     private InterventionRepository interventionRepository;
 
 
-
     /**
      * Cette methode permet de lister tous les projets de davidsons
      *
@@ -61,19 +60,17 @@ public class ProjectServiceImpl implements IProjectService {
 
 
     @Override
-    public ProjectDto createOrUpdate(ProjectDto projectDto) {
-        projectDto.setClientDto((clientService.findById(projectDto.getClientId())));
-        projectDto.setManagerDto(managerService.findById(projectDto.getManagerId()));
-
+    public ProjectDto createOrUpdate(ProjectDto projectDto, Long clientId, Long managerId) {
+        projectDto.setClientDto(clientService.findById(clientId));
+        projectDto.setManagerDto(managerService.findById(managerId));
         return projectConverter.entityToDto(projectRepository.save(projectConverter.dtoToEntity(projectDto)));
     }
 
     @Override
     public ProjectDto updateIsActiveByProjectId(Long projectId, Boolean isActive) {
-        ProjectDto projectDto = projectConverter.entityToDto(projectRepository.findById(projectId)
-                .orElseThrow(() -> new ApplicationException("This project with Id" + projectId + "not exist")));
-
+        ProjectDto projectDto = findById(projectId);
         projectDto.setActive(isActive);
+
         return projectConverter.entityToDto(projectRepository.save(projectConverter.dtoToEntity(projectDto)));
     }
 

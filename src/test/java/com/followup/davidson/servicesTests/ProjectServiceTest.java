@@ -153,7 +153,8 @@ public class ProjectServiceTest {
 
 
         Mockito.when(projectRepository.save(PROJECT_1)).thenReturn(PROJECT_1);
-        ProjectDto projectDtoReturned = projectService.createOrUpdate(PROJECT_DTO_1);
+        ProjectDto projectDtoReturned = projectService.createOrUpdate(PROJECT_DTO_1,PROJECT_1.getClient().getClientId(),
+                PROJECT_DTO_1.getManagerDto().getManagerId());
 
         assertEquals(PROJECT_DTO_1, projectDtoReturned);
     }

@@ -11,8 +11,6 @@ import lombok.*;
 public class TjDto {
     private Long tjId;
     private Float tarif;
-    private Long personId;
-    private Long projectId;
     private ProjectDto projectDto;
     private PersonDto personDto;
 }

@@ -27,18 +27,23 @@ public class ProjectController {
         return projectService.findAll();
     }
 
-    @PostMapping("/")
-    public ProjectDto createProject(@Valid @RequestBody ProjectDto projectDto) {
-        return projectService.createOrUpdate(projectDto);
+    @PostMapping("/client/{clientId}/manager/{managerId}")
+    public ProjectDto createProject(@Valid @RequestBody ProjectDto projectDto,
+                                    @PathVariable(value = "clientId") Long clientId,
+                                    @PathVariable(value = "managerId") Long managerId) {
+        return projectService.createOrUpdate(projectDto, clientId, managerId);
     }
 
-    @PutMapping("/")
-    public ProjectDto updateProject(@Valid @RequestBody ProjectDto projectDto) {
-        return projectService.createOrUpdate(projectDto);
+    @PutMapping("/client/{clientId}/manager/{managerId}")
+    public ProjectDto updateProject(@Valid @RequestBody ProjectDto projectDto,
+                                    @PathVariable(value = "clientId") Long clientId,
+                                    @PathVariable(value = "managerId") Long managerId) {
+        return projectService.createOrUpdate(projectDto, clientId, managerId);
     }
 
     @PutMapping("/{projectId}")
-    public ProjectDto updateIsActiveByProjectId(@PathVariable(value = "projectId") Long projectId, @Valid @RequestBody ProjectDto projectDto) {
+    public ProjectDto updateIsActiveByProjectId(@PathVariable(value = "projectId") Long projectId,
+                                                @Valid @RequestBody ProjectDto projectDto) {
         return projectService.updateIsActiveByProjectId(projectId, projectDto.isActive());
     }
 

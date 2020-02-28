@@ -18,7 +18,6 @@ public class PersonConverter implements GenericsConverter<Person, PersonDto> {
                 .firstName(person.getFirstName())
                 .lastName(person.getLastName())
                 .isActive(person.isActive())
-                .managerId(person.getManager().getManagerId())
                 .managerDto(managerConverter.entityToDto(person.getManager()))
                 .build();
     }

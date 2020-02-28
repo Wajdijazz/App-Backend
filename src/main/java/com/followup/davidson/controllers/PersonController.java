@@ -26,14 +26,14 @@ public class PersonController {
         return personService.findAll();
     }
 
-    @PostMapping("/")
-    public PersonDto createPerson(@Valid @RequestBody PersonDto personDto) {
-        return personService.createOrUpdate(personDto);
+    @PostMapping("/{managerId}")
+    public PersonDto createPerson(@Valid @RequestBody PersonDto personDto, @PathVariable(value = "managerId") Long managerId) {
+        return personService.createOrUpdate(personDto,managerId);
     }
 
-    @PutMapping("/")
-    public PersonDto updatePerson(@Valid @RequestBody PersonDto personDto) {
-        return personService.createOrUpdate(personDto);
+    @PutMapping("/manager/{managerId}")
+    public PersonDto updatePerson(@Valid @RequestBody PersonDto personDto, @PathVariable(value = "managerId") Long managerId) {
+        return personService.createOrUpdate(personDto,managerId);
     }
 
     @PutMapping("/{personId}")

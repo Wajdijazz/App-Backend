@@ -13,7 +13,7 @@ public interface IProjectService {
 
     ProjectDto findById(Long id);
 
-    ProjectDto createOrUpdate(ProjectDto projectDto);
+    ProjectDto createOrUpdate(ProjectDto projectDto, Long clientId, Long managerId);
 
     ProjectDto updateIsActiveByProjectId(Long projectId, Boolean isActive);
 

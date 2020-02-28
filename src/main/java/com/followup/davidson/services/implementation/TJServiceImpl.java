@@ -27,13 +27,10 @@ public class TJServiceImpl implements ITJService {
     private IPersonService personService;
 
 
-
-
-
     @Override
-    public TjDto create(TjDto tjDto) {
-        tjDto.setProjectDto(projectService.findById(tjDto.getProjectId()));
-        tjDto.setPersonDto(personService.findById(tjDto.getPersonId()));
+    public TjDto create(TjDto tjDto, Long projectId, Long personId) {
+        tjDto.setProjectDto(projectService.findById(projectId));
+        tjDto.setPersonDto(personService.findById(personId));
 
         return tjConverter.entityToDto(tjRepository.save(tjConverter.dtoToEntity(tjDto)));
     }
@@ -56,11 +53,11 @@ public class TJServiceImpl implements ITJService {
      * @return
      */
     @Override
-    public TjDto updateByProjectAndPerson(TjDto tjDto) {
-        tjDto.setProjectDto(projectService.findById(tjDto.getProjectId()));
-        tjDto.setPersonDto(personService.findById(tjDto.getPersonId()));
+    public TjDto updateByProjectAndPerson(TjDto tjDto, Long projectId, Long personId) {
+        tjDto.setProjectDto(projectService.findById(projectId));
+        tjDto.setPersonDto(personService.findById(personId));
 
-        TJ tjByProjectAndPerson = tjRepository.findByProject_ProjectIdAndPerson_PersonId(tjDto.getProjectId(), tjDto.getPersonId());
+        TJ tjByProjectAndPerson = tjRepository.findByProject_ProjectIdAndPerson_PersonId(projectId, personId);
         tjDto.setTjId(tjByProjectAndPerson.getTjId());
 
         return tjConverter.entityToDto(tjRepository.save(tjConverter.dtoToEntity(tjDto)));
@@ -79,7 +76,7 @@ public class TJServiceImpl implements ITJService {
             return null;
         } else {
             TJ tj = tjRepository.findByProject_ProjectIdAndPerson_PersonId(projectId, personId);
-            if(tj == null){
+            if (tj == null) {
                 return null;
             }
             return tj.getTarif();

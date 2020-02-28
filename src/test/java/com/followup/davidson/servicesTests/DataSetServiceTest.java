@@ -5,15 +5,10 @@ import com.followup.davidson.Utils.Utils;
 import com.followup.davidson.converter.PersonConverter;
 import com.followup.davidson.converter.ProjectConverter;
 import com.followup.davidson.dto.*;
-import com.followup.davidson.model.Person;
-import com.followup.davidson.model.Project;
-import com.followup.davidson.model.TJ;
 import com.followup.davidson.services.implementation.DataSetServiceImp;
 import com.followup.davidson.services.implementation.PersonServiceImpl;
 import com.followup.davidson.services.implementation.ProjectServiceImpl;
-import com.followup.davidson.services.implementation.TJServiceImpl;
 import org.junit.Before;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -49,7 +44,6 @@ public class DataSetServiceTest {
             DataForTest.PersonData.PERSON_1_ID,
             DataForTest.PersonData.PERSON_1_FIRSTNAME,
             DataForTest.PersonData.PERSON_1_LASTTNAME,
-            DataForTest.ManagerData.MANAGER_1_ID,
             MANAGER_DTO,
             DataForTest.PersonData.PERSON_1_ISACTIVE
     );
@@ -58,7 +52,6 @@ public class DataSetServiceTest {
             DataForTest.PersonData.PERSON_2_ID,
             DataForTest.PersonData.PERSON_2_FIRSTNAME,
             DataForTest.PersonData.PERSON_2_LASTTNAME,
-            DataForTest.ManagerData.MANAGER_1_ID,
             MANAGER_DTO,
             DataForTest.PersonData.PERSON_1_ISACTIVE
     );

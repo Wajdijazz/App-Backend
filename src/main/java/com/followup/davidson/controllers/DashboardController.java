@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(Routes.DASHBOARD)
@@ -19,7 +20,7 @@ import javax.validation.Valid;
 public class DashboardController {
     private IDashboardService dashboardService;
     @PostMapping("/")
-    public DashboardDto createDashboard(@Valid @RequestBody DashboardDto dashboardDto) {
-        return dashboardService.createDashboard(dashboardDto);
+    public DashboardDto createDashboard(@Valid @RequestBody List<DashboardDto> dashboardDtos) {
+        return null;
     }
 }

@@ -3,26 +3,17 @@ package com.followup.davidson.servicesTests;
 
 import com.followup.davidson.Utils.DataForTest;
 import com.followup.davidson.Utils.Utils;
-import com.followup.davidson.controllers.ManagerController;
-import com.followup.davidson.dto.ClientDto;
 import com.followup.davidson.dto.ManagerDto;
 import com.followup.davidson.dto.PersonDto;
-import com.followup.davidson.model.Client;
 import com.followup.davidson.model.Manager;
 import com.followup.davidson.model.Person;
 
-import com.followup.davidson.repositories.ManagerRepository;
 import com.followup.davidson.repositories.PersonRepository;
 import com.followup.davidson.services.IManagerService;
 import com.followup.davidson.services.IPersonService;
-import com.followup.davidson.services.implementation.ManagerServiceImpl;
-import com.followup.davidson.services.implementation.PersonServiceImpl;
 import org.junit.Before;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -60,7 +51,6 @@ public class PersonServiceTest {
             DataForTest.PersonData.PERSON_1_ID,
             DataForTest.PersonData.PERSON_1_FIRSTNAME,
             DataForTest.PersonData.PERSON_1_LASTTNAME,
-            DataForTest.ManagerData.MANAGER_1_ID,
             MANAGER_DTO,
             DataForTest.PersonData.PERSON_1_ISACTIVE
     );
@@ -69,7 +59,6 @@ public class PersonServiceTest {
             DataForTest.PersonData.PERSON_2_ID,
             DataForTest.PersonData.PERSON_2_FIRSTNAME,
             DataForTest.PersonData.PERSON_2_LASTTNAME,
-            DataForTest.ManagerData.MANAGER_1_ID,
             MANAGER_DTO,
             DataForTest.PersonData.PERSON_2_ISACTIVE
     );
@@ -140,7 +129,7 @@ public class PersonServiceTest {
         Mockito.when(managerService.findById(1L)).thenReturn(MANAGER_DTO);
         Mockito.when(personRepository.save(PERSON_1)).thenReturn(PERSON_1);
 
-        PersonDto personDtoReturned = personService.createOrUpdate(PERSON_DTO_1);
+        PersonDto personDtoReturned = personService.createOrUpdate(PERSON_DTO_1,MANAGER_DTO.getManagerId());
 
         assertEquals(PERSON_DTO_1, personDtoReturned);
     }

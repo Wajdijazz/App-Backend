@@ -40,14 +40,13 @@ public class Utils {
     }
 
 
-    public static final PersonDto getPersonDto(Long id, String firstName, String lastName, Long managerId,
+    public static final PersonDto getPersonDto(Long id, String firstName, String lastName,
                                                ManagerDto managerDto, boolean isActive) {
         return PersonDto.builder()
                 .personId(id)
                 .firstName(firstName)
                 .lastName(lastName)
                 .isActive(isActive)
-                .managerId(managerId)
                 .managerDto(managerDto)
                 .build();
     }
@@ -69,8 +68,6 @@ public class Utils {
                 .projectId(id)
                 .projectName(projectName)
                 .isActive(isActive)
-                .clientId(clientId)
-                .managerId(managerId)
                 .managerDto(managerDto)
                 .clientDto(clientDto)
                 .build();
@@ -92,8 +89,6 @@ public class Utils {
         return TjDto.builder()
                 .tjId(id)
                 .tarif(tarif)
-                .projectId(projectId)
-                .personId(personId)
                 .personDto(personDto)
                 .projectDto(projectDto)
                 .build();

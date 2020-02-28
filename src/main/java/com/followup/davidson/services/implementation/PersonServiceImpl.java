@@ -47,18 +47,16 @@ public class PersonServiceImpl implements IPersonService {
      * @return personne créee
      */
     @Override
-    public PersonDto createOrUpdate(PersonDto personDto) {
-        personDto.setManagerDto(managerService.findById(personDto.getManagerId()));
-
+    public PersonDto createOrUpdate(PersonDto personDto,Long managerId) {
+        personDto.setManagerDto(managerService.findById(managerId));
         return personConverter.entityToDto(personRepository.save(personConverter.dtoToEntity(personDto)));
     }
 
     @Override
     public PersonDto updateIsActiveByPersonId(Long personId, Boolean isActive) {
-        PersonDto personDto = personConverter.entityToDto(personRepository.findById(personId).
-                orElseThrow(() -> new ApplicationException("This person with Id" + personId + "not exist")));
-
+        PersonDto personDto = findById(personId);
         personDto.setActive(isActive);
+
         return personConverter.entityToDto(personRepository.save(personConverter.dtoToEntity(personDto)));
     }
 

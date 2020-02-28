@@ -22,14 +22,17 @@ public class TJController {
     }
 
 
-    @PostMapping("/")
-    public TjDto createTj(@Valid @RequestBody TjDto tjDto) {
-        return tjService.create(tjDto);
+    @PostMapping("/project/{projectId}/person/{personId}")
+    public TjDto createTj(@Valid @RequestBody TjDto tjDto,@PathVariable(value = "projectId") Long projectId,
+                          @PathVariable(value = "personId") Long personId) {
+        return tjService.create(tjDto,projectId,personId);
     }
 
-    @PutMapping("/")
-    public TjDto updateTj(@Valid @RequestBody TjDto tjDto) {
-        return tjService.updateByProjectAndPerson(tjDto);
+    @PutMapping("/project/{projectId}/person/{personId}")
+    public TjDto updateTj(@Valid @RequestBody TjDto tjDto,
+                          @PathVariable(value = "projectId") Long projectId,
+                          @PathVariable(value = "personId") Long personId) {
+        return tjService.updateByProjectAndPerson(tjDto,projectId,personId);
     }
 
 

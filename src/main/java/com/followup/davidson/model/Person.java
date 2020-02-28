@@ -19,6 +19,8 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @ToString
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+@SecondaryTable(name = "dashboard", pkJoinColumns = @PrimaryKeyJoinColumn(name = "person_id"))
+
 /**
  * Person est la classe represetant un consultant chez Davidson
  */
