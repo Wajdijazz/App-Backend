@@ -6,6 +6,7 @@ import com.followup.davidson.dto.ProjectDto;
 import com.followup.davidson.services.IDatasetService;
 import com.followup.davidson.services.IPersonService;
 import com.followup.davidson.services.IProjectService;
+import com.followup.davidson.services.ITJService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ public class DataSetServiceImp implements IDatasetService {
 
     private IProjectService projectService;
     private IPersonService personService;
+    private ITJService tjService;
 
 
     /**
@@ -31,17 +33,26 @@ public class DataSetServiceImp implements IDatasetService {
     @Override
     public DatasetDto getByProject(Long projectId) {
         ProjectDto project = projectService.findByProjectIdAndIsActiveTrue(projectId);
-
-        List<PersonDto> persons = personService.findAll();
-        List<PersonDto> personDtoList = persons.stream()
-                .filter(personDto -> personDto.isActive() == true)
-                .collect(Collectors.toList());
+        List<PersonDto> persons = personService.findActivePersons();
 
         DatasetDto dataset = DatasetDto.builder()
-                .persons(personDtoList)
+                .persons(persons)
                 .project(project)
                 .build();
 
+        return dataset;
+    }
+
+    public DatasetDto getByProjectPersons() {
+
+        List<PersonDto> persons = personService.findActivePersons();
+        List<ProjectDto> projects = projectService.findActiveProjects();
+
+
+        DatasetDto dataset = DatasetDto.builder()
+                .persons(persons)
+                .projects(projects)
+                .build();
         return dataset;
     }
 }

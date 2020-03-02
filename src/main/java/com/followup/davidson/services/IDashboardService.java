@@ -6,6 +6,5 @@ import java.util.List;
 
 public interface IDashboardService {
 
-    DashboardDto createDashboard(List<DashboardDto> dashboardDtoList);
-
+    DashboardDto createDashboard(Long projectId, Long personId, Float tarif);
 }

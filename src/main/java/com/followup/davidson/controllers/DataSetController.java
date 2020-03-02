@@ -20,4 +20,8 @@ public class DataSetController {
     public DatasetDto getByProject(@PathVariable(value = "projectId") Long projectId) {
             return datasetService.getByProject(projectId);
     }
+    @GetMapping("/")
+    public DatasetDto getByProjectPersons() {
+            return datasetService.getByProjectPersons();
+    }
 }

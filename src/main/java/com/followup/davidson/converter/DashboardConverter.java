@@ -1,20 +1,25 @@
 package com.followup.davidson.converter;
 
 import com.followup.davidson.dto.DashboardDto;
+import com.followup.davidson.dto.DatasetDto;
 import com.followup.davidson.model.Dashboard;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DashboardConverter implements GenericsConverter<Dashboard, DashboardDto> {
+@AllArgsConstructor
+public class DashboardConverter  implements GenericsConverter<Dashboard, DashboardDto> {
+    private PersonConverter personConverter;
+    private ProjectConverter projectConverter;
     @Override
     public DashboardDto entityToDto(Dashboard dashboard) {
         return DashboardDto.builder()
                 .dashboardId(dashboard.getDashboardId())
-                .personId(dashboard.getPerson().getPersonId())
-                .projectId(dashboard.getProject().getProjectId())
+                .personDto(personConverter.entityToDto(dashboard.getPerson()))
+                .projectDto(projectConverter.entityToDto(dashboard.getProject()))
                 .tarif(dashboard.getTarif())
-                .total(dashboard.getTotal())
                 .worked_day(dashboard.getWorked_day())
+                .total(dashboard.getTotal())
                 .build();
     }
 
@@ -22,9 +27,10 @@ public class DashboardConverter implements GenericsConverter<Dashboard, Dashboar
     public Dashboard dtoToEntity(DashboardDto dashboardDto) {
         return Dashboard.builder()
                 .dashboardId(dashboardDto.getDashboardId())
+                .person(personConverter.dtoToEntity(dashboardDto.getPersonDto()))
+                .project(projectConverter.dtoToEntity(dashboardDto.getProjectDto()))
                 .tarif(dashboardDto.getTarif())
-                .total(dashboardDto.getTotal())
                 .worked_day(dashboardDto.getWorked_day())
-                .build();
-    }
+                .total(dashboardDto.getTotal())
+                .build();    }
 }

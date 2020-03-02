@@ -16,5 +16,6 @@ public class PersonDto {
     private ManagerDto managerDto;
     @JsonProperty
     private boolean isActive;
+    private float tarif;
 
 }

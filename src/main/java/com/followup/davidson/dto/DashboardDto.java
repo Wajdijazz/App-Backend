@@ -2,6 +2,8 @@ package com.followup.davidson.dto;
 
 import lombok.*;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -10,8 +12,6 @@ import lombok.*;
 @EqualsAndHashCode
 public class DashboardDto {
     private Long dashboardId;
-    private Long personId;
-    private Long projectId;
     private ProjectDto projectDto;
     private PersonDto personDto;
     private Float tarif;

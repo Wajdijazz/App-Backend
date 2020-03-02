@@ -8,15 +8,15 @@ import java.util.List;
 public interface ITJService {
 
 
-    TjDto create(TjDto tjDto,  Long projectId, Long personId);
+    TjDto create(TjDto tjDto, Long projectId, Long personId);
 
-    void deleteTj(Long id);
+    void deleteTjByPerson(Long personId);
 
-    TjDto updateByProjectAndPerson(TjDto  tjDto,  Long projectId, Long personId);
+    void deleteTjByProject(Long projectId);
 
-    Float  findTarifByProject_ProjectIdAndPerson_PersonId(Long projectId, Long personId);
+    TjDto updateByProjectAndPerson(TjDto tjDto, Long projectId, Long personId);
 
-
+    Float findTarifByProject_ProjectIdAndPerson_PersonId(Long projectId, Long personId);
 
 
 }

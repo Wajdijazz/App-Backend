@@ -17,4 +17,7 @@ public interface IPersonService {
     PersonDto findById(Long id);
 
     void deletePerson(Long personId);
+
+    List<PersonDto> findActivePersons();
+
 }

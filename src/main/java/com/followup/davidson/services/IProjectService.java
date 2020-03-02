@@ -20,4 +20,6 @@ public interface IProjectService {
     ProjectDto findByProjectIdAndIsActiveTrue(Long projectId);
 
     void deleteProject(Long id);
+
+    List<ProjectDto> findActiveProjects();
 }

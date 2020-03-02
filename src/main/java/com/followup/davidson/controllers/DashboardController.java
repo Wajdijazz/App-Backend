@@ -6,10 +6,7 @@ import com.followup.davidson.dto.DashboardDto;
 import com.followup.davidson.dto.ProjectDto;
 import com.followup.davidson.services.IDashboardService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -19,8 +16,5 @@ import java.util.List;
 @AllArgsConstructor
 public class DashboardController {
     private IDashboardService dashboardService;
-    @PostMapping("/")
-    public DashboardDto createDashboard(@Valid @RequestBody List<DashboardDto> dashboardDtos) {
-        return null;
-    }
+
 }

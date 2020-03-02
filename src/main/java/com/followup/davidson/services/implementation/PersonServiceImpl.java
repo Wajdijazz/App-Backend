@@ -83,4 +83,9 @@ public class PersonServiceImpl implements IPersonService {
         tjRepository.deleteByPerson_PersonId(id);
         personRepository.deleteById(id);
     }
+
+    @Override
+    public List<PersonDto> findActivePersons() {
+        return personConverter.entityListToDtoList(personRepository.findByIsActiveTrue());
+    }
 }

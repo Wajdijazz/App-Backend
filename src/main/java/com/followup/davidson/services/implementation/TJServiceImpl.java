@@ -8,6 +8,7 @@ import com.followup.davidson.exceptions.ApplicationException;
 import com.followup.davidson.model.Client;
 import com.followup.davidson.model.TJ;
 import com.followup.davidson.repositories.TJRepository;
+import com.followup.davidson.services.IDashboardService;
 import com.followup.davidson.services.IPersonService;
 import com.followup.davidson.services.IProjectService;
 import com.followup.davidson.services.ITJService;
@@ -25,25 +26,35 @@ public class TJServiceImpl implements ITJService {
     private TjConverter tjConverter;
     private IProjectService projectService;
     private IPersonService personService;
+    private IDashboardService dashboardService;
 
 
     @Override
     public TjDto create(TjDto tjDto, Long projectId, Long personId) {
+
         tjDto.setProjectDto(projectService.findById(projectId));
         tjDto.setPersonDto(personService.findById(personId));
 
-        return tjConverter.entityToDto(tjRepository.save(tjConverter.dtoToEntity(tjDto)));
+      //  dashboardService.createDashboard(projectId, personId, tjDto.getTarif());
+
+        TJ tj = tjRepository.findByProject_ProjectIdAndPerson_PersonId(projectId, personId);
+        if (tj == null) {
+            return tjConverter.entityToDto(tjRepository.save(tjConverter.dtoToEntity(tjDto)));
+        } else if (tj.getTarif() == 0) {
+            return updateByProjectAndPerson(tjDto, projectId, personId);
+        } else {
+            return tjConverter.entityToDto(tjRepository.save(tjConverter.dtoToEntity(tjDto)));
+        }
     }
 
-
-    /**
-     * Cette methode permet de supprimer un tj par id
-     *
-     * @param id
-     */
     @Override
-    public void deleteTj(Long id) {
-        tjRepository.deleteById(id);
+    public void deleteTjByPerson(Long personId) {
+        personService.deletePerson(personId);
+    }
+
+    @Override
+    public void deleteTjByProject(Long projectId) {
+        projectService.deleteProject(projectId);
     }
 
     /**

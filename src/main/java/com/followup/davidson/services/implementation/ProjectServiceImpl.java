@@ -13,6 +13,7 @@ import com.followup.davidson.model.Project;
 import com.followup.davidson.repositories.*;
 
 import com.followup.davidson.services.IClientService;
+import com.followup.davidson.services.IDashboardService;
 import com.followup.davidson.services.IManagerService;
 import com.followup.davidson.services.IProjectService;
 import lombok.AllArgsConstructor;
@@ -63,6 +64,7 @@ public class ProjectServiceImpl implements IProjectService {
     public ProjectDto createOrUpdate(ProjectDto projectDto, Long clientId, Long managerId) {
         projectDto.setClientDto(clientService.findById(clientId));
         projectDto.setManagerDto(managerService.findById(managerId));
+
         return projectConverter.entityToDto(projectRepository.save(projectConverter.dtoToEntity(projectDto)));
     }
 
@@ -90,5 +92,10 @@ public class ProjectServiceImpl implements IProjectService {
         interventionRepository.deleteByProject_ProjectId(id);
         tjRepository.deleteByProject_ProjectId(id);
         projectRepository.deleteById(id);
+    }
+
+    @Override
+    public List<ProjectDto> findActiveProjects() {
+        return projectConverter.entityListToDtoList(projectRepository.findByIsActiveTrue());
     }
 }
