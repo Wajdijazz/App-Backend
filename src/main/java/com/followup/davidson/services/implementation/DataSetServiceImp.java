@@ -31,8 +31,8 @@ public class DataSetServiceImp implements IDatasetService {
     @Override
     public DatasetDto getByProject(Long projectId) {
         ProjectDto project = projectService.findByProjectIdAndIsActiveTrue(projectId);
-        List<PersonDto> persons = personService.findAll();
 
+        List<PersonDto> persons = personService.findAll();
         List<PersonDto> personDtoList = persons.stream()
                 .filter(personDto -> personDto.isActive() == true)
                 .collect(Collectors.toList());
