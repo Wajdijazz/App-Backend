@@ -1,9 +1,15 @@
 package com.followup.davidson.services;
 
 import com.followup.davidson.dto.DatasetDto;
+import com.followup.davidson.model.DataSet;
+
+import java.util.List;
 
 public interface IDatasetService {
 
-    DatasetDto getByProject(Long projectId);
-    DatasetDto getByProjectPersons();
+    List<DatasetDto> getDataSet(int month, int year);
+
+    List<DatasetDto> getDataSetForTj();
+
+
 }

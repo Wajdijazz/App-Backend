@@ -17,9 +17,8 @@ public interface IProjectService {
 
     ProjectDto updateIsActiveByProjectId(Long projectId, Boolean isActive);
 
-    ProjectDto findByProjectIdAndIsActiveTrue(Long projectId);
-
     void deleteProject(Long id);
 
     List<ProjectDto> findActiveProjects();
+
 }

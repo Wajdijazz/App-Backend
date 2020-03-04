@@ -1,6 +1,7 @@
 package com.followup.davidson.repositories;
 
 
+import com.followup.davidson.dto.DatasetDto;
 import com.followup.davidson.model.Intervention;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -17,7 +18,7 @@ public interface InterventionRepository extends JpaRepository<Intervention, Long
 
 
     @Query(value = "SELECT i.date, i.mode, i.person, i.project FROM Intervention as i GROUP BY i.date")
-    List<Intervention> findAllByDay ();
+    List<Intervention> findAllByDay();
 
     /**
      * cette methode permet de lister toutes les interventions d'une personne  sur un projet
@@ -56,6 +57,9 @@ public interface InterventionRepository extends JpaRepository<Intervention, Long
             " and intervention.project_id= :projectId and intervention.person_id= :personId",
             nativeQuery = true)
     Float workedDayByPersonAndProjectAndMonthAndYear(long projectId, long personId, long monthNumber, long yearNumber);
+
+
+
 
     /**
      * cette methode permet de supprimer les interventions par personId et par projectId

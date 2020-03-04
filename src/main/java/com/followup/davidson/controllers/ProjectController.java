@@ -22,9 +22,14 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
-    @GetMapping(value = "/", produces = {"application/json"})
+    @GetMapping("/")
     public List<ProjectDto> getAllProject() {
         return projectService.findAll();
+    }
+
+    @GetMapping("/active")
+    public List<ProjectDto> getActiveProjects() {
+        return projectService.findActiveProjects();
     }
 
     @PostMapping("/client/{clientId}/manager/{managerId}")
@@ -51,6 +56,7 @@ public class ProjectController {
     public ProjectDto findProjectById(@PathVariable(value = "id") Long projectId) {
         return projectService.findById(projectId);
     }
+
 
     @DeleteMapping("/{id}")
     public void deletePeroject(@PathVariable(value = "id") Long projectId) {

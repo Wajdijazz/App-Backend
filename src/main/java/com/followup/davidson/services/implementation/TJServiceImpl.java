@@ -34,17 +34,8 @@ public class TJServiceImpl implements ITJService {
 
         tjDto.setProjectDto(projectService.findById(projectId));
         tjDto.setPersonDto(personService.findById(personId));
+        return tjConverter.entityToDto(tjRepository.save(tjConverter.dtoToEntity(tjDto)));
 
-      //  dashboardService.createDashboard(projectId, personId, tjDto.getTarif());
-
-        TJ tj = tjRepository.findByProject_ProjectIdAndPerson_PersonId(projectId, personId);
-        if (tj == null) {
-            return tjConverter.entityToDto(tjRepository.save(tjConverter.dtoToEntity(tjDto)));
-        } else if (tj.getTarif() == 0) {
-            return updateByProjectAndPerson(tjDto, projectId, personId);
-        } else {
-            return tjConverter.entityToDto(tjRepository.save(tjConverter.dtoToEntity(tjDto)));
-        }
     }
 
     @Override

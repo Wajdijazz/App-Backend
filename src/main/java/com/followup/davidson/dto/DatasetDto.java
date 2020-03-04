@@ -11,9 +11,11 @@ import java.util.Collection;
 @AllArgsConstructor
 @ToString
 public class DatasetDto {
-    private Collection<PersonDto> persons;
-    private Collection<ProjectDto> projects;
-    private ProjectDto project;
+    private Long personId;
+    private Long projectId;
+    private Float tarif;
+    private Float worked;
+
 
 
 }

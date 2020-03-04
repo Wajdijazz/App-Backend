@@ -3,6 +3,7 @@ package com.followup.davidson.services.implementation;
 import com.followup.davidson.converter.ManagerConverter;
 import com.followup.davidson.converter.PersonConverter;
 import com.followup.davidson.dto.PersonDto;
+import com.followup.davidson.dto.ProjectDto;
 import com.followup.davidson.exceptions.ApplicationException;
 
 import com.followup.davidson.model.Person;
@@ -83,6 +84,7 @@ public class PersonServiceImpl implements IPersonService {
         tjRepository.deleteByPerson_PersonId(id);
         personRepository.deleteById(id);
     }
+
 
     @Override
     public List<PersonDto> findActivePersons() {

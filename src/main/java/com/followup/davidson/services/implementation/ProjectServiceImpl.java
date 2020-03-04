@@ -76,11 +76,6 @@ public class ProjectServiceImpl implements IProjectService {
         return projectConverter.entityToDto(projectRepository.save(projectConverter.dtoToEntity(projectDto)));
     }
 
-    @Override
-    public ProjectDto findByProjectIdAndIsActiveTrue(Long projectId) {
-        return projectConverter.entityToDto(projectRepository.findByProjectIdAndIsActiveTrue(projectId));
-    }
-
 
     /**
      * Cette methode permet de supprimer un projet par son id
@@ -98,4 +93,6 @@ public class ProjectServiceImpl implements IProjectService {
     public List<ProjectDto> findActiveProjects() {
         return projectConverter.entityListToDtoList(projectRepository.findByIsActiveTrue());
     }
+
+
 }

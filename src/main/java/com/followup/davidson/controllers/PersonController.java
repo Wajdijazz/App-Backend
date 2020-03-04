@@ -21,24 +21,29 @@ public class PersonController {
         this.personService = personService;
     }
 
-    @GetMapping(value = "/", produces = {"application/json"})
+    @GetMapping("/")
     public List<PersonDto> getAllPerson() {
         return personService.findAll();
     }
 
+    @GetMapping("/active")
+    public List<PersonDto> getActivePersons() {
+        return personService.findActivePersons();
+    }
+
     @PostMapping("/{managerId}")
     public PersonDto createPerson(@Valid @RequestBody PersonDto personDto, @PathVariable(value = "managerId") Long managerId) {
-        return personService.createOrUpdate(personDto,managerId);
+        return personService.createOrUpdate(personDto, managerId);
     }
 
     @PutMapping("/manager/{managerId}")
     public PersonDto updatePerson(@Valid @RequestBody PersonDto personDto, @PathVariable(value = "managerId") Long managerId) {
-        return personService.createOrUpdate(personDto,managerId);
+        return personService.createOrUpdate(personDto, managerId);
     }
 
     @PutMapping("/{personId}")
-    public PersonDto updateIsActiveByPersonId(@PathVariable(value = "personId") Long personId,@Valid @RequestBody PersonDto personDto) {
-        return personService.updateIsActiveByPersonId(personId,personDto.isActive());
+    public PersonDto updateIsActiveByPersonId(@PathVariable(value = "personId") Long personId, @Valid @RequestBody PersonDto personDto) {
+        return personService.updateIsActiveByPersonId(personId, personDto.isActive());
     }
 
     @GetMapping("/{id}")
